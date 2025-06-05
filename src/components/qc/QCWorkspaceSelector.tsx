@@ -13,12 +13,16 @@ const QCWorkspaceSelector: React.FC = () => {
   const [selectedForm, setSelectedForm] = useState<string | null>(null);
   const [inspectionType, setInspectionType] = useState<'pre-pour' | 'post-pour'>('pre-pour');
 
-  // Technical drawing placeholder images that look more realistic
+  // Realistic blueprint and technical drawing placeholder images
   const technicalDrawingImages = [
-    "https://images.unsplash.com/photo-1461749280684-dccba630e2f6", // monitor showing technical code/drawings
-    "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7", // technical code display
-    "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d", // technical work setup
-    "https://images.unsplash.com/photo-1473091534298-04dcbce3278c", // technical drawing tools
+    "https://images.unsplash.com/photo-1487958449943-2429e8be8625", // white concrete building structure
+    "https://images.unsplash.com/photo-1486718448742-163732cd1544", // architectural structure detail
+    "https://images.unsplash.com/photo-1433832597046-4f10e10ac764", // building architectural detail
+    "https://images.unsplash.com/photo-1493397212122-2b85dda8106b", // building with structural lines
+    "https://images.unsplash.com/photo-1466442929976-97f336a657be", // architectural building detail
+    "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13", // architectural blueprints
+    "https://images.unsplash.com/photo-1545389336-cf090694435e", // construction blueprints
+    "https://images.unsplash.com/photo-1504307651254-35680f356dfd", // technical drawings
   ];
 
   // Generate mock QC inspection pieces from scheduled jobs with realistic drawing pages
@@ -31,7 +35,7 @@ const QCWorkspaceSelector: React.FC = () => {
       const pageCount = Math.floor(Math.random() * 3) + 2; // 2-4 pages
       const drawingPages = Array.from({ length: pageCount }, (_, pageIndex) => ({
         id: `${job.id}-pg${pageIndex + 1}`,
-        imageUrl: technicalDrawingImages[pageIndex % technicalDrawingImages.length],
+        imageUrl: technicalDrawingImages[(index * pageCount + pageIndex) % technicalDrawingImages.length],
         pageNumber: pageIndex + 1,
         annotations: []
       }));
