@@ -3,10 +3,61 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, Cloud, Users, Settings, AlertCircle, TrendingUp } from "lucide-react";
+import { Calendar, Cloud, Users, Settings, AlertCircle, TrendingUp, Shield, PenTool, FolderOpen, Calculator, Truck } from "lucide-react";
 import QCStatusOverview from "./QCStatusOverview";
 
 const Dashboard = () => {
+  const modules = [
+    {
+      title: "Quality Control",
+      description: "Inspection management, checklists, workflow automation, and analytics",
+      icon: Shield,
+      href: "/qc",
+      color: "bg-blue-600",
+      hoverColor: "hover:bg-blue-700"
+    },
+    {
+      title: "Drafting & Engineering",
+      description: "CAD drawings, 3D models, document management, and calculations",
+      icon: PenTool,
+      href: "/drafting",
+      color: "bg-purple-600",
+      hoverColor: "hover:bg-purple-700"
+    },
+    {
+      title: "Scheduling & Planning",
+      description: "Production scheduling, delivery planning, and resource optimization",
+      icon: Calendar,
+      href: "/scheduling",
+      color: "bg-cyan-600",
+      hoverColor: "hover:bg-cyan-700"
+    },
+    {
+      title: "Project Management",
+      description: "Task tracking, team collaboration, progress monitoring, and reporting",
+      icon: FolderOpen,
+      href: "/project-management",
+      color: "bg-emerald-600",
+      hoverColor: "hover:bg-emerald-700"
+    },
+    {
+      title: "Estimating & Sales",
+      description: "Cost estimation, bid tracking, sales analytics, and proposal generation",
+      icon: Calculator,
+      href: "/estimating-sales",
+      color: "bg-amber-600",
+      hoverColor: "hover:bg-amber-700"
+    },
+    {
+      title: "Field Services",
+      description: "Installation tracking, service requests, crew management, and field reporting",
+      icon: Truck,
+      href: "/field-services",
+      color: "bg-orange-600",
+      hoverColor: "hover:bg-orange-700"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50">
       {/* Header */}
