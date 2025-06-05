@@ -4,9 +4,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Factory, Settings, BarChart3 } from "lucide-react";
-import WallPanelsProduction from "@/components/production/WallPanelsProduction";
-import PrecastProduction from "@/components/production/PrecastProduction";
+import { ArrowLeft, Factory, Settings } from "lucide-react";
+import ProductionOverview from "@/components/production/ProductionOverview";
+import WallPanelDetails from "@/components/production/WallPanelDetails";
+import PrecastDetails from "@/components/production/PrecastDetails";
 import ExtrudedProduction from "@/components/production/ExtrudedProduction";
 import FlexicoreProduction from "@/components/production/FlexicoreProduction";
 import DoubleTeesProduction from "@/components/production/DoubleTeesProduction";
@@ -27,7 +28,7 @@ const ProductionDashboard = () => {
               <Separator orientation="vertical" className="h-6 bg-white/20" />
               <div>
                 <h1 className="text-3xl font-bold">Production Department</h1>
-                <p className="text-blue-100 mt-1">Wall Panels, Precast, Extruded, Flexicore & Double Tees</p>
+                <p className="text-blue-100 mt-1">Comprehensive manufacturing management across all production lines</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
@@ -47,100 +48,40 @@ const ProductionDashboard = () => {
       </header>
 
       <div className="container mx-auto p-6">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-          <Card className="border-l-4 border-l-green-500 hover:shadow-lg transition-shadow">
-            <CardContent className="p-4">
-              <div className="text-center">
-                <p className="text-sm font-medium text-gray-600">Wall Panels</p>
-                <p className="text-2xl font-bold text-green-600">45</p>
-                <p className="text-xs text-gray-500">pieces today</p>
-              </div>
-            </CardContent>
-          </Card>
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-6">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="wall-panels">Wall Panels</TabsTrigger>
+            <TabsTrigger value="precast">Precast</TabsTrigger>
+            <TabsTrigger value="extruded">Extruded</TabsTrigger>
+            <TabsTrigger value="flexicore">Flexicore</TabsTrigger>
+            <TabsTrigger value="double-tees">Double Tees</TabsTrigger>
+          </TabsList>
 
-          <Card className="border-l-4 border-l-blue-500 hover:shadow-lg transition-shadow">
-            <CardContent className="p-4">
-              <div className="text-center">
-                <p className="text-sm font-medium text-gray-600">Precast</p>
-                <p className="text-2xl font-bold text-blue-600">32</p>
-                <p className="text-xs text-gray-500">pieces today</p>
-              </div>
-            </CardContent>
-          </Card>
+          <TabsContent value="overview">
+            <ProductionOverview />
+          </TabsContent>
 
-          <Card className="border-l-4 border-l-purple-500 hover:shadow-lg transition-shadow">
-            <CardContent className="p-4">
-              <div className="text-center">
-                <p className="text-sm font-medium text-gray-600">Extruded</p>
-                <p className="text-2xl font-bold text-purple-600">28</p>
-                <p className="text-xs text-gray-500">pieces today</p>
-              </div>
-            </CardContent>
-          </Card>
+          <TabsContent value="wall-panels">
+            <WallPanelDetails />
+          </TabsContent>
 
-          <Card className="border-l-4 border-l-orange-500 hover:shadow-lg transition-shadow">
-            <CardContent className="p-4">
-              <div className="text-center">
-                <p className="text-sm font-medium text-gray-600">Flexicore</p>
-                <p className="text-2xl font-bold text-orange-600">36</p>
-                <p className="text-xs text-gray-500">pieces today</p>
-              </div>
-            </CardContent>
-          </Card>
+          <TabsContent value="precast">
+            <PrecastDetails />
+          </TabsContent>
 
-          <Card className="border-l-4 border-l-red-500 hover:shadow-lg transition-shadow">
-            <CardContent className="p-4">
-              <div className="text-center">
-                <p className="text-sm font-medium text-gray-600">Double Tees</p>
-                <p className="text-2xl font-bold text-red-600">15</p>
-                <p className="text-xs text-gray-500">pieces today</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+          <TabsContent value="extruded">
+            <ExtrudedProduction />
+          </TabsContent>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Factory className="h-6 w-6 mr-2" />
-              Production Management
-            </CardTitle>
-            <CardDescription>
-              Manage production across all five subdepartments
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="wall-panels" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="wall-panels">Wall Panels</TabsTrigger>
-                <TabsTrigger value="precast">Precast</TabsTrigger>
-                <TabsTrigger value="extruded">Extruded</TabsTrigger>
-                <TabsTrigger value="flexicore">Flexicore</TabsTrigger>
-                <TabsTrigger value="double-tees">Double Tees</TabsTrigger>
-              </TabsList>
+          <TabsContent value="flexicore">
+            <FlexicoreProduction />
+          </TabsContent>
 
-              <TabsContent value="wall-panels">
-                <WallPanelsProduction />
-              </TabsContent>
-
-              <TabsContent value="precast">
-                <PrecastProduction />
-              </TabsContent>
-
-              <TabsContent value="extruded">
-                <ExtrudedProduction />
-              </TabsContent>
-
-              <TabsContent value="flexicore">
-                <FlexicoreProduction />
-              </TabsContent>
-
-              <TabsContent value="double-tees">
-                <DoubleTeesProduction />
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+          <TabsContent value="double-tees">
+            <DoubleTeesProduction />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
