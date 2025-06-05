@@ -13,35 +13,33 @@ const QCWorkspaceSelector: React.FC = () => {
   const [selectedForm, setSelectedForm] = useState<string | null>(null);
   const [inspectionType, setInspectionType] = useState<'pre-pour' | 'post-pour'>('pre-pour');
 
-  // Mock data - in real app this would come from API
-  const mockPieces: QCInspectionPiece[] = [
-    {
-      id: "P001",
-      pieceNumber: "WP-2024-001-012",
-      pieceName: "Wall Panel A-12",
-      formId: "WP1",
-      pourOrder: 1,
-      inspectionStatus: "pending",
+  // Generate mock QC inspection pieces from scheduled jobs
+  const generateMockQCPieces = (formId: string): QCInspectionPiece[] => {
+    const form = getAllForms().find(f => f.id === formId);
+    if (!form || !form.scheduledJobs.length) return [];
+
+    return form.scheduledJobs.map((job, index) => ({
+      id: `QC-${job.id}`,
+      pieceNumber: `${formId}-2024-${String(index + 1).padStart(3, '0')}`,
+      pieceName: `${job.panelType || 'Element'} ${index + 1}`,
+      formId: formId,
+      pourOrder: index + 1,
+      inspectionStatus: Math.random() > 0.7 ? 'complete' : 'pending',
       drawingPages: [
-        { id: "pg1", imageUrl: "/placeholder.svg", pageNumber: 1, annotations: [] },
-        { id: "pg2", imageUrl: "/placeholder.svg", pageNumber: 2, annotations: [] }
+        { 
+          id: `pg${index + 1}`, 
+          imageUrl: "/placeholder.svg", 
+          pageNumber: 1, 
+          annotations: [] 
+        }
       ]
-    },
-    {
-      id: "P002",
-      pieceNumber: "WP-2024-001-013", 
-      pieceName: "Wall Panel A-13",
-      formId: "WP1",
-      pourOrder: 2,
-      inspectionStatus: "pending",
-      drawingPages: [
-        { id: "pg3", imageUrl: "/placeholder.svg", pageNumber: 1, annotations: [] }
-      ]
-    }
-  ];
+    }));
+  };
 
   if (selectedForm) {
     const form = getAllForms().find(f => f.id === selectedForm);
+    const mockPieces = generateMockQCPieces(selectedForm);
+    
     return (
       <MobileQCInspection
         formId={selectedForm}
