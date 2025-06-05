@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -94,13 +93,17 @@ const QCWorkspaceSelector: React.FC<QCWorkspaceSelectorProps> = ({ department })
         annotations: []
       }));
 
+      // Properly type the inspection status
+      const statusOptions: ('complete' | 'pending' | 'in-progress' | 'issues')[] = ['complete', 'pending', 'in-progress', 'issues'];
+      const randomStatus = statusOptions[Math.floor(Math.random() * statusOptions.length)];
+
       return {
         id: `QC-${job.id}`,
         pieceNumber: `${formId}-2024-${String(index + 1).padStart(3, '0')}`,
         pieceName: `${job.panelType || 'Element'} ${index + 1}`,
         formId: formId,
         pourOrder: index + 1,
-        inspectionStatus: Math.random() > 0.7 ? 'complete' : 'pending',
+        inspectionStatus: randomStatus,
         drawingPages: drawingPages
       };
     });
