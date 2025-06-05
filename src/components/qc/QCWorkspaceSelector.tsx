@@ -13,16 +13,16 @@ const QCWorkspaceSelector: React.FC = () => {
   const [selectedForm, setSelectedForm] = useState<string | null>(null);
   const [inspectionType, setInspectionType] = useState<'pre-pour' | 'post-pour'>('pre-pour');
 
-  // Realistic blueprint and technical drawing placeholder images
+  // Actual blueprint and technical drawing images
   const technicalDrawingImages = [
-    "https://images.unsplash.com/photo-1487958449943-2429e8be8625", // white concrete building structure
-    "https://images.unsplash.com/photo-1486718448742-163732cd1544", // architectural structure detail
-    "https://images.unsplash.com/photo-1433832597046-4f10e10ac764", // building architectural detail
-    "https://images.unsplash.com/photo-1493397212122-2b85dda8106b", // building with structural lines
-    "https://images.unsplash.com/photo-1466442929976-97f336a657be", // architectural building detail
-    "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13", // architectural blueprints
-    "https://images.unsplash.com/photo-1545389336-cf090694435e", // construction blueprints
-    "https://images.unsplash.com/photo-1504307651254-35680f356dfd", // technical drawings
+    "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13", // architectural blueprints with measurements
+    "https://images.unsplash.com/photo-1545389336-cf090694435e", // construction blueprints on table
+    "https://images.unsplash.com/photo-1504307651254-35680f356dfd", // technical engineering drawings
+    "https://images.unsplash.com/photo-1581094794329-c8112a89af12", // blueprint technical drawings
+    "https://images.unsplash.com/photo-1541888946425-d81bb19240f5", // engineering drawings and plans
+    "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8", // architectural blueprint plans
+    "https://images.unsplash.com/photo-1581094288338-2314dddb7ece", // technical drawing blueprints
+    "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b", // construction blueprint drawings
   ];
 
   // Generate mock QC inspection pieces from scheduled jobs with realistic drawing pages
