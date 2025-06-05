@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Factory, Settings } from "lucide-react";
+import { Factory } from "lucide-react";
 import DayView from "./DayView";
 import { precastForms } from "@/data/productionForms";
+import InventoryTracker from "./InventoryTracker";
 
 const PrecastDetails = () => {
   return (
@@ -26,6 +27,7 @@ const PrecastDetails = () => {
           <TabsTrigger value="day-view">Day View</TabsTrigger>
           <TabsTrigger value="weekly-schedule">Weekly Schedule</TabsTrigger>
           <TabsTrigger value="form-management">Form Management</TabsTrigger>
+          <TabsTrigger value="inventory">Inventory</TabsTrigger>
         </TabsList>
 
         <TabsContent value="day-view">
@@ -67,6 +69,10 @@ const PrecastDetails = () => {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="inventory">
+          <InventoryTracker department="precast" />
         </TabsContent>
       </Tabs>
     </div>

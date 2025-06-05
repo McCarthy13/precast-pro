@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Play, Pause, CheckCircle, Clock } from "lucide-react";
+import InventoryTracker from "./InventoryTracker";
 
 const DoubleTeesProduction = () => {
   const doubleTeeJobs = [
@@ -55,75 +57,118 @@ const DoubleTeesProduction = () => {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Double Tee Production Queue</CardTitle>
-            <CardDescription>Large span double tee production</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Job ID</TableHead>
-                  <TableHead>Project</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Span</TableHead>
-                  <TableHead>Progress</TableHead>
-                  <TableHead>Bed</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {doubleTeeJobs.map((job) => (
-                  <TableRow key={job.id}>
-                    <TableCell className="font-medium">{job.id}</TableCell>
-                    <TableCell>{job.project}</TableCell>
-                    <TableCell>{job.teeType}</TableCell>
-                    <TableCell>{job.span}</TableCell>
-                    <TableCell>
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-sm">
-                          <span>{job.completed}/{job.quantity}</span>
-                          <span>{Math.round((job.completed / job.quantity) * 100)}%</span>
-                        </div>
-                        <Progress value={(job.completed / job.quantity) * 100} className="h-2" />
-                      </div>
-                    </TableCell>
-                    <TableCell>{job.bed}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        {getStatusIcon(job.status)}
-                        <Badge variant="outline">{job.status}</Badge>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Double Tee Controls</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Button className="w-full bg-red-600 hover:bg-red-700">
-              Start Double Tee Pour
-            </Button>
-            <Button variant="outline" className="w-full">
-              Pre-stress Setup
-            </Button>
-            <Button variant="outline" className="w-full">
-              Strand Tensioning
-            </Button>
-            <Button variant="outline" className="w-full">
-              Release Schedule
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="flex justify-between items-center">
+        <div>
+          <h3 className="text-2xl font-bold">Double Tee Production</h3>
+          <p className="text-gray-600">Large span double tee production</p>
+        </div>
       </div>
+
+      <Tabs defaultValue="production-queue" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="production-queue">Production Queue</TabsTrigger>
+          <TabsTrigger value="controls">Controls</TabsTrigger>
+          <TabsTrigger value="inventory">Inventory</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="production-queue">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <Card className="lg:col-span-2">
+              <CardHeader>
+                <CardTitle>Double Tee Production Queue</CardTitle>
+                <CardDescription>Large span double tee production</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Job ID</TableHead>
+                      <TableHead>Project</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Span</TableHead>
+                      <TableHead>Progress</TableHead>
+                      <TableHead>Bed</TableHead>
+                      <TableHead>Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {doubleTeeJobs.map((job) => (
+                      <TableRow key={job.id}>
+                        <TableCell className="font-medium">{job.id}</TableCell>
+                        <TableCell>{job.project}</TableCell>
+                        <TableCell>{job.teeType}</TableCell>
+                        <TableCell>{job.span}</TableCell>
+                        <TableCell>
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-sm">
+                              <span>{job.completed}/{job.quantity}</span>
+                              <span>{Math.round((job.completed / job.quantity) * 100)}%</span>
+                            </div>
+                            <Progress value={(job.completed / job.quantity) * 100} className="h-2" />
+                          </div>
+                        </TableCell>
+                        <TableCell>{job.bed}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center space-x-2">
+                            {getStatusIcon(job.status)}
+                            <Badge variant="outline">{job.status}</Badge>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Double Tee Controls</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Button className="w-full bg-red-600 hover:bg-red-700">
+                  Start Double Tee Pour
+                </Button>
+                <Button variant="outline" className="w-full">
+                  Pre-stress Setup
+                </Button>
+                <Button variant="outline" className="w-full">
+                  Strand Tensioning
+                </Button>
+                <Button variant="outline" className="w-full">
+                  Release Schedule
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="controls">
+          <Card>
+            <CardHeader>
+              <CardTitle>Double Tee Controls</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Button className="w-full bg-red-600 hover:bg-red-700">
+                Start Double Tee Pour
+              </Button>
+              <Button variant="outline" className="w-full">
+                Pre-stress Setup
+              </Button>
+              <Button variant="outline" className="w-full">
+                Strand Tensioning
+              </Button>
+              <Button variant="outline" className="w-full">
+                Release Schedule
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="inventory">
+          <InventoryTracker department="double-tees" />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

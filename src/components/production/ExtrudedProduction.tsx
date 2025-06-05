@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import DayView from "./DayView";
 import { extrudedForms } from "@/data/productionForms";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
+import InventoryTracker from "./InventoryTracker";
 
 const ExtrudedProduction = () => {
 
@@ -27,6 +29,7 @@ const ExtrudedProduction = () => {
       productType: "Solid Slabs",
       length: "20 ft",
       quantity: 28,
+      completed: 28,
       status: "completed",
       line: "Extruder Line 2"
     },
@@ -73,6 +76,7 @@ const ExtrudedProduction = () => {
           <TabsTrigger value="day-view">Day View</TabsTrigger>
           <TabsTrigger value="production-queue">Production Queue</TabsTrigger>
           <TabsTrigger value="extruder-controls">Extruder Controls</TabsTrigger>
+          <TabsTrigger value="inventory">Inventory</TabsTrigger>
         </TabsList>
 
         <TabsContent value="day-view">
@@ -149,6 +153,10 @@ const ExtrudedProduction = () => {
               </Button>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="inventory">
+          <InventoryTracker department="extruded" />
         </TabsContent>
       </Tabs>
     </div>

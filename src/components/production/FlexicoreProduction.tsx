@@ -8,6 +8,7 @@ import DayView from "./DayView";
 import { flexicoreForms } from "@/data/productionForms";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
+import InventoryTracker from "./InventoryTracker";
 
 const FlexicoreProduction = () => {
   const flexicoreJobs = [
@@ -86,6 +87,7 @@ const FlexicoreProduction = () => {
           <TabsTrigger value="day-view">Day View</TabsTrigger>
           <TabsTrigger value="production-queue">Production Queue</TabsTrigger>
           <TabsTrigger value="flexicore-controls">Flexicore Controls</TabsTrigger>
+          <TabsTrigger value="inventory">Inventory</TabsTrigger>
         </TabsList>
 
         <TabsContent value="day-view">
@@ -186,6 +188,10 @@ const FlexicoreProduction = () => {
               </Button>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="inventory">
+          <InventoryTracker department="flexicore" />
         </TabsContent>
       </Tabs>
     </div>

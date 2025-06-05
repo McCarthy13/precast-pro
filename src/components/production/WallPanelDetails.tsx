@@ -7,6 +7,7 @@ import { Plus, Search, Filter } from "lucide-react";
 import JobTable from "./wall-panels/JobTable";
 import QualityControlSection from "./wall-panels/QualityControlSection";
 import ProductionPlanningForm from "./wall-panels/ProductionPlanningForm";
+import InventoryTracker from "./InventoryTracker";
 
 const WallPanelDetails = () => {
   const activeJobs = [
@@ -90,6 +91,7 @@ const WallPanelDetails = () => {
           <TabsTrigger value="active-jobs">Active Jobs</TabsTrigger>
           <TabsTrigger value="quality-control">Quality Control</TabsTrigger>
           <TabsTrigger value="production-planning">Production Planning</TabsTrigger>
+          <TabsTrigger value="inventory">Inventory</TabsTrigger>
         </TabsList>
 
         <TabsContent value="active-jobs">
@@ -119,6 +121,10 @@ const WallPanelDetails = () => {
 
         <TabsContent value="production-planning">
           <ProductionPlanningForm />
+        </TabsContent>
+
+        <TabsContent value="inventory">
+          <InventoryTracker department="wall-panels" />
         </TabsContent>
       </Tabs>
     </div>
