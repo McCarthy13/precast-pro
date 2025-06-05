@@ -3,15 +3,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Plus, FileText, Shield, Wrench } from "lucide-react";
+import { Search, Plus, FileText, Award } from "lucide-react";
 
 const QCCerts = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Material Certificates</h2>
-          <p className="text-gray-600">Steel, strand, mesh, cement, and fly ash certifications</p>
+          <h2 className="text-2xl font-bold">Certificates</h2>
+          <p className="text-gray-600">Material certificates for steel, strand, mesh, cement, and fly ash</p>
         </div>
         <Button className="bg-blue-600 hover:bg-blue-700">
           <Plus className="h-4 w-4 mr-2" />
@@ -29,21 +29,21 @@ const QCCerts = () => {
 
       <Tabs defaultValue="steel-certs" className="space-y-4">
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="steel-certs">Steel</TabsTrigger>
-          <TabsTrigger value="strand-certs">Strand</TabsTrigger>
-          <TabsTrigger value="mesh-certs">Mesh</TabsTrigger>
-          <TabsTrigger value="cement-certs">Cement</TabsTrigger>
-          <TabsTrigger value="flyash-certs">Fly Ash</TabsTrigger>
+          <TabsTrigger value="steel-certs">Steel Certs</TabsTrigger>
+          <TabsTrigger value="strand-certs">Strand Certs</TabsTrigger>
+          <TabsTrigger value="mesh-certs">Mesh Certs</TabsTrigger>
+          <TabsTrigger value="cement-certs">Cement Certs</TabsTrigger>
+          <TabsTrigger value="flyash-certs">Fly Ash Certs</TabsTrigger>
         </TabsList>
 
         <TabsContent value="steel-certs">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <Wrench className="h-5 w-5 mr-2" />
+                <Award className="h-5 w-5 mr-2" />
                 Steel Certificates
               </CardTitle>
-              <CardDescription>Flat stock, angle, tube, rebar certifications</CardDescription>
+              <CardDescription>Certificates for flat stock, angle, tube, rebar, and other steel materials</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-gray-500">Steel certificate management coming soon...</p>
@@ -54,14 +54,11 @@ const QCCerts = () => {
         <TabsContent value="strand-certs">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="h-5 w-5 mr-2" />
-                Strand Certificates
-              </CardTitle>
-              <CardDescription>Prestressing strand certifications and test reports</CardDescription>
+              <CardTitle>Strand Certificates</CardTitle>
+              <CardDescription>Prestressing strand material certificates</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-500">Strand certificate tracking coming soon...</p>
+              <p className="text-gray-500">Strand certificate management coming soon...</p>
             </CardContent>
           </Card>
         </TabsContent>
@@ -69,11 +66,8 @@ const QCCerts = () => {
         <TabsContent value="mesh-certs">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <Shield className="h-5 w-5 mr-2" />
-                Mesh Certificates
-              </CardTitle>
-              <CardDescription>Type 1, Type 2, Type 3, Type 4 mesh certifications</CardDescription>
+              <CardTitle>Mesh Certificates</CardTitle>
+              <CardDescription>Type 1, Type 2, Type 3, and Type 4 mesh certificates</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-gray-500">Mesh certificate management coming soon...</p>
@@ -85,10 +79,10 @@ const QCCerts = () => {
           <Card>
             <CardHeader>
               <CardTitle>Cement Certificates</CardTitle>
-              <CardDescription>Portland cement certifications and mill test reports</CardDescription>
+              <CardDescription>Portland cement material certificates</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-500">Cement certificate tracking coming soon...</p>
+              <p className="text-gray-500">Cement certificate management coming soon...</p>
             </CardContent>
           </Card>
         </TabsContent>
@@ -97,7 +91,7 @@ const QCCerts = () => {
           <Card>
             <CardHeader>
               <CardTitle>Fly Ash Certificates</CardTitle>
-              <CardDescription>Fly ash certifications and quality reports</CardDescription>
+              <CardDescription>Fly ash material certificates and specifications</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-gray-500">Fly ash certificate management coming soon...</p>
