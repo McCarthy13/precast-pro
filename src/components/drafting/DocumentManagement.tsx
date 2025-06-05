@@ -5,160 +5,228 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FileText, Search, Filter, Upload, Download, Share2, Eye, FolderOpen, File, Archive } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FileText, Search, Filter, Upload, Download, Share2, Eye, FolderOpen, File, Archive, Shield, AlertTriangle, CheckCircle, Clock, Factory, PenTool, Calculator, Truck } from "lucide-react";
 
 const DocumentManagement = () => {
+  const departments = [
+    {
+      id: "qc",
+      name: "Quality Control",
+      icon: Shield,
+      color: "bg-blue-600",
+      documents: 89,
+      pending: 3,
+      compliant: 98
+    },
+    {
+      id: "drafting",
+      name: "Drafting & Engineering", 
+      icon: PenTool,
+      color: "bg-purple-600",
+      documents: 245,
+      pending: 5,
+      compliant: 96
+    },
+    {
+      id: "production",
+      name: "Production",
+      icon: Factory,
+      color: "bg-green-600",
+      documents: 156,
+      pending: 2,
+      compliant: 94
+    },
+    {
+      id: "estimating",
+      name: "Estimating & Sales",
+      icon: Calculator,
+      color: "bg-amber-600",
+      documents: 78,
+      pending: 1,
+      compliant: 99
+    },
+    {
+      id: "field",
+      name: "Field Services",
+      icon: Truck,
+      color: "bg-orange-600",
+      documents: 45,
+      pending: 1,
+      compliant: 92
+    }
+  ];
+
   const documents = [
     {
       id: "DOC-001",
       name: "Project Alpha Specifications.pdf",
       type: "Specification",
-      category: "Technical",
+      department: "Drafting & Engineering",
+      version: "Rev 3.2",
+      isoCompliant: true,
       size: "2.4 MB",
       uploadDate: "2024-01-15",
-      status: "current",
-      uploadedBy: "John Smith"
+      status: "approved",
+      uploadedBy: "John Smith",
+      reviewedBy: "Sarah Johnson",
+      nextReview: "2024-04-15"
     },
     {
-      id: "DOC-002",
+      id: "DOC-002", 
       name: "Material Test Reports.xlsx",
       type: "Report",
-      category: "QC",
+      department: "Quality Control",
+      version: "Rev 1.0",
+      isoCompliant: true,
       size: "1.8 MB",
       uploadDate: "2024-01-14",
       status: "current",
-      uploadedBy: "Sarah Johnson"
+      uploadedBy: "Sarah Johnson",
+      reviewedBy: "Mike Chen",
+      nextReview: "2024-02-14"
     },
     {
       id: "DOC-003",
       name: "Connection Calculations.docx",
       type: "Calculation",
-      category: "Engineering",
+      department: "Drafting & Engineering", 
+      version: "Rev 2.1",
+      isoCompliant: false,
       size: "856 KB",
       uploadDate: "2024-01-13",
-      status: "archived",
-      uploadedBy: "Mike Chen"
+      status: "pending_review",
+      uploadedBy: "Mike Chen",
+      reviewedBy: null,
+      nextReview: "2024-01-20"
     },
     {
       id: "DOC-004",
-      name: "Erection Manual Rev2.pdf",
+      name: "Production Manual Rev2.pdf",
       type: "Manual",
-      category: "Installation",
+      department: "Production",
+      version: "Rev 2.0",
+      isoCompliant: true,
       size: "5.2 MB",
       uploadDate: "2024-01-12",
-      status: "current",
-      uploadedBy: "Emily Davis"
+      status: "approved",
+      uploadedBy: "Emily Davis",
+      reviewedBy: "John Smith",
+      nextReview: "2024-07-12"
     }
   ];
 
-  const getFileIcon = (type: string) => {
-    switch (type.toLowerCase()) {
-      case "specification":
-      case "manual":
-        return <FileText className="h-4 w-4 text-blue-600" />;
-      case "report":
-        return <File className="h-4 w-4 text-green-600" />;
-      case "calculation":
-        return <File className="h-4 w-4 text-purple-600" />;
-      default:
-        return <File className="h-4 w-4 text-gray-600" />;
-    }
-  };
-
-  const getCategoryColor = (category: string) => {
-    switch (category.toLowerCase()) {
-      case "technical":
-        return "bg-blue-100 text-blue-800";
-      case "qc":
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "approved":
         return "bg-green-100 text-green-800";
-      case "engineering":
-        return "bg-purple-100 text-purple-800";
-      case "installation":
-        return "bg-orange-100 text-orange-800";
+      case "pending_review":
+        return "bg-yellow-100 text-yellow-800";
+      case "current":
+        return "bg-blue-100 text-blue-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
   };
 
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "approved":
+        return <CheckCircle className="h-4 w-4 text-green-600" />;
+      case "pending_review":
+        return <Clock className="h-4 w-4 text-yellow-600" />;
+      case "current":
+        return <FileText className="h-4 w-4 text-blue-600" />;
+      default:
+        return <File className="h-4 w-4 text-gray-600" />;
+    }
+  };
+
   return (
     <div className="space-y-6">
-      {/* Document Upload and Search */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-          <Input
-            placeholder="Search documents by name, type, or category..."
-            className="pl-10"
-          />
-        </div>
-        <Select>
-          <SelectTrigger className="w-48">
-            <Filter className="h-4 w-4 mr-2" />
-            <SelectValue placeholder="Filter by category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            <SelectItem value="technical">Technical</SelectItem>
-            <SelectItem value="qc">QC</SelectItem>
-            <SelectItem value="engineering">Engineering</SelectItem>
-            <SelectItem value="installation">Installation</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button className="bg-purple-600 hover:bg-purple-700">
-          <Upload className="h-4 w-4 mr-2" />
-          Upload Document
-        </Button>
-      </div>
+      <Tabs defaultValue="departments" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="departments">Departments</TabsTrigger>
+          <TabsTrigger value="documents">All Documents</TabsTrigger>
+          <TabsTrigger value="revisions">Revision Control</TabsTrigger>
+          <TabsTrigger value="compliance">ISO Compliance</TabsTrigger>
+        </TabsList>
 
-      {/* Folder Structure */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Folder Structure</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
-                <FolderOpen className="h-4 w-4 text-blue-600" />
-                <span className="text-sm">Project Alpha</span>
-                <Badge variant="outline" className="ml-auto text-xs">12</Badge>
-              </div>
-              <div className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded cursor-pointer ml-4">
-                <FolderOpen className="h-4 w-4 text-blue-600" />
-                <span className="text-sm">Drawings</span>
-                <Badge variant="outline" className="ml-auto text-xs">45</Badge>
-              </div>
-              <div className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded cursor-pointer ml-4">
-                <FolderOpen className="h-4 w-4 text-blue-600" />
-                <span className="text-sm">Specifications</span>
-                <Badge variant="outline" className="ml-auto text-xs">8</Badge>
-              </div>
-              <div className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded cursor-pointer ml-4">
-                <FolderOpen className="h-4 w-4 text-blue-600" />
-                <span className="text-sm">Reports</span>
-                <Badge variant="outline" className="ml-auto text-xs">15</Badge>
-              </div>
-              <div className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
-                <FolderOpen className="h-4 w-4 text-green-600" />
-                <span className="text-sm">Project Beta</span>
-                <Badge variant="outline" className="ml-auto text-xs">8</Badge>
-              </div>
-              <div className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
-                <Archive className="h-4 w-4 text-gray-600" />
-                <span className="text-sm">Archive</span>
-                <Badge variant="outline" className="ml-auto text-xs">23</Badge>
-              </div>
+        <TabsContent value="departments" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {departments.map((dept) => {
+              const IconComponent = dept.icon;
+              return (
+                <Card key={dept.id} className="hover:shadow-md transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-lg">
+                      <div className={`p-2 rounded-lg ${dept.color} mr-3`}>
+                        <IconComponent className="h-5 w-5 text-white" />
+                      </div>
+                      {dept.name}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div>
+                        <p className="text-2xl font-bold text-blue-600">{dept.documents}</p>
+                        <p className="text-xs text-gray-600">Documents</p>
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold text-yellow-600">{dept.pending}</p>
+                        <p className="text-xs text-gray-600">Pending</p>
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold text-green-600">{dept.compliant}%</p>
+                        <p className="text-xs text-gray-600">ISO Compliant</p>
+                      </div>
+                    </div>
+                    <Button variant="outline" className="w-full">
+                      View Documents
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="documents" className="space-y-6">
+          {/* Search and Filters */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input
+                placeholder="Search documents by name, type, or department..."
+                className="pl-10"
+              />
             </div>
-          </CardContent>
-        </Card>
+            <Select>
+              <SelectTrigger className="w-48">
+                <Filter className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Filter by department" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Departments</SelectItem>
+                <SelectItem value="qc">Quality Control</SelectItem>
+                <SelectItem value="drafting">Drafting & Engineering</SelectItem>
+                <SelectItem value="production">Production</SelectItem>
+                <SelectItem value="estimating">Estimating & Sales</SelectItem>
+                <SelectItem value="field">Field Services</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button className="bg-purple-600 hover:bg-purple-700">
+              <Upload className="h-4 w-4 mr-2" />
+              Upload Document
+            </Button>
+          </div>
 
-        {/* Document List */}
-        <div className="lg:col-span-3">
+          {/* Documents Table */}
           <Card>
             <CardHeader>
               <CardTitle>Document Library</CardTitle>
               <CardDescription>
-                Manage project documents, specifications, and reports
+                Centralized document management with revision control and ISO compliance tracking
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -166,12 +234,11 @@ const DocumentManagement = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Document</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Size</TableHead>
-                    <TableHead>Upload Date</TableHead>
-                    <TableHead>Uploaded By</TableHead>
+                    <TableHead>Department</TableHead>
+                    <TableHead>Version</TableHead>
+                    <TableHead>ISO Status</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead>Next Review</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -180,26 +247,36 @@ const DocumentManagement = () => {
                     <TableRow key={doc.id}>
                       <TableCell>
                         <div className="flex items-center space-x-2">
-                          {getFileIcon(doc.type)}
-                          <span className="font-medium">{doc.name}</span>
+                          {getStatusIcon(doc.status)}
+                          <div>
+                            <div className="font-medium">{doc.name}</div>
+                            <div className="text-sm text-gray-500">{doc.type} • {doc.size}</div>
+                          </div>
                         </div>
                       </TableCell>
-                      <TableCell>{doc.type}</TableCell>
+                      <TableCell>{doc.department}</TableCell>
                       <TableCell>
-                        <Badge className={getCategoryColor(doc.category)}>
-                          {doc.category}
+                        <Badge variant="outline">{doc.version}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        {doc.isoCompliant ? (
+                          <Badge className="bg-green-100 text-green-800">
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Compliant
+                          </Badge>
+                        ) : (
+                          <Badge className="bg-red-100 text-red-800">
+                            <AlertTriangle className="h-3 w-3 mr-1" />
+                            Non-Compliant
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(doc.status)}>
+                          {doc.status.replace('_', ' ')}
                         </Badge>
                       </TableCell>
-                      <TableCell>{doc.size}</TableCell>
-                      <TableCell>{doc.uploadDate}</TableCell>
-                      <TableCell>{doc.uploadedBy}</TableCell>
-                      <TableCell>
-                        <Badge 
-                          className={doc.status === 'current' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}
-                        >
-                          {doc.status}
-                        </Badge>
-                      </TableCell>
+                      <TableCell className="text-sm">{doc.nextReview}</TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
                           <Button variant="ghost" size="sm">
@@ -219,59 +296,32 @@ const DocumentManagement = () => {
               </Table>
             </CardContent>
           </Card>
-        </div>
-      </div>
+        </TabsContent>
 
-      {/* Document Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <FileText className="h-5 w-5 text-blue-600" />
-              <div>
-                <p className="text-sm font-medium text-gray-600">Total Documents</p>
-                <p className="text-2xl font-bold text-blue-600">127</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <Upload className="h-5 w-5 text-green-600" />
-              <div>
-                <p className="text-sm font-medium text-gray-600">This Week</p>
-                <p className="text-2xl font-bold text-green-600">8</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <TabsContent value="revisions" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Revision Control</CardTitle>
+              <CardDescription>Track document versions and change history</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-500">Revision control interface coming soon...</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <Archive className="h-5 w-5 text-gray-600" />
-              <div>
-                <p className="text-sm font-medium text-gray-600">Archived</p>
-                <p className="text-2xl font-bold text-gray-600">23</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <FolderOpen className="h-5 w-5 text-purple-600" />
-              <div>
-                <p className="text-sm font-medium text-gray-600">Storage Used</p>
-                <p className="text-2xl font-bold text-purple-600">45GB</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+        <TabsContent value="compliance" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>ISO Standards Compliance</CardTitle>
+              <CardDescription>Monitor and ensure ISO compliance across all documents</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-500">ISO compliance dashboard coming soon...</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

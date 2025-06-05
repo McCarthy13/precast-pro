@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, FileText, Folder, Search, Settings } from "lucide-react";
+import DocumentManagement from "@/components/drafting/DocumentManagement";
 
 const DocumentManagementDashboard = () => {
   return (
@@ -21,7 +22,7 @@ const DocumentManagementDashboard = () => {
               <Separator orientation="vertical" className="h-6 bg-white/20" />
               <div>
                 <h1 className="text-3xl font-bold">Document Management</h1>
-                <p className="text-indigo-100 mt-1">Centralized document storage and collaboration</p>
+                <p className="text-indigo-100 mt-1">Centralized document storage, revision control, and ISO compliance</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
@@ -56,8 +57,8 @@ const DocumentManagementDashboard = () => {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Folders</p>
-                  <p className="text-2xl font-bold text-purple-600">156</p>
+                  <p className="text-sm font-medium text-gray-600">Departments</p>
+                  <p className="text-2xl font-bold text-purple-600">15</p>
                 </div>
                 <Folder className="h-8 w-8 text-purple-600" />
               </div>
@@ -68,11 +69,11 @@ const DocumentManagementDashboard = () => {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Storage Used</p>
-                  <p className="text-2xl font-bold text-blue-600">78%</p>
+                  <p className="text-sm font-medium text-gray-600">ISO Compliant</p>
+                  <p className="text-2xl font-bold text-blue-600">94%</p>
                 </div>
                 <div className="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center">
-                  <span className="text-blue-600 text-lg">💾</span>
+                  <span className="text-blue-600 text-lg">📋</span>
                 </div>
               </div>
             </CardContent>
@@ -82,8 +83,8 @@ const DocumentManagementDashboard = () => {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Recent Activity</p>
-                  <p className="text-2xl font-bold text-green-600">23</p>
+                  <p className="text-sm font-medium text-gray-600">Pending Reviews</p>
+                  <p className="text-2xl font-bold text-green-600">12</p>
                 </div>
                 <Search className="h-8 w-8 text-green-600" />
               </div>
@@ -91,15 +92,7 @@ const DocumentManagementDashboard = () => {
           </Card>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Document Management System</CardTitle>
-            <CardDescription>Centralized document storage, version control, and collaboration</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Document management interface would be implemented here.</p>
-          </CardContent>
-        </Card>
+        <DocumentManagement />
       </div>
     </div>
   );
