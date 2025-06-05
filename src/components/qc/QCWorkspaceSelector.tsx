@@ -13,27 +13,39 @@ const QCWorkspaceSelector: React.FC = () => {
   const [selectedForm, setSelectedForm] = useState<string | null>(null);
   const [inspectionType, setInspectionType] = useState<'pre-pour' | 'post-pour'>('pre-pour');
 
-  // Generate mock QC inspection pieces from scheduled jobs
+  // Technical drawing placeholder images that look more realistic
+  const technicalDrawingImages = [
+    "https://images.unsplash.com/photo-1461749280684-dccba630e2f6", // monitor showing technical code/drawings
+    "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7", // technical code display
+    "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d", // technical work setup
+    "https://images.unsplash.com/photo-1473091534298-04dcbce3278c", // technical drawing tools
+  ];
+
+  // Generate mock QC inspection pieces from scheduled jobs with realistic drawing pages
   const generateMockQCPieces = (formId: string): QCInspectionPiece[] => {
     const form = getAllForms().find(f => f.id === formId);
     if (!form || !form.scheduledJobs.length) return [];
 
-    return form.scheduledJobs.map((job, index) => ({
-      id: `QC-${job.id}`,
-      pieceNumber: `${formId}-2024-${String(index + 1).padStart(3, '0')}`,
-      pieceName: `${job.panelType || 'Element'} ${index + 1}`,
-      formId: formId,
-      pourOrder: index + 1,
-      inspectionStatus: Math.random() > 0.7 ? 'complete' : 'pending',
-      drawingPages: [
-        { 
-          id: `pg${index + 1}`, 
-          imageUrl: "/placeholder.svg", 
-          pageNumber: 1, 
-          annotations: [] 
-        }
-      ]
-    }));
+    return form.scheduledJobs.map((job, index) => {
+      // Generate 2-4 drawing pages per piece for scrolling functionality
+      const pageCount = Math.floor(Math.random() * 3) + 2; // 2-4 pages
+      const drawingPages = Array.from({ length: pageCount }, (_, pageIndex) => ({
+        id: `${job.id}-pg${pageIndex + 1}`,
+        imageUrl: technicalDrawingImages[pageIndex % technicalDrawingImages.length],
+        pageNumber: pageIndex + 1,
+        annotations: []
+      }));
+
+      return {
+        id: `QC-${job.id}`,
+        pieceNumber: `${formId}-2024-${String(index + 1).padStart(3, '0')}`,
+        pieceName: `${job.panelType || 'Element'} ${index + 1}`,
+        formId: formId,
+        pourOrder: index + 1,
+        inspectionStatus: Math.random() > 0.7 ? 'complete' : 'pending',
+        drawingPages: drawingPages
+      };
+    });
   };
 
   if (selectedForm) {

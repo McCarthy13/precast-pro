@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { ArrowLeft, Save, GripVertical, Play, CheckCircle, AlertTriangle } from "lucide-react";
 import { QCInspectionPiece } from "@/types/production";
+import DrawingInspectionViewer from "./DrawingInspectionViewer";
 
 interface MobileQCInspectionProps {
   formId: string;
@@ -27,6 +28,7 @@ const MobileQCInspection: React.FC<MobileQCInspectionProps> = ({
 }) => {
   const [pieces, setPieces] = useState(initialPieces);
   const [isDragDisabled] = useState(inspectionType === 'post-pour');
+  const [selectedPiece, setSelectedPiece] = useState<QCInspectionPiece | null>(null);
 
   const handleDragEnd = (result: any) => {
     if (!result.destination || isDragDisabled) return;
@@ -42,6 +44,11 @@ const MobileQCInspection: React.FC<MobileQCInspectionProps> = ({
     }));
 
     setPieces(updatedItems);
+  };
+
+  const handleInspectPiece = (piece: QCInspectionPiece) => {
+    setSelectedPiece(piece);
+    onStartInspection(piece.id);
   };
 
   const getStatusColor = (status: string) => {
@@ -69,6 +76,17 @@ const MobileQCInspection: React.FC<MobileQCInspectionProps> = ({
         return <div className="h-4 w-4 rounded-full bg-gray-400" />;
     }
   };
+
+  // If a piece is selected for inspection, show the drawing viewer
+  if (selectedPiece) {
+    return (
+      <DrawingInspectionViewer
+        piece={selectedPiece}
+        inspectionType={inspectionType}
+        onBack={() => setSelectedPiece(null)}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -147,7 +165,7 @@ const MobileQCInspection: React.FC<MobileQCInspectionProps> = ({
                             
                             <Button 
                               size="sm" 
-                              onClick={() => onStartInspection(piece.id)}
+                              onClick={() => handleInspectPiece(piece)}
                               className="flex-shrink-0"
                             >
                               {piece.inspectionStatus === 'complete' ? 'Review' : 'Inspect'}
