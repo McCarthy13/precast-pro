@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, Cloud, Users, Settings, AlertCircle, TrendingUp, Shield, PenTool, FolderOpen, Calculator, Truck, Factory, Package, Truck as TruckIcon, Warehouse, Wrench, FileText, Users as UsersIcon, Globe, Flask } from "lucide-react";
+import { Calendar, Cloud, Users, Settings, AlertCircle, TrendingUp, Shield, PenTool, FolderOpen, Calculator, Truck, Factory, Package, Truck as TruckIcon, Warehouse, Wrench, FileText, Users as UsersIcon, Globe, FlaskConical } from "lucide-react";
 import QCStatusOverview from "./QCStatusOverview";
 
 const Dashboard = () => {
@@ -123,7 +123,7 @@ const Dashboard = () => {
     {
       title: "Research & Development",
       description: "Innovation tracking, testing protocols, and product development",
-      icon: Flask,
+      icon: FlaskConical,
       href: "/research-development",
       color: "bg-amber-500",
       hoverColor: "hover:bg-amber-600"
