@@ -1,10 +1,9 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, Cloud, Users, Settings, AlertCircle, TrendingUp, Shield, PenTool, FolderOpen, Calculator, Truck } from "lucide-react";
+import { Calendar, Cloud, Users, Settings, AlertCircle, TrendingUp, Shield, PenTool, FolderOpen, Calculator, Truck, Factory, Package, Truck as TruckIcon, Warehouse, Wrench, FileText, Users as UsersIcon, Globe, Flask } from "lucide-react";
 import QCStatusOverview from "./QCStatusOverview";
 
 const Dashboard = () => {
@@ -56,6 +55,78 @@ const Dashboard = () => {
       href: "/field-services",
       color: "bg-orange-600",
       hoverColor: "hover:bg-orange-700"
+    },
+    {
+      title: "Production Department",
+      description: "Wall Panels, Precast, Extruded, Flexicore, Double Tees production",
+      icon: Factory,
+      href: "/production",
+      color: "bg-green-600",
+      hoverColor: "hover:bg-green-700"
+    },
+    {
+      title: "Purchasing & Receiving",
+      description: "Material procurement, vendor management, and inventory tracking",
+      icon: Package,
+      href: "/purchasing-receiving",
+      color: "bg-orange-500",
+      hoverColor: "hover:bg-orange-600"
+    },
+    {
+      title: "Dispatch & Delivery",
+      description: "Fleet management, route optimization, and delivery coordination",
+      icon: TruckIcon,
+      href: "/dispatch-delivery",
+      color: "bg-blue-500",
+      hoverColor: "hover:bg-blue-600"
+    },
+    {
+      title: "Yard Management",
+      description: "Storage optimization, inventory tracking, and yard operations",
+      icon: Warehouse,
+      href: "/yard-management",
+      color: "bg-gray-600",
+      hoverColor: "hover:bg-gray-700"
+    },
+    {
+      title: "Maintenance",
+      description: "Equipment maintenance, work orders, and facility management",
+      icon: Wrench,
+      href: "/maintenance",
+      color: "bg-red-600",
+      hoverColor: "hover:bg-red-700"
+    },
+    {
+      title: "Document Management",
+      description: "Centralized document storage, version control, and collaboration",
+      icon: FileText,
+      href: "/document-management",
+      color: "bg-indigo-600",
+      hoverColor: "hover:bg-indigo-700"
+    },
+    {
+      title: "Contact Management (CRM)",
+      description: "Customer relationship management and contact database",
+      icon: UsersIcon,
+      href: "/contact-management",
+      color: "bg-teal-600",
+      hoverColor: "hover:bg-teal-700"
+    },
+    {
+      title: "Client Portal",
+      description: "Customer self-service portal and project visibility",
+      icon: Globe,
+      href: "/client-portal",
+      color: "bg-violet-600",
+      hoverColor: "hover:bg-violet-700"
+    },
+    {
+      title: "Research & Development",
+      description: "Innovation tracking, testing protocols, and product development",
+      icon: Flask,
+      href: "/research-development",
+      color: "bg-amber-500",
+      hoverColor: "hover:bg-amber-600"
     }
   ];
 
@@ -162,14 +233,11 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* QC Status Overview and Modules Grid */}
+        {/* QC Status Overview */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {/* QC Status Overview - takes 2 columns on large screens */}
           <div className="lg:col-span-2">
             <QCStatusOverview />
           </div>
-
-          {/* Quality Control Module */}
           <Card className="module-card-hover border-l-4 border-l-orange-500">
             <CardHeader>
               <CardTitle className="flex items-center text-orange-700">
@@ -196,141 +264,34 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* Modules Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Estimating/Sales */}
-          <Card className="module-card-hover border-l-4 border-l-blue-500">
-            <CardHeader>
-              <CardTitle className="flex items-center text-blue-700">
-                <Calculator className="h-5 w-5 mr-2" />
-                Estimating/Sales
-              </CardTitle>
-              <CardDescription>Bid management and customer relations</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Active Bids</span>
-                  <Badge variant="outline">12</Badge>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Win Rate</span>
-                  <Badge className="bg-green-100 text-green-800">78%</Badge>
-                </div>
-                <Button variant="outline" className="w-full mt-4" asChild>
-                  <a href="/estimating-sales">Open Module</a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Drafting/Engineering */}
-          <Card className="module-card-hover border-l-4 border-l-purple-500">
-            <CardHeader>
-              <CardTitle className="flex items-center text-purple-700">
-                <div className="h-5 w-5 mr-2 bg-purple-600 rounded flex items-center justify-center">
-                  <span className="text-white text-xs">3D</span>
-                </div>
-                Drafting/Engineering
-              </CardTitle>
-              <CardDescription>3D models, drawings, and document management</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Active Drawings</span>
-                  <Badge variant="outline">45</Badge>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Pending Approval</span>
-                  <Badge className="bg-orange-100 text-orange-800">8</Badge>
-                </div>
-                <Button variant="outline" className="w-full mt-4" asChild>
-                  <a href="/drafting">Open Module</a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Production */}
-          <Card className="module-card-hover border-l-4 border-l-green-500">
-            <CardHeader>
-              <CardTitle className="flex items-center text-green-700">
-                <div className="h-5 w-5 mr-2 bg-green-600 rounded flex items-center justify-center">
-                  <span className="text-white text-xs">⚡</span>
-                </div>
-                Production
-              </CardTitle>
-              <CardDescription>Wall Panels, Precast, Extruded, Flexicore</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Daily Output</span>
-                  <Badge className="bg-green-100 text-green-800">23 pieces</Badge>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Efficiency</span>
-                  <Badge className="bg-blue-100 text-blue-800">94%</Badge>
-                </div>
-                <Button variant="outline" className="w-full mt-4" asChild>
-                  <a href="/scheduling">Open Module</a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Project Management */}
-          <Card className="module-card-hover border-l-4 border-l-indigo-500">
-            <CardHeader>
-              <CardTitle className="flex items-center text-indigo-700">
-                <Users className="h-5 w-5 mr-2" />
-                Project Management
-              </CardTitle>
-              <CardDescription>Tasks, timelines, and team coordination</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Open Tasks</span>
-                  <Badge variant="outline">67</Badge>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">On Schedule</span>
-                  <Badge className="bg-green-100 text-green-800">21/24</Badge>
-                </div>
-                <Button variant="outline" className="w-full mt-4" asChild>
-                  <a href="/project-management">Open Module</a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Weather Integration */}
-          <Card className="module-card-hover border-l-4 border-l-sky-500">
-            <CardHeader>
-              <CardTitle className="flex items-center text-sky-700">
-                <Cloud className="h-5 w-5 mr-2" />
-                Weather & Environment
-              </CardTitle>
-              <CardDescription>Real-time conditions and historical data</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Current Temp</span>
-                  <Badge className="bg-sky-100 text-sky-800">72°F</Badge>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Humidity</span>
-                  <Badge variant="outline">65%</Badge>
-                </div>
-                <Button variant="outline" className="w-full mt-4" asChild>
-                  <a href="/field-services">View Details</a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+        {/* All Modules Grid */}
+        <div>
+          <h2 className="text-2xl font-bold mb-6">All Department Modules</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {modules.map((module) => {
+              const IconComponent = module.icon;
+              return (
+                <Card key={module.title} className="module-card-hover">
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-sm">
+                      <IconComponent className="h-5 w-5 mr-2" />
+                      {module.title}
+                    </CardTitle>
+                    <CardDescription className="text-xs">{module.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button 
+                      variant="outline" 
+                      className="w-full" 
+                      asChild
+                    >
+                      <a href={module.href}>Open Module</a>
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
         </div>
 
         {/* Recent Activity */}

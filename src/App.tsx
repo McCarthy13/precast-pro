@@ -10,6 +10,15 @@ import SchedulingDashboard from "./pages/SchedulingDashboard";
 import ProjectManagementDashboard from "./pages/ProjectManagementDashboard";
 import EstimatingSalesDashboard from "./pages/EstimatingSalesDashboard";
 import FieldServicesDashboard from "./pages/FieldServicesDashboard";
+import ProductionDashboard from "./pages/ProductionDashboard";
+import PurchasingReceivingDashboard from "./pages/PurchasingReceivingDashboard";
+import DispatchDeliveryDashboard from "./pages/DispatchDeliveryDashboard";
+import YardManagementDashboard from "./pages/YardManagementDashboard";
+import MaintenanceDashboard from "./pages/MaintenanceDashboard";
+import DocumentManagementDashboard from "./pages/DocumentManagementDashboard";
+import ContactManagementDashboard from "./pages/ContactManagementDashboard";
+import ClientPortalDashboard from "./pages/ClientPortalDashboard";
+import ResearchDevelopmentDashboard from "./pages/ResearchDevelopmentDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +36,15 @@ const App = () => (
         <Route path="/project-management" element={<ProjectManagementDashboard />} />
         <Route path="/estimating-sales" element={<EstimatingSalesDashboard />} />
         <Route path="/field-services" element={<FieldServicesDashboard />} />
+        <Route path="/production" element={<ProductionDashboard />} />
+        <Route path="/purchasing-receiving" element={<PurchasingReceivingDashboard />} />
+        <Route path="/dispatch-delivery" element={<DispatchDeliveryDashboard />} />
+        <Route path="/yard-management" element={<YardManagementDashboard />} />
+        <Route path="/maintenance" element={<MaintenanceDashboard />} />
+        <Route path="/document-management" element={<DocumentManagementDashboard />} />
+        <Route path="/contact-management" element={<ContactManagementDashboard />} />
+        <Route path="/client-portal" element={<ClientPortalDashboard />} />
+        <Route path="/research-development" element={<ResearchDevelopmentDashboard />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
