@@ -3,11 +3,12 @@ import React, { useState, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { ArrowLeft, Save, GripVertical, Play, CheckCircle, AlertTriangle } from "lucide-react";
+import { ArrowLeft, Save, GripVertical, Play, CheckCircle, AlertTriangle, Eye, Hash } from "lucide-react";
 import { QCInspectionPiece } from "@/types/production";
 import DrawingInspectionViewer from "./DrawingInspectionViewer";
+import WorkspaceInspectionViewer from "./WorkspaceInspectionViewer";
 
 interface MobileQCInspectionProps {
   formId: string;
@@ -29,6 +30,7 @@ const MobileQCInspection: React.FC<MobileQCInspectionProps> = ({
   const [pieces, setPieces] = useState(initialPieces);
   const [isDragDisabled] = useState(inspectionType === 'post-pour');
   const [selectedPiece, setSelectedPiece] = useState<QCInspectionPiece | null>(null);
+  const [showWorkspaceInspection, setShowWorkspaceInspection] = useState(false);
 
   const handleDragEnd = (result: any) => {
     if (!result.destination || isDragDisabled) return;
@@ -49,6 +51,28 @@ const MobileQCInspection: React.FC<MobileQCInspectionProps> = ({
   const handleInspectPiece = (piece: QCInspectionPiece) => {
     setSelectedPiece(piece);
     onStartInspection(piece.id);
+  };
+
+  const handlePositionChange = (pieceId: string, newPosition: number) => {
+    if (newPosition < 1 || newPosition > pieces.length) return;
+    
+    const updatedPieces = pieces.map(piece => {
+      if (piece.id === pieceId) {
+        return { ...piece, pourOrder: newPosition };
+      }
+      return piece;
+    });
+    
+    // Sort by new position to maintain order
+    const sortedPieces = updatedPieces.sort((a, b) => a.pourOrder - b.pourOrder);
+    
+    // Reassign sequential positions
+    const finalPieces = sortedPieces.map((piece, index) => ({
+      ...piece,
+      pourOrder: index + 1
+    }));
+    
+    setPieces(finalPieces);
   };
 
   const getStatusColor = (status: string) => {
@@ -77,6 +101,18 @@ const MobileQCInspection: React.FC<MobileQCInspectionProps> = ({
     }
   };
 
+  // If workspace inspection is active, show the workspace viewer
+  if (showWorkspaceInspection) {
+    return (
+      <WorkspaceInspectionViewer
+        formName={formName}
+        pieces={pieces.sort((a, b) => a.pourOrder - b.pourOrder)}
+        inspectionType={inspectionType}
+        onBack={() => setShowWorkspaceInspection(false)}
+      />
+    );
+  }
+
   // If a piece is selected for inspection, show the drawing viewer
   if (selectedPiece) {
     return (
@@ -102,7 +138,17 @@ const MobileQCInspection: React.FC<MobileQCInspectionProps> = ({
               <p className="text-sm text-gray-600">{inspectionType} Inspection</p>
             </div>
           </div>
-          <Badge variant="secondary">{pieces.length} Pieces</Badge>
+          <div className="flex items-center space-x-2">
+            <Badge variant="secondary">{pieces.length} Pieces</Badge>
+            <Button 
+              size="sm" 
+              onClick={() => setShowWorkspaceInspection(true)}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              <Eye className="h-4 w-4 mr-2" />
+              Inspect All
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -110,8 +156,8 @@ const MobileQCInspection: React.FC<MobileQCInspectionProps> = ({
       <div className="bg-blue-50 border-b border-blue-200 p-4">
         <p className="text-sm text-blue-800">
           {inspectionType === 'pre-pour' 
-            ? "Drag pieces to arrange in pour order, then tap to start inspection"
-            : "Pieces are arranged in pour order. Tap to continue inspection from pre-pour markups"
+            ? "Assign positions to pieces, then use 'Inspect All' to review the entire workspace"
+            : "Pieces are arranged in assigned order. Use 'Inspect All' to continue inspection from pre-pour markups"
           }
         </p>
       </div>
@@ -147,8 +193,17 @@ const MobileQCInspection: React.FC<MobileQCInspectionProps> = ({
                               </div>
                             )}
                             
-                            <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                              {piece.pourOrder}
+                            <div className="flex items-center space-x-2">
+                              <Hash className="h-4 w-4 text-gray-500" />
+                              <Input
+                                type="number"
+                                value={piece.pourOrder}
+                                onChange={(e) => handlePositionChange(piece.id, parseInt(e.target.value))}
+                                className="w-16 h-8 text-center text-sm"
+                                min={1}
+                                max={pieces.length}
+                                disabled={isDragDisabled}
+                              />
                             </div>
                             
                             <div className="flex-1 min-w-0">
@@ -165,6 +220,7 @@ const MobileQCInspection: React.FC<MobileQCInspectionProps> = ({
                             
                             <Button 
                               size="sm" 
+                              variant="outline"
                               onClick={() => handleInspectPiece(piece)}
                               className="flex-shrink-0"
                             >
@@ -195,16 +251,6 @@ const MobileQCInspection: React.FC<MobileQCInspectionProps> = ({
             )}
           </Droppable>
         </DragDropContext>
-
-        {/* Save Button for Pre-pour */}
-        {inspectionType === 'pre-pour' && (
-          <div className="mt-6 pt-4 border-t">
-            <Button className="w-full bg-green-600 hover:bg-green-700">
-              <Save className="h-4 w-4 mr-2" />
-              Save Pour Order
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );
