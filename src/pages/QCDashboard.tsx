@@ -5,13 +5,23 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle, AlertTriangle, XCircle, Search, Plus, Filter, Clock, Camera, FileText, Settings, TrendingUp, ArrowLeft, Factory } from "lucide-react";
+import { CheckCircle, AlertTriangle, XCircle, Search, Plus, Filter, Clock, Camera, FileText, Settings, TrendingUp, ArrowLeft, Factory, FlaskConical, Shield, Database, Calendar, BookOpen, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import QCInspectionList from "@/components/qc/QCInspectionList";
 import QCWorkflowManager from "@/components/qc/QCWorkflowManager";
 import QCAnalytics from "@/components/qc/QCAnalytics";
 import QCChecklistManager from "@/components/qc/QCChecklistManager";
 import QCWorkspaceSelector from "@/components/qc/QCWorkspaceSelector";
+import QCMixDesigns from "@/components/qc/QCMixDesigns";
+import QCFreshConcreteTests from "@/components/qc/QCFreshConcreteTests";
+import QCAudits from "@/components/qc/QCAudits";
+import QCBatchReports from "@/components/qc/QCBatchReports";
+import QCResources from "@/components/qc/QCResources";
+import QCStrand from "@/components/qc/QCStrand";
+import QCMoistures from "@/components/qc/QCMoistures";
+import QCAggregateInfo from "@/components/qc/QCAggregateInfo";
+import QCCalibration from "@/components/qc/QCCalibration";
+import QCCerts from "@/components/qc/QCCerts";
 
 const QCDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,7 +51,7 @@ const QCDashboard = () => {
               </Link>
               <div>
                 <h1 className="text-3xl font-bold">Quality Control</h1>
-                <p className="text-blue-100 mt-1">Comprehensive QC Management & Workflow System</p>
+                <p className="text-blue-100 mt-1">Comprehensive QC Management & Documentation System</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -122,7 +132,7 @@ const QCDashboard = () => {
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  placeholder="Search inspections, pieces, projects..."
+                  placeholder="Search across all QC modules..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -161,28 +171,70 @@ const QCDashboard = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="workspace-inspections" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="workspace-inspections" className="flex items-center">
-              <Factory className="h-4 w-4 mr-2" />
-              Workspaces
-            </TabsTrigger>
-            <TabsTrigger value="inspections" className="flex items-center">
-              <CheckCircle className="h-4 w-4 mr-2" />
-              Inspections
-            </TabsTrigger>
-            <TabsTrigger value="workflows" className="flex items-center">
-              <Settings className="h-4 w-4 mr-2" />
-              Workflows
-            </TabsTrigger>
-            <TabsTrigger value="checklists" className="flex items-center">
-              <FileText className="h-4 w-4 mr-2" />
-              Checklists
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center">
-              <TrendingUp className="h-4 w-4 mr-2" />
-              Analytics
-            </TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto">
+            <TabsList className="grid grid-cols-8 lg:grid-cols-16 min-w-max">
+              <TabsTrigger value="workspace-inspections" className="flex items-center text-xs px-3">
+                <Factory className="h-4 w-4 mr-1" />
+                Workspaces
+              </TabsTrigger>
+              <TabsTrigger value="inspections" className="flex items-center text-xs px-3">
+                <CheckCircle className="h-4 w-4 mr-1" />
+                Inspections
+              </TabsTrigger>
+              <TabsTrigger value="mix-designs" className="flex items-center text-xs px-3">
+                <FlaskConical className="h-4 w-4 mr-1" />
+                Mix Designs
+              </TabsTrigger>
+              <TabsTrigger value="fresh-concrete" className="flex items-center text-xs px-3">
+                <Database className="h-4 w-4 mr-1" />
+                Fresh Concrete
+              </TabsTrigger>
+              <TabsTrigger value="audits" className="flex items-center text-xs px-3">
+                <Shield className="h-4 w-4 mr-1" />
+                Audits
+              </TabsTrigger>
+              <TabsTrigger value="batch-reports" className="flex items-center text-xs px-3">
+                <FileText className="h-4 w-4 mr-1" />
+                Batch Reports
+              </TabsTrigger>
+              <TabsTrigger value="resources" className="flex items-center text-xs px-3">
+                <BookOpen className="h-4 w-4 mr-1" />
+                Resources
+              </TabsTrigger>
+              <TabsTrigger value="strand" className="flex items-center text-xs px-3">
+                <Zap className="h-4 w-4 mr-1" />
+                Strand
+              </TabsTrigger>
+              <TabsTrigger value="moistures" className="flex items-center text-xs px-3">
+                <Database className="h-4 w-4 mr-1" />
+                Moistures
+              </TabsTrigger>
+              <TabsTrigger value="aggregates" className="flex items-center text-xs px-3">
+                <Database className="h-4 w-4 mr-1" />
+                Aggregates
+              </TabsTrigger>
+              <TabsTrigger value="calibration" className="flex items-center text-xs px-3">
+                <Calendar className="h-4 w-4 mr-1" />
+                Calibration
+              </TabsTrigger>
+              <TabsTrigger value="certs" className="flex items-center text-xs px-3">
+                <FileText className="h-4 w-4 mr-1" />
+                Certs
+              </TabsTrigger>
+              <TabsTrigger value="workflows" className="flex items-center text-xs px-3">
+                <Settings className="h-4 w-4 mr-1" />
+                Workflows
+              </TabsTrigger>
+              <TabsTrigger value="checklists" className="flex items-center text-xs px-3">
+                <FileText className="h-4 w-4 mr-1" />
+                Checklists
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="flex items-center text-xs px-3">
+                <TrendingUp className="h-4 w-4 mr-1" />
+                Analytics
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="workspace-inspections">
             <QCWorkspaceSelector />
@@ -190,6 +242,46 @@ const QCDashboard = () => {
 
           <TabsContent value="inspections">
             <QCInspectionList searchTerm={searchTerm} filter={activeFilter} />
+          </TabsContent>
+
+          <TabsContent value="mix-designs">
+            <QCMixDesigns />
+          </TabsContent>
+
+          <TabsContent value="fresh-concrete">
+            <QCFreshConcreteTests />
+          </TabsContent>
+
+          <TabsContent value="audits">
+            <QCAudits />
+          </TabsContent>
+
+          <TabsContent value="batch-reports">
+            <QCBatchReports />
+          </TabsContent>
+
+          <TabsContent value="resources">
+            <QCResources />
+          </TabsContent>
+
+          <TabsContent value="strand">
+            <QCStrand />
+          </TabsContent>
+
+          <TabsContent value="moistures">
+            <QCMoistures />
+          </TabsContent>
+
+          <TabsContent value="aggregates">
+            <QCAggregateInfo />
+          </TabsContent>
+
+          <TabsContent value="calibration">
+            <QCCalibration />
+          </TabsContent>
+
+          <TabsContent value="certs">
+            <QCCerts />
           </TabsContent>
 
           <TabsContent value="workflows">
