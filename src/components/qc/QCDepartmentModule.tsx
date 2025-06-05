@@ -221,7 +221,7 @@ const QCDepartmentModule = ({ departmentName, departmentColor, metrics }: QCDepa
 
           {/* Tab Content */}
           <TabsContent value="workspace-inspections">
-            <QCWorkspaceSelector />
+            <QCWorkspaceSelector department={departmentName} />
           </TabsContent>
 
           <TabsContent value="fresh-concrete">
