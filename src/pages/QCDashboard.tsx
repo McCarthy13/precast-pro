@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle, AlertTriangle, XCircle, Search, Plus, Filter, Clock, Camera, FileText, Settings, TrendingUp, ArrowLeft, Factory, FlaskConical, Shield, Database, Calendar, BookOpen, Zap } from "lucide-react";
+import { CheckCircle, AlertTriangle, XCircle, Search, Plus, Filter, Clock, Camera, FileText, Settings, TrendingUp, ArrowLeft, Factory, FlaskConical, Shield, Database, Calendar, BookOpen, Zap, Droplets, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import QCInspectionList from "@/components/qc/QCInspectionList";
 import QCWorkflowManager from "@/components/qc/QCWorkflowManager";
@@ -33,7 +33,9 @@ const QCDashboard = () => {
     passedToday: 18,
     failedToday: 2,
     overdueInspections: 5,
-    averagePassRate: 94.2
+    averagePassRate: 94.2,
+    freshTestsToday: 12,
+    moistureTestsToday: 8
   };
 
   return (
@@ -51,7 +53,7 @@ const QCDashboard = () => {
               </Link>
               <div>
                 <h1 className="text-3xl font-bold">Quality Control</h1>
-                <p className="text-blue-100 mt-1">Comprehensive QC Management & Documentation System</p>
+                <p className="text-blue-100 mt-1">Daily QC Operations & Inspection Management</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -68,58 +70,97 @@ const QCDashboard = () => {
       </header>
 
       <div className="container mx-auto p-6">
-        {/* Quick Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-8">
-          <Card className="module-card-hover">
+        {/* Daily Operations Metrics - Prominently Featured */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <Card className="module-card-hover border-l-4 border-l-blue-600">
             <CardContent className="p-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">{qcMetrics.totalInspections}</div>
-                <div className="text-xs text-gray-600">Total Inspections</div>
+                <Factory className="h-6 w-6 mx-auto mb-2 text-blue-600" />
+                <div className="text-2xl font-bold text-blue-600">{qcMetrics.pendingInspections}</div>
+                <div className="text-xs text-gray-600">Pending Inspections</div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="module-card-hover">
+          <Card className="module-card-hover border-l-4 border-l-green-600">
             <CardContent className="p-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-orange-600">{qcMetrics.pendingInspections}</div>
-                <div className="text-xs text-gray-600">Pending</div>
+                <FlaskConical className="h-6 w-6 mx-auto mb-2 text-green-600" />
+                <div className="text-2xl font-bold text-green-600">{qcMetrics.freshTestsToday}</div>
+                <div className="text-xs text-gray-600">Fresh Tests Today</div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="module-card-hover">
+          <Card className="module-card-hover border-l-4 border-l-purple-600">
             <CardContent className="p-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">{qcMetrics.passedToday}</div>
-                <div className="text-xs text-gray-600">Passed Today</div>
+                <Droplets className="h-6 w-6 mx-auto mb-2 text-purple-600" />
+                <div className="text-2xl font-bold text-purple-600">{qcMetrics.moistureTestsToday}</div>
+                <div className="text-xs text-gray-600">Moisture Tests Today</div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="module-card-hover">
+          <Card className="module-card-hover border-l-4 border-l-orange-600">
             <CardContent className="p-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-red-600">{qcMetrics.failedToday}</div>
-                <div className="text-xs text-gray-600">Failed Today</div>
+                <AlertTriangle className="h-6 w-6 mx-auto mb-2 text-orange-600" />
+                <div className="text-2xl font-bold text-orange-600">{qcMetrics.overdueInspections}</div>
+                <div className="text-xs text-gray-600">Overdue Items</div>
               </div>
             </CardContent>
           </Card>
-          
-          <Card className="module-card-hover">
-            <CardContent className="p-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">{qcMetrics.overdueInspections}</div>
-                <div className="text-xs text-gray-600">Overdue</div>
+        </div>
+
+        {/* Quick Access - Daily Operations */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <Card className="module-card-hover border-l-4 border-l-blue-600">
+            <CardHeader>
+              <CardTitle className="flex items-center text-blue-700">
+                <Factory className="h-5 w-5 mr-2" />
+                Workspace Inspections
+              </CardTitle>
+              <CardDescription>Pre-Pour and Post-Pour Inspections - Primary QC Activity</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Today's Inspections</span>
+                  <Badge variant="outline">{qcMetrics.pendingInspections}</Badge>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Completion Rate</span>
+                  <Badge className="bg-green-100 text-green-800">{qcMetrics.averagePassRate}%</Badge>
+                </div>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                  Start Workspace Inspection
+                </Button>
               </div>
             </CardContent>
           </Card>
-          
-          <Card className="module-card-hover">
-            <CardContent className="p-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-indigo-600">{qcMetrics.averagePassRate}%</div>
-                <div className="text-xs text-gray-600">Pass Rate</div>
+
+          <Card className="module-card-hover border-l-4 border-l-green-600">
+            <CardHeader>
+              <CardTitle className="flex items-center text-green-700">
+                <FlaskConical className="h-5 w-5 mr-2" />
+                Fresh Concrete Testing
+              </CardTitle>
+              <CardDescription>Daily concrete testing for all departments</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Tests Today</span>
+                  <Badge variant="outline">{qcMetrics.freshTestsToday}</Badge>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Avg Temp</span>
+                  <Badge className="bg-blue-100 text-blue-800">71°F</Badge>
+                </div>
+                <Button className="w-full bg-green-600 hover:bg-green-700">
+                  Record Fresh Test
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -132,7 +173,7 @@ const QCDashboard = () => {
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  placeholder="Search across all QC modules..."
+                  placeholder="Search inspections, tests, and QC data..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -169,103 +210,71 @@ const QCDashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Main Content Tabs */}
+        {/* Main Content Tabs - Reorganized by Usage Priority */}
         <Tabs defaultValue="workspace-inspections" className="space-y-6">
           <div className="overflow-x-auto">
-            <TabsList className="grid grid-cols-8 lg:grid-cols-16 min-w-max">
-              <TabsTrigger value="workspace-inspections" className="flex items-center text-xs px-3">
+            <TabsList className="grid grid-cols-6 lg:grid-cols-12 min-w-max">
+              {/* Primary Daily Operations */}
+              <TabsTrigger value="workspace-inspections" className="flex items-center text-xs px-3 bg-blue-50">
                 <Factory className="h-4 w-4 mr-1" />
-                Workspaces
-              </TabsTrigger>
-              <TabsTrigger value="inspections" className="flex items-center text-xs px-3">
-                <CheckCircle className="h-4 w-4 mr-1" />
                 Inspections
               </TabsTrigger>
-              <TabsTrigger value="mix-designs" className="flex items-center text-xs px-3">
+              <TabsTrigger value="fresh-concrete" className="flex items-center text-xs px-3 bg-green-50">
                 <FlaskConical className="h-4 w-4 mr-1" />
-                Mix Designs
+                Fresh Tests
               </TabsTrigger>
-              <TabsTrigger value="fresh-concrete" className="flex items-center text-xs px-3">
+              <TabsTrigger value="moistures" className="flex items-center text-xs px-3 bg-purple-50">
+                <Droplets className="h-4 w-4 mr-1" />
+                Moistures
+              </TabsTrigger>
+              <TabsTrigger value="aggregates" className="flex items-center text-xs px-3 bg-orange-50">
+                <BarChart3 className="h-4 w-4 mr-1" />
+                Gradations
+              </TabsTrigger>
+              
+              {/* Secondary Operations */}
+              <TabsTrigger value="mix-designs" className="flex items-center text-xs px-3">
                 <Database className="h-4 w-4 mr-1" />
-                Fresh Concrete
-              </TabsTrigger>
-              <TabsTrigger value="audits" className="flex items-center text-xs px-3">
-                <Shield className="h-4 w-4 mr-1" />
-                Audits
+                Mix Designs
               </TabsTrigger>
               <TabsTrigger value="batch-reports" className="flex items-center text-xs px-3">
                 <FileText className="h-4 w-4 mr-1" />
                 Batch Reports
               </TabsTrigger>
-              <TabsTrigger value="resources" className="flex items-center text-xs px-3">
-                <BookOpen className="h-4 w-4 mr-1" />
-                Resources
-              </TabsTrigger>
-              <TabsTrigger value="strand" className="flex items-center text-xs px-3">
-                <Zap className="h-4 w-4 mr-1" />
-                Strand
-              </TabsTrigger>
-              <TabsTrigger value="moistures" className="flex items-center text-xs px-3">
-                <Database className="h-4 w-4 mr-1" />
-                Moistures
-              </TabsTrigger>
-              <TabsTrigger value="aggregates" className="flex items-center text-xs px-3">
-                <Database className="h-4 w-4 mr-1" />
-                Aggregates
-              </TabsTrigger>
               <TabsTrigger value="calibration" className="flex items-center text-xs px-3">
-                <Calendar className="h-4 w-4 mr-1" />
+                <Settings className="h-4 w-4 mr-1" />
                 Calibration
               </TabsTrigger>
               <TabsTrigger value="certs" className="flex items-center text-xs px-3">
                 <FileText className="h-4 w-4 mr-1" />
                 Certs
               </TabsTrigger>
-              <TabsTrigger value="workflows" className="flex items-center text-xs px-3">
-                <Settings className="h-4 w-4 mr-1" />
-                Workflows
+              <TabsTrigger value="strand" className="flex items-center text-xs px-3">
+                <Zap className="h-4 w-4 mr-1" />
+                Strand
               </TabsTrigger>
-              <TabsTrigger value="checklists" className="flex items-center text-xs px-3">
-                <FileText className="h-4 w-4 mr-1" />
-                Checklists
+              <TabsTrigger value="audits" className="flex items-center text-xs px-3">
+                <Shield className="h-4 w-4 mr-1" />
+                Audits
               </TabsTrigger>
               <TabsTrigger value="analytics" className="flex items-center text-xs px-3">
                 <TrendingUp className="h-4 w-4 mr-1" />
                 Analytics
               </TabsTrigger>
+              <TabsTrigger value="resources" className="flex items-center text-xs px-3">
+                <BookOpen className="h-4 w-4 mr-1" />
+                Resources
+              </TabsTrigger>
             </TabsList>
           </div>
 
+          {/* Primary Daily Operations Content */}
           <TabsContent value="workspace-inspections">
             <QCWorkspaceSelector />
           </TabsContent>
 
-          <TabsContent value="inspections">
-            <QCInspectionList searchTerm={searchTerm} filter={activeFilter} />
-          </TabsContent>
-
-          <TabsContent value="mix-designs">
-            <QCMixDesigns />
-          </TabsContent>
-
           <TabsContent value="fresh-concrete">
             <QCFreshConcreteTests />
-          </TabsContent>
-
-          <TabsContent value="audits">
-            <QCAudits />
-          </TabsContent>
-
-          <TabsContent value="batch-reports">
-            <QCBatchReports />
-          </TabsContent>
-
-          <TabsContent value="resources">
-            <QCResources />
-          </TabsContent>
-
-          <TabsContent value="strand">
-            <QCStrand />
           </TabsContent>
 
           <TabsContent value="moistures">
@@ -276,6 +285,15 @@ const QCDashboard = () => {
             <QCAggregateInfo />
           </TabsContent>
 
+          {/* Secondary Operations Content */}
+          <TabsContent value="mix-designs">
+            <QCMixDesigns />
+          </TabsContent>
+
+          <TabsContent value="batch-reports">
+            <QCBatchReports />
+          </TabsContent>
+
           <TabsContent value="calibration">
             <QCCalibration />
           </TabsContent>
@@ -284,16 +302,20 @@ const QCDashboard = () => {
             <QCCerts />
           </TabsContent>
 
-          <TabsContent value="workflows">
-            <QCWorkflowManager />
+          <TabsContent value="strand">
+            <QCStrand />
           </TabsContent>
 
-          <TabsContent value="checklists">
-            <QCChecklistManager />
+          <TabsContent value="audits">
+            <QCAudits />
           </TabsContent>
 
           <TabsContent value="analytics">
             <QCAnalytics />
+          </TabsContent>
+
+          <TabsContent value="resources">
+            <QCResources />
           </TabsContent>
         </Tabs>
       </div>
