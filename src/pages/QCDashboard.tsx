@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle, AlertTriangle, XCircle, Search, Plus, Filter, Clock, Camera, FileText, Settings, TrendingUp } from "lucide-react";
+import { CheckCircle, AlertTriangle, XCircle, Search, Plus, Filter, Clock, Camera, FileText, Settings, TrendingUp, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 import QCInspectionList from "@/components/qc/QCInspectionList";
 import QCWorkflowManager from "@/components/qc/QCWorkflowManager";
 import QCAnalytics from "@/components/qc/QCAnalytics";
@@ -30,9 +31,17 @@ const QCDashboard = () => {
       <header className="construction-gradient text-white p-6 shadow-lg">
         <div className="container mx-auto">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">Quality Control</h1>
-              <p className="text-blue-100 mt-1">Comprehensive QC Management & Workflow System</p>
+            <div className="flex items-center space-x-4">
+              <Link to="/">
+                <Button variant="ghost" size="sm" className="text-white hover:bg-white/10">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Dashboard
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-3xl font-bold">Quality Control</h1>
+                <p className="text-blue-100 mt-1">Comprehensive QC Management & Workflow System</p>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
               <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
