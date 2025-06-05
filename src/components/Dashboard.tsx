@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -194,8 +193,8 @@ const Dashboard = () => {
                   <span className="text-sm text-gray-600">Pending Approval</span>
                   <Badge className="bg-orange-100 text-orange-800">8</Badge>
                 </div>
-                <Button variant="outline" className="w-full mt-4">
-                  Open Module
+                <Button variant="outline" className="w-full mt-4" asChild>
+                  <a href="/drafting">Open Module</a>
                 </Button>
               </div>
             </CardContent>
