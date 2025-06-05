@@ -6,6 +6,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import QCDashboard from "./pages/QCDashboard";
+import QCWallPanels from "./pages/QCWallPanels";
+import QCPrecast from "./pages/QCPrecast";
+import QCExtruded from "./pages/QCExtruded";
+import QCFlexicore from "./pages/QCFlexicore";
+import QCDoubleTees from "./pages/QCDoubleTees";
 import DraftingDashboard from "./pages/DraftingDashboard";
 import SchedulingDashboard from "./pages/SchedulingDashboard";
 import ProjectManagementDashboard from "./pages/ProjectManagementDashboard";
@@ -39,6 +44,11 @@ const App: React.FC = () => (
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/qc" element={<QCDashboard />} />
+        <Route path="/qc/wall-panels" element={<QCWallPanels />} />
+        <Route path="/qc/precast" element={<QCPrecast />} />
+        <Route path="/qc/extruded" element={<QCExtruded />} />
+        <Route path="/qc/flexicore" element={<QCFlexicore />} />
+        <Route path="/qc/double-tees" element={<QCDoubleTees />} />
         <Route path="/drafting" element={<DraftingDashboard />} />
         <Route path="/scheduling" element={<SchedulingDashboard />} />
         <Route path="/project-management" element={<ProjectManagementDashboard />} />
