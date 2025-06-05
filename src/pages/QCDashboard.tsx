@@ -159,8 +159,12 @@ const QCDashboard = () => {
         </Card>
 
         {/* Main Content Tabs */}
-        <Tabs defaultValue="inspections" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+        <Tabs defaultValue="workspace-inspections" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="workspace-inspections" className="flex items-center">
+              <Factory className="h-4 w-4 mr-2" />
+              Workspaces
+            </TabsTrigger>
             <TabsTrigger value="inspections" className="flex items-center">
               <CheckCircle className="h-4 w-4 mr-2" />
               Inspections
@@ -178,6 +182,10 @@ const QCDashboard = () => {
               Analytics
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="workspace-inspections">
+            <QCWorkspaceSelector />
+          </TabsContent>
 
           <TabsContent value="inspections">
             <QCInspectionList searchTerm={searchTerm} filter={activeFilter} />

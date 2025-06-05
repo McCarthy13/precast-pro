@@ -18,6 +18,9 @@ export interface Job {
   strandType?: string;
   tensionForce?: string;
   curingMethod?: string;
+  formId?: string;
+  scheduledDate?: string;
+  pourOrder?: number;
 }
 
 export interface DepartmentStatus {
@@ -35,4 +38,47 @@ export interface ProductionMetrics {
   qualityIssues: number;
   efficiency: number;
   onTimeDelivery: number;
+}
+
+export interface ProductionForm {
+  id: string;
+  name: string;
+  department: 'precast' | 'extruded' | 'flexicore' | 'wall-panels';
+  capacity: number;
+  dimensions?: string;
+  isActive: boolean;
+  currentJob?: Job;
+  scheduledJobs: Job[];
+}
+
+export interface QCInspectionPiece {
+  id: string;
+  pieceNumber: string;
+  pieceName: string;
+  formId: string;
+  pourOrder: number;
+  inspectionStatus: 'pending' | 'in-progress' | 'complete' | 'issues';
+  prePourAnnotations?: any[];
+  postPourAnnotations?: any[];
+  drawingPages: DrawingPage[];
+}
+
+export interface DrawingPage {
+  id: string;
+  imageUrl: string;
+  pageNumber: number;
+  annotations: Annotation[];
+}
+
+export interface Annotation {
+  id: string;
+  type: 'comment' | 'markup' | 'highlight';
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
+  text?: string;
+  color: string;
+  timestamp: string;
+  inspector: string;
 }
