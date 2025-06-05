@@ -137,8 +137,8 @@ const Dashboard = () => {
                   <span className="text-sm text-gray-600">Pass Rate</span>
                   <Badge className="bg-green-100 text-green-800">96%</Badge>
                 </div>
-                <Button variant="outline" className="w-full mt-4">
-                  Open Module
+                <Button variant="outline" className="w-full mt-4" asChild>
+                  <a href="/qc">Open QC Module</a>
                 </Button>
               </div>
             </CardContent>
