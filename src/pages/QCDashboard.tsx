@@ -5,12 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle, AlertTriangle, XCircle, Search, Plus, Filter, Clock, Camera, FileText, Settings, TrendingUp, ArrowLeft } from "lucide-react";
+import { CheckCircle, AlertTriangle, XCircle, Search, Plus, Filter, Clock, Camera, FileText, Settings, TrendingUp, ArrowLeft, Factory } from "lucide-react";
 import { Link } from "react-router-dom";
 import QCInspectionList from "@/components/qc/QCInspectionList";
 import QCWorkflowManager from "@/components/qc/QCWorkflowManager";
 import QCAnalytics from "@/components/qc/QCAnalytics";
 import QCChecklistManager from "@/components/qc/QCChecklistManager";
+import QCWorkspaceSelector from "@/components/qc/QCWorkspaceSelector";
 
 const QCDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");

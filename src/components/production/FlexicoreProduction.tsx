@@ -1,11 +1,13 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Factory, Play, Pause, CheckCircle, Clock, Progress } from "lucide-react";
+import { Factory, Play, Pause, CheckCircle, Clock } from "lucide-react";
 import DayView from "./DayView";
 import { flexicoreForms } from "@/data/productionForms";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Progress } from "@/components/ui/progress";
 
 const FlexicoreProduction = () => {
   const flexicoreJobs = [
