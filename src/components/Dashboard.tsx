@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -201,7 +202,7 @@ const Dashboard = () => {
           <Card className="module-card-hover border-l-4 border-l-blue-500">
             <CardHeader>
               <CardTitle className="flex items-center text-blue-700">
-                <Calendar className="h-5 w-5 mr-2" />
+                <Calculator className="h-5 w-5 mr-2" />
                 Estimating/Sales
               </CardTitle>
               <CardDescription>Bid management and customer relations</CardDescription>
@@ -216,8 +217,8 @@ const Dashboard = () => {
                   <span className="text-sm text-gray-600">Win Rate</span>
                   <Badge className="bg-green-100 text-green-800">78%</Badge>
                 </div>
-                <Button variant="outline" className="w-full mt-4">
-                  Open Module
+                <Button variant="outline" className="w-full mt-4" asChild>
+                  <a href="/estimating-sales">Open Module</a>
                 </Button>
               </div>
             </CardContent>
@@ -272,8 +273,8 @@ const Dashboard = () => {
                   <span className="text-sm text-gray-600">Efficiency</span>
                   <Badge className="bg-blue-100 text-blue-800">94%</Badge>
                 </div>
-                <Button variant="outline" className="w-full mt-4">
-                  Open Module
+                <Button variant="outline" className="w-full mt-4" asChild>
+                  <a href="/scheduling">Open Module</a>
                 </Button>
               </div>
             </CardContent>
@@ -298,8 +299,8 @@ const Dashboard = () => {
                   <span className="text-sm text-gray-600">On Schedule</span>
                   <Badge className="bg-green-100 text-green-800">21/24</Badge>
                 </div>
-                <Button variant="outline" className="w-full mt-4">
-                  Open Module
+                <Button variant="outline" className="w-full mt-4" asChild>
+                  <a href="/project-management">Open Module</a>
                 </Button>
               </div>
             </CardContent>
@@ -324,8 +325,8 @@ const Dashboard = () => {
                   <span className="text-sm text-gray-600">Humidity</span>
                   <Badge variant="outline">65%</Badge>
                 </div>
-                <Button variant="outline" className="w-full mt-4">
-                  View Details
+                <Button variant="outline" className="w-full mt-4" asChild>
+                  <a href="/field-services">View Details</a>
                 </Button>
               </div>
             </CardContent>
