@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Calendar, Cloud, Users, Settings, AlertCircle, TrendingUp } from "lucide-react";
+import QCStatusOverview from "./QCStatusOverview";
 
 const Dashboard = () => {
   return (
@@ -110,6 +111,40 @@ const Dashboard = () => {
           </Card>
         </div>
 
+        {/* QC Status Overview and Modules Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* QC Status Overview - takes 2 columns on large screens */}
+          <div className="lg:col-span-2">
+            <QCStatusOverview />
+          </div>
+
+          {/* Quality Control Module */}
+          <Card className="module-card-hover border-l-4 border-l-orange-500">
+            <CardHeader>
+              <CardTitle className="flex items-center text-orange-700">
+                <AlertCircle className="h-5 w-5 mr-2" />
+                Quality Control
+              </CardTitle>
+              <CardDescription>Inspections, testing, and compliance</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Today's Tests</span>
+                  <Badge variant="outline">15</Badge>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Pass Rate</span>
+                  <Badge className="bg-green-100 text-green-800">96%</Badge>
+                </div>
+                <Button variant="outline" className="w-full mt-4">
+                  Open Module
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Modules Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Estimating/Sales */}
@@ -186,32 +221,6 @@ const Dashboard = () => {
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Efficiency</span>
                   <Badge className="bg-blue-100 text-blue-800">94%</Badge>
-                </div>
-                <Button variant="outline" className="w-full mt-4">
-                  Open Module
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Quality Control */}
-          <Card className="module-card-hover border-l-4 border-l-orange-500">
-            <CardHeader>
-              <CardTitle className="flex items-center text-orange-700">
-                <AlertCircle className="h-5 w-5 mr-2" />
-                Quality Control
-              </CardTitle>
-              <CardDescription>Inspections, testing, and compliance</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Today's Tests</span>
-                  <Badge variant="outline">15</Badge>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Pass Rate</span>
-                  <Badge className="bg-green-100 text-green-800">96%</Badge>
                 </div>
                 <Button variant="outline" className="w-full mt-4">
                   Open Module
