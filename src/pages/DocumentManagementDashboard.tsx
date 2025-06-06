@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,9 +6,43 @@ import { ArrowLeft, FileText, Folder, Search, Settings, Eye } from "lucide-react
 import DocumentManagement from "@/components/drafting/DocumentManagement";
 import { useState } from "react";
 import ExampleForm from "@/components/templates/ExampleForm";
+import FreshConcreteTestForm from "@/components/templates/FreshConcreteTestForm";
 
 const DocumentManagementDashboard = () => {
   const [showTemplate, setShowTemplate] = useState(false);
+  const [showFreshConcreteTest, setShowFreshConcreteTest] = useState(false);
+
+  if (showFreshConcreteTest) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+        <header className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 shadow-lg">
+          <div className="container mx-auto">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setShowFreshConcreteTest(false)}
+                  className="text-white hover:bg-white/10"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Document Management
+                </Button>
+                <Separator orientation="vertical" className="h-6 bg-white/20" />
+                <div>
+                  <h1 className="text-3xl font-bold">Fresh Concrete Test Data Form</h1>
+                  <p className="text-indigo-100 mt-1">QC-FCT-001 - Rev 1.0</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div className="container mx-auto p-6">
+          <FreshConcreteTestForm />
+        </div>
+      </div>
+    );
+  }
 
   if (showTemplate) {
     return (
@@ -66,6 +99,14 @@ const DocumentManagementDashboard = () => {
                 <FileText className="h-4 w-4 mr-1" />
                 2,847 Documents
               </Badge>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowFreshConcreteTest(true)}
+                className="border-white/30 text-white hover:bg-white/10"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                Fresh Concrete Test Form
+              </Button>
               <Button 
                 variant="outline" 
                 onClick={() => setShowTemplate(true)}
