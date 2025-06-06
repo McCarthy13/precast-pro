@@ -3,10 +3,46 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, FileText, Folder, Search, Settings } from "lucide-react";
+import { ArrowLeft, FileText, Folder, Search, Settings, Eye } from "lucide-react";
 import DocumentManagement from "@/components/drafting/DocumentManagement";
+import { useState } from "react";
+import ExampleForm from "@/components/templates/ExampleForm";
 
 const DocumentManagementDashboard = () => {
+  const [showTemplate, setShowTemplate] = useState(false);
+
+  if (showTemplate) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+        <header className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 shadow-lg">
+          <div className="container mx-auto">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setShowTemplate(false)}
+                  className="text-white hover:bg-white/10"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Document Management
+                </Button>
+                <Separator orientation="vertical" className="h-6 bg-white/20" />
+                <div>
+                  <h1 className="text-3xl font-bold">Document Template Example</h1>
+                  <p className="text-indigo-100 mt-1">Preview of standardized document template</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div className="container mx-auto p-6">
+          <ExampleForm />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       <header className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 shadow-lg">
@@ -30,6 +66,14 @@ const DocumentManagementDashboard = () => {
                 <FileText className="h-4 w-4 mr-1" />
                 2,847 Documents
               </Badge>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowTemplate(true)}
+                className="border-white/30 text-white hover:bg-white/10"
+              >
+                <Eye className="h-4 w-4 mr-2" />
+                View Template Example
+              </Button>
               <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
                 <Settings className="h-4 w-4 mr-2" />
                 Settings
