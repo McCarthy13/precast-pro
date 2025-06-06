@@ -25,6 +25,8 @@ import DocumentManagementDashboard from "./pages/DocumentManagementDashboard";
 import ContactManagementDashboard from "./pages/ContactManagementDashboard";
 import ClientPortalDashboard from "./pages/ClientPortalDashboard";
 import ResearchDevelopmentDashboard from "./pages/ResearchDevelopmentDashboard";
+import FreshConcreteTestFormPage from "./pages/FreshConcreteTestFormPage";
+import MoistureTestForm from "./components/templates/MoistureTestForm";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -63,6 +65,8 @@ const App: React.FC = () => (
         <Route path="/contact-management" element={<ContactManagementDashboard />} />
         <Route path="/client-portal" element={<ClientPortalDashboard />} />
         <Route path="/research-development" element={<ResearchDevelopmentDashboard />} />
+        <Route path="/templates/fresh-concrete-test" element={<FreshConcreteTestFormPage />} />
+        <Route path="/templates/moisture-test" element={<MoistureTestForm />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
