@@ -31,7 +31,6 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
   const navigate = useNavigate();
   const [records, setRecords] = useState<MoistureTestRecord[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedRecord, setSelectedRecord] = useState<MoistureTestRecord | null>(null);
 
   const absorptionValues: { [key: string]: number } = {
     "3/8\" Pea Gravel": 2.5,
@@ -58,18 +57,26 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
     setRecords(filteredRecords);
   }, [departmentName]);
 
-  const filteredRecords = records.filter(record =>
-    record.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    record.departmentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    record.notes.toLowerCase().includes(searchTerm.toLowerCase())
+  // Flatten all test data from all records for the main table view
+  const allTestData = records.flatMap(record => 
+    record.testData.map(testEntry => ({
+      ...testEntry,
+      recordId: record.id,
+      submittedAt: record.submittedAt,
+      departmentName: record.departmentName,
+      notes: record.notes
+    }))
+  );
+
+  const filteredTestData = allTestData.filter(entry =>
+    entry.recordId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    entry.departmentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    entry.binNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    entry.aggregate.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleNewTest = () => {
     navigate('/templates/moisture-test');
-  };
-
-  const handleBackToList = () => {
-    setSelectedRecord(null);
   };
 
   const formatDate = (dateString: string) => {
@@ -133,77 +140,6 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
     };
   };
 
-  if (selectedRecord) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center gap-4">
-          <Button variant="outline" onClick={handleBackToList}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Records
-          </Button>
-          <div>
-            <h2 className="text-2xl font-bold">Moisture Test Details - {selectedRecord.id}</h2>
-            <p className="text-gray-600">
-              {selectedRecord.departmentName} • {formatDate(selectedRecord.submittedAt)}
-            </p>
-          </div>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Test Data</CardTitle>
-            <CardDescription>Detailed moisture test measurements</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Bin #</TableHead>
-                    <TableHead>Aggregate</TableHead>
-                    <TableHead>Wet Weight (lbs)</TableHead>
-                    <TableHead>Dry Weight (lbs)</TableHead>
-                    <TableHead>Total Moisture (%)</TableHead>
-                    <TableHead>Free Moisture (%)</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {selectedRecord.testData.map((row, index) => {
-                    const { totalMoisture, freeMoisture } = calculateMoisture(
-                      row.wetWeight, 
-                      row.dryWeight, 
-                      row.aggregate
-                    );
-                    
-                    return (
-                      <TableRow key={index}>
-                        <TableCell>{formatTestDate(row.date)}</TableCell>
-                        <TableCell>{row.binNumber}</TableCell>
-                        <TableCell>{row.aggregate}</TableCell>
-                        <TableCell>{row.wetWeight}</TableCell>
-                        <TableCell>{row.dryWeight}</TableCell>
-                        <TableCell>{totalMoisture ? `${totalMoisture}%` : ''}</TableCell>
-                        <TableCell>{freeMoisture ? `${freeMoisture}%` : ''}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </div>
-            
-            {selectedRecord.notes && (
-              <div className="mt-6">
-                <h4 className="font-semibold mb-2">Notes and Observations</h4>
-                <p className="text-gray-700 bg-gray-50 p-3 rounded">{selectedRecord.notes}</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -231,14 +167,14 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Droplets className="h-5 w-5 mr-2" />
-            Moisture Test Records
+            Moisture Test Data
           </CardTitle>
           <CardDescription>
-            {filteredRecords.length} record{filteredRecords.length !== 1 ? 's' : ''} found
+            {filteredTestData.length} test entr{filteredTestData.length !== 1 ? 'ies' : 'y'} found
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {filteredRecords.length === 0 ? (
+          {filteredTestData.length === 0 ? (
             <div className="text-center py-8">
               <Droplets className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <p className="text-gray-500">No moisture test records found.</p>
@@ -256,41 +192,38 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Test ID</TableHead>
-                    <TableHead>Department</TableHead>
                     <TableHead>Date</TableHead>
-                    <TableHead>Test Entries</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead>Bin #</TableHead>
+                    <TableHead>Aggregate</TableHead>
+                    <TableHead>Wet Weight (lbs)</TableHead>
+                    <TableHead>Dry Weight (lbs)</TableHead>
+                    <TableHead>Total Moisture (%)</TableHead>
+                    <TableHead>Free Moisture (%)</TableHead>
+                    <TableHead>Submitted</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredRecords.map((record) => (
-                    <TableRow key={record.id}>
-                      <TableCell className="font-medium">{record.id}</TableCell>
-                      <TableCell>{record.departmentName}</TableCell>
-                      <TableCell>{formatDate(record.submittedAt)}</TableCell>
-                      <TableCell>{record.testData.length} entries</TableCell>
-                      <TableCell>
-                        <Badge variant={record.status === 'completed' ? 'default' : 'secondary'}>
-                          {record.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex space-x-2">
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={() => setSelectedRecord(record)}
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button variant="outline" size="sm">
-                            <Download className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {filteredTestData.map((entry, index) => {
+                    const { totalMoisture, freeMoisture } = calculateMoisture(
+                      entry.wetWeight, 
+                      entry.dryWeight, 
+                      entry.aggregate
+                    );
+                    
+                    return (
+                      <TableRow key={`${entry.recordId}-${index}`}>
+                        <TableCell className="font-medium">{entry.recordId}</TableCell>
+                        <TableCell>{formatTestDate(entry.date)}</TableCell>
+                        <TableCell>{entry.binNumber}</TableCell>
+                        <TableCell>{entry.aggregate}</TableCell>
+                        <TableCell>{entry.wetWeight}</TableCell>
+                        <TableCell>{entry.dryWeight}</TableCell>
+                        <TableCell>{totalMoisture ? `${totalMoisture}%` : ''}</TableCell>
+                        <TableCell>{freeMoisture ? `${freeMoisture}%` : ''}</TableCell>
+                        <TableCell>{formatDate(entry.submittedAt)}</TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>
