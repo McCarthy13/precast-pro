@@ -150,12 +150,12 @@ const MoistureTestForm = () => {
                             <SelectValue placeholder="Select aggregate" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="3/8\" Pea Gravel">3/8" Pea Gravel</SelectItem>
+                            <SelectItem value="3/8&quot; Pea Gravel">3/8" Pea Gravel</SelectItem>
                             <SelectItem value="Fine Sand">Fine Sand</SelectItem>
-                            <SelectItem value="3/4\" Stone">3/4" Stone</SelectItem>
-                            <SelectItem value="1/2\" Stone">1/2" Stone</SelectItem>
+                            <SelectItem value="3/4&quot; Stone">3/4" Stone</SelectItem>
+                            <SelectItem value="1/2&quot; Stone">1/2" Stone</SelectItem>
                             <SelectItem value="Coarse Sand">Coarse Sand</SelectItem>
-                            <SelectItem value="1\" Stone">1" Stone</SelectItem>
+                            <SelectItem value="1&quot; Stone">1" Stone</SelectItem>
                             <SelectItem value="Mason Sand">Mason Sand</SelectItem>
                             <SelectItem value="#57 Stone">#57 Stone</SelectItem>
                           </SelectContent>
