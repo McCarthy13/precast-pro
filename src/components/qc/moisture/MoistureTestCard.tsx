@@ -93,8 +93,9 @@ const MoistureTestCard: React.FC<MoistureTestCardProps> = ({ departmentName = ""
         description: `Moisture test record ${record.id} has been created with ${validData.length} test entries.`,
       });
 
-      // Navigate back to the department page
-      navigate(-1);
+      // Navigate to moisture historical records
+      const departmentRoute = departmentName ? departmentName.toLowerCase().replace(/\s+/g, '-') : 'precast';
+      navigate(`/qc/${departmentRoute}`, { state: { showMoistureRecords: true } });
 
     } catch (error) {
       console.error('Error submitting moisture test:', error);
