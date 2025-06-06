@@ -3,18 +3,29 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface FreshConcreteTestData {
-  date: Date | undefined;
+  date: string;
+  time: string;
   mixDesign: string;
-  batchNumber: string;
-  slump: string;
+  batchTicket: string;
+  pieces: string;
+  slumpFlow: string;
   airContent: string;
-  temperature: string;
+  ambientTemp: string;
+  concreteTemp: string;
   unitWeight: string;
+  yield: string;
+  relativeYield: string;
+  t20: string;
+  jRing: string;
+  staticSegregation: string;
+  technician: string;
 }
 
 interface FreshConcreteTestCardProps {
@@ -26,22 +37,27 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
   const { toast } = useToast();
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [testData, setTestData] = useState<FreshConcreteTestData[]>(
-    Array(10).fill(null).map(() => ({
-      date: undefined,
-      mixDesign: '',
-      batchNumber: '',
-      slump: '',
-      airContent: '',
-      temperature: '',
-      unitWeight: ''
-    }))
-  );
+  const [testData, setTestData] = useState<FreshConcreteTestData>({
+    date: '',
+    time: '',
+    mixDesign: '',
+    batchTicket: '',
+    pieces: '',
+    slumpFlow: '',
+    airContent: '',
+    ambientTemp: '',
+    concreteTemp: '',
+    unitWeight: '',
+    yield: '',
+    relativeYield: '',
+    t20: '',
+    jRing: '',
+    staticSegregation: '',
+    technician: ''
+  });
 
-  const updateRow = (index: number, field: keyof FreshConcreteTestData, value: any) => {
-    const newData = [...testData];
-    newData[index] = { ...newData[index], [field]: value };
-    setTestData(newData);
+  const updateField = (field: keyof FreshConcreteTestData, value: string) => {
+    setTestData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleCancel = () => {
@@ -52,14 +68,11 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
     setIsSubmitting(true);
     
     try {
-      const validData = testData.filter(row => 
-        row.date || row.mixDesign || row.batchNumber || row.slump || row.airContent || row.temperature || row.unitWeight
-      );
-
-      if (validData.length === 0) {
+      // Check if at least some required fields are filled
+      if (!testData.date || !testData.mixDesign || !testData.slumpFlow) {
         toast({
-          title: "No Data to Submit",
-          description: "Please fill in at least one row of test data.",
+          title: "Missing Required Fields",
+          description: "Please fill in at least Date, Mix Design, and Slump Flow.",
           variant: "destructive",
         });
         setIsSubmitting(false);
@@ -70,7 +83,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
         id: `FCT-${Date.now()}`,
         departmentName: departmentName || "Unknown",
         submittedAt: new Date().toISOString(),
-        testData: validData,
+        testData: testData,
         notes: notes,
         status: 'completed'
       };
@@ -83,7 +96,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
 
       toast({
         title: "Test Submitted Successfully",
-        description: `Fresh concrete test record ${record.id} has been created with ${validData.length} test entries.`,
+        description: `Fresh concrete test record ${record.id} has been created.`,
       });
 
       const departmentRoute = departmentName ? departmentName.toLowerCase().replace(/\s+/g, '-') : 'precast';
@@ -122,98 +135,185 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
           <CardDescription>Record fresh concrete test measurements</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-300">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-300 p-2 text-left">Date</th>
-                    <th className="border border-gray-300 p-2 text-left">Mix Design</th>
-                    <th className="border border-gray-300 p-2 text-left">Batch #</th>
-                    <th className="border border-gray-300 p-2 text-left">Slump (in)</th>
-                    <th className="border border-gray-300 p-2 text-left">Air Content (%)</th>
-                    <th className="border border-gray-300 p-2 text-left">Temperature (°F)</th>
-                    <th className="border border-gray-300 p-2 text-left">Unit Weight (lb/ft³)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {testData.map((row, index) => (
-                    <tr key={index}>
-                      <td className="border border-gray-300 p-1">
-                        <input
-                          type="date"
-                          value={row.date ? new Date(row.date).toISOString().split('T')[0] : ''}
-                          onChange={(e) => updateRow(index, 'date', e.target.value ? new Date(e.target.value) : undefined)}
-                          className="w-full p-1 border-0 focus:ring-1 focus:ring-blue-500"
-                        />
-                      </td>
-                      <td className="border border-gray-300 p-1">
-                        <input
-                          type="text"
-                          value={row.mixDesign}
-                          onChange={(e) => updateRow(index, 'mixDesign', e.target.value)}
-                          className="w-full p-1 border-0 focus:ring-1 focus:ring-blue-500"
-                          placeholder="Mix design"
-                        />
-                      </td>
-                      <td className="border border-gray-300 p-1">
-                        <input
-                          type="text"
-                          value={row.batchNumber}
-                          onChange={(e) => updateRow(index, 'batchNumber', e.target.value)}
-                          className="w-full p-1 border-0 focus:ring-1 focus:ring-blue-500"
-                          placeholder="Batch #"
-                        />
-                      </td>
-                      <td className="border border-gray-300 p-1">
-                        <input
-                          type="number"
-                          step="0.25"
-                          value={row.slump}
-                          onChange={(e) => updateRow(index, 'slump', e.target.value)}
-                          className="w-full p-1 border-0 focus:ring-1 focus:ring-blue-500"
-                          placeholder="0.0"
-                        />
-                      </td>
-                      <td className="border border-gray-300 p-1">
-                        <input
-                          type="number"
-                          step="0.1"
-                          value={row.airContent}
-                          onChange={(e) => updateRow(index, 'airContent', e.target.value)}
-                          className="w-full p-1 border-0 focus:ring-1 focus:ring-blue-500"
-                          placeholder="0.0"
-                        />
-                      </td>
-                      <td className="border border-gray-300 p-1">
-                        <input
-                          type="number"
-                          value={row.temperature}
-                          onChange={(e) => updateRow(index, 'temperature', e.target.value)}
-                          className="w-full p-1 border-0 focus:ring-1 focus:ring-blue-500"
-                          placeholder="70"
-                        />
-                      </td>
-                      <td className="border border-gray-300 p-1">
-                        <input
-                          type="number"
-                          step="0.1"
-                          value={row.unitWeight}
-                          onChange={(e) => updateRow(index, 'unitWeight', e.target.value)}
-                          className="w-full p-1 border-0 focus:ring-1 focus:ring-blue-500"
-                          placeholder="0.0"
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="date">Date</Label>
+              <Input
+                id="date"
+                type="date"
+                value={testData.date}
+                onChange={(e) => updateField('date', e.target.value)}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="time">Time</Label>
+              <Input
+                id="time"
+                type="time"
+                value={testData.time}
+                onChange={(e) => updateField('time', e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="mixDesign">Mix Design</Label>
+              <Input
+                id="mixDesign"
+                value={testData.mixDesign}
+                onChange={(e) => updateField('mixDesign', e.target.value)}
+                placeholder="e.g., MD-001"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="batchTicket">Batch Ticket</Label>
+              <Input
+                id="batchTicket"
+                value={testData.batchTicket}
+                onChange={(e) => updateField('batchTicket', e.target.value)}
+                placeholder="e.g., BT-2024-0115-001"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="pieces">Pieces</Label>
+              <Input
+                id="pieces"
+                value={testData.pieces}
+                onChange={(e) => updateField('pieces', e.target.value)}
+                placeholder="e.g., WP1-001, WP1-002"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="slumpFlow">Slump Flow (in)</Label>
+              <Input
+                id="slumpFlow"
+                type="number"
+                step="0.25"
+                value={testData.slumpFlow}
+                onChange={(e) => updateField('slumpFlow', e.target.value)}
+                placeholder="e.g., 5.5"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="airContent">Air Content (%)</Label>
+              <Input
+                id="airContent"
+                type="number"
+                step="0.1"
+                value={testData.airContent}
+                onChange={(e) => updateField('airContent', e.target.value)}
+                placeholder="e.g., 6.2"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="ambientTemp">Ambient Temperature (°F)</Label>
+              <Input
+                id="ambientTemp"
+                type="number"
+                value={testData.ambientTemp}
+                onChange={(e) => updateField('ambientTemp', e.target.value)}
+                placeholder="e.g., 72"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="concreteTemp">Concrete Temperature (°F)</Label>
+              <Input
+                id="concreteTemp"
+                type="number"
+                value={testData.concreteTemp}
+                onChange={(e) => updateField('concreteTemp', e.target.value)}
+                placeholder="e.g., 68"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="unitWeight">Unit Weight (lb/ft³)</Label>
+              <Input
+                id="unitWeight"
+                type="number"
+                step="0.1"
+                value={testData.unitWeight}
+                onChange={(e) => updateField('unitWeight', e.target.value)}
+                placeholder="e.g., 145.2"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="yield">Yield (ft³/yd³)</Label>
+              <Input
+                id="yield"
+                type="number"
+                step="0.1"
+                value={testData.yield}
+                onChange={(e) => updateField('yield', e.target.value)}
+                placeholder="e.g., 27.0"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="relativeYield">Relative Yield</Label>
+              <Input
+                id="relativeYield"
+                type="number"
+                step="0.01"
+                value={testData.relativeYield}
+                onChange={(e) => updateField('relativeYield', e.target.value)}
+                placeholder="e.g., 1.00"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="t20">T-20 (sec)</Label>
+              <Input
+                id="t20"
+                type="number"
+                step="0.1"
+                value={testData.t20}
+                onChange={(e) => updateField('t20', e.target.value)}
+                placeholder="e.g., 12.5"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="jRing">J-Ring</Label>
+              <Input
+                id="jRing"
+                value={testData.jRing}
+                onChange={(e) => updateField('jRing', e.target.value)}
+                placeholder="Pass/Fail"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="staticSegregation">Static Segregation</Label>
+              <Input
+                id="staticSegregation"
+                value={testData.staticSegregation}
+                onChange={(e) => updateField('staticSegregation', e.target.value)}
+                placeholder="Pass/Fail"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="technician">Technician</Label>
+              <Input
+                id="technician"
+                value={testData.technician}
+                onChange={(e) => updateField('technician', e.target.value)}
+                placeholder="Technician name"
+              />
             </div>
           </div>
           
-          <div className="mt-4 text-sm text-gray-600">
+          <div className="mt-6 text-sm text-gray-600 space-y-1">
             <p>• Record all measurements according to ASTM standards</p>
-            <p>• Slump should be measured immediately after mixing</p>
+            <p>• Slump flow should be measured immediately after mixing</p>
             <p>• Air content and unit weight tests should be performed on fresh concrete</p>
           </div>
         </CardContent>
