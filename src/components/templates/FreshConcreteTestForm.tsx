@@ -37,18 +37,14 @@ const FreshConcreteTestForm = () => {
           <CardDescription>Basic test details and batch information</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="test-id">Test ID</Label>
-              <Input id="test-id" placeholder="FCT-001" />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="test-date">Test Date</Label>
               <Input id="test-date" type="date" />
             </div>
             <div>
-              <Label htmlFor="technician">Technician</Label>
-              <Input id="technician" placeholder="Enter technician name" />
+              <Label htmlFor="test-time">Test Time</Label>
+              <Input id="test-time" type="time" />
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -67,8 +63,18 @@ const FreshConcreteTestForm = () => {
               </Select>
             </div>
             <div>
-              <Label htmlFor="batch-number">Batch Number</Label>
-              <Input id="batch-number" placeholder="B-2024-0115-01" />
+              <Label htmlFor="batch-ticket">Batch Ticket</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select batch ticket" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="BT-2024-0115-001">BT-2024-0115-001 - MD-001 - 3.5 yd³</SelectItem>
+                  <SelectItem value="BT-2024-0115-002">BT-2024-0115-002 - MD-002 - 5.0 yd³</SelectItem>
+                  <SelectItem value="BT-2024-0115-003">BT-2024-0115-003 - MD-003 - 2.8 yd³</SelectItem>
+                  <SelectItem value="BT-2024-0115-004">BT-2024-0115-004 - MD-004 - 4.2 yd³</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </CardContent>
@@ -80,18 +86,22 @@ const FreshConcreteTestForm = () => {
           <CardDescription>Record all fresh concrete test measurements</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
-              <Label htmlFor="slump">Slump (inches)</Label>
-              <Input id="slump" type="number" step="0.1" placeholder="5.5" />
+              <Label htmlFor="slump-flow">Slump/Slump Flow (inches)</Label>
+              <Input id="slump-flow" type="number" step="0.1" placeholder="5.5" />
             </div>
             <div>
               <Label htmlFor="air-content">Air Content (%)</Label>
               <Input id="air-content" type="number" step="0.1" placeholder="6.2" />
             </div>
             <div>
-              <Label htmlFor="temperature">Temperature (°F)</Label>
-              <Input id="temperature" type="number" placeholder="68" />
+              <Label htmlFor="ambient-temperature">Ambient Temperature (°F)</Label>
+              <Input id="ambient-temperature" type="number" placeholder="72" />
+            </div>
+            <div>
+              <Label htmlFor="concrete-temperature">Concrete Temperature (°F)</Label>
+              <Input id="concrete-temperature" type="number" placeholder="68" />
             </div>
             <div>
               <Label htmlFor="unit-weight">Unit Weight (lb/ft³)</Label>
@@ -102,11 +112,47 @@ const FreshConcreteTestForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="yield">Yield (ft³/yd³)</Label>
-              <Input id="yield" type="number" step="0.1" placeholder="27.0" />
+              <Input id="yield" type="number" step="0.1" placeholder="27.0" disabled className="bg-gray-100" />
+              <p className="text-xs text-gray-500 mt-1">Auto-populated from batch ticket</p>
             </div>
             <div>
-              <Label htmlFor="relative-yield">Relative Yield (%)</Label>
-              <Input id="relative-yield" type="number" step="0.1" placeholder="100.0" />
+              <Label htmlFor="relative-yield">Relative Yield</Label>
+              <Input id="relative-yield" type="number" step="0.01" placeholder="1.00" disabled className="bg-gray-100" />
+              <p className="text-xs text-gray-500 mt-1">Auto-calculated (actual ÷ target)</p>
+            </div>
+          </div>
+
+          <div className="border-t pt-4">
+            <h4 className="font-medium mb-3">Additional Specifications</h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="t20">T-20 (seconds)</Label>
+                <Input id="t20" type="number" step="0.1" placeholder="12.5" />
+              </div>
+              <div>
+                <Label htmlFor="j-ring">J-Ring</Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select result" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="pass">Pass</SelectItem>
+                    <SelectItem value="fail">Fail</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="static-segregation">Static Segregation</Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select result" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="pass">Pass</SelectItem>
+                    <SelectItem value="fail">Fail</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </CardContent>
