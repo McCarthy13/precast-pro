@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import MoistureTestTable from './MoistureTestTable';
 
@@ -50,6 +49,10 @@ const MoistureTestCard: React.FC<MoistureTestCardProps> = ({ departmentName = ""
     const newData = [...moistureData];
     newData[index] = { ...newData[index], [field]: value };
     setMoistureData(newData);
+  };
+
+  const handleCancel = () => {
+    navigate(-1); // Go back to previous page
   };
 
   const handleSubmit = async () => {
@@ -111,7 +114,11 @@ const MoistureTestCard: React.FC<MoistureTestCardProps> = ({ departmentName = ""
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-end">
+      <div className="flex justify-between items-center">
+        <Button variant="outline" onClick={handleCancel} className="flex items-center">
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back
+        </Button>
         <Button variant="outline" size="sm" asChild>
           <a href="/templates/moisture-test" className="flex items-center">
             <ExternalLink className="h-4 w-4 mr-2" />
@@ -155,7 +162,10 @@ const MoistureTestCard: React.FC<MoistureTestCardProps> = ({ departmentName = ""
         </CardContent>
       </Card>
 
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        <Button variant="outline" onClick={handleCancel}>
+          Cancel
+        </Button>
         <Button 
           onClick={handleSubmit} 
           disabled={isSubmitting}
