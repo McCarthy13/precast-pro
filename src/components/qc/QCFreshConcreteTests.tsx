@@ -14,6 +14,7 @@ const QCFreshConcreteTests = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [columnFilters, setColumnFilters] = useState<Record<string, string>>({});
   const [showFilters, setShowFilters] = useState(false);
+  const [strengthData, setStrengthData] = useState<Record<string, any>>({});
 
   const freshTests = [
     {
@@ -114,6 +115,30 @@ const QCFreshConcreteTests = () => {
     { key: 'jRing', label: 'J-Ring' },
     { key: 'staticSegregation', label: 'Static Segregation' }
   ];
+
+  const updateStrengthData = (testId: string, field: string, value: string) => {
+    setStrengthData(prev => ({
+      ...prev,
+      [testId]: {
+        ...prev[testId],
+        [field]: value
+      }
+    }));
+  };
+
+  const calculateAverage = (testId: string) => {
+    const data = strengthData[testId];
+    if (!data) return '';
+    
+    const strength1 = parseFloat(data.strength1 || '0');
+    const strength2 = parseFloat(data.strength2 || '0');
+    const strength3 = parseFloat(data.strength3 || '0');
+    
+    if (strength1 > 0 && strength2 > 0 && strength3 > 0) {
+      return Math.round((strength1 + strength2 + strength3) / 3).toString();
+    }
+    return '';
+  };
 
   const filteredAndSortedTests = useMemo(() => {
     let filtered = freshTests;
@@ -294,6 +319,19 @@ const QCFreshConcreteTests = () => {
                       {columns.map((column) => (
                         <TableHead key={column.key}>{column.label}</TableHead>
                       ))}
+                      <TableHead className="text-center font-semibold bg-blue-50" colSpan={5}>
+                        STRENGTH RESULTS
+                      </TableHead>
+                    </TableRow>
+                    <TableRow>
+                      {columns.map(() => (
+                        <TableHead key="spacer" className="p-0 h-0"></TableHead>
+                      ))}
+                      <TableHead className="text-xs">Release/Release Required</TableHead>
+                      <TableHead className="text-xs">28-Day Strength 1</TableHead>
+                      <TableHead className="text-xs">28-Day Strength 2</TableHead>
+                      <TableHead className="text-xs">28-Day Strength 3</TableHead>
+                      <TableHead className="text-xs">Average</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -321,6 +359,44 @@ const QCFreshConcreteTests = () => {
                           <Badge className={test.staticSegregation === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
                             {test.staticSegregation}
                           </Badge>
+                        </TableCell>
+                        {/* Strength Results - Editable columns */}
+                        <TableCell>
+                          <Input
+                            className="w-24 h-8 text-xs"
+                            placeholder="5171/3500"
+                            value={strengthData[test.id]?.release || ''}
+                            onChange={(e) => updateStrengthData(test.id, 'release', e.target.value)}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Input
+                            className="w-20 h-8 text-xs"
+                            placeholder="8674"
+                            value={strengthData[test.id]?.strength1 || ''}
+                            onChange={(e) => updateStrengthData(test.id, 'strength1', e.target.value)}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Input
+                            className="w-20 h-8 text-xs"
+                            placeholder="8491"
+                            value={strengthData[test.id]?.strength2 || ''}
+                            onChange={(e) => updateStrengthData(test.id, 'strength2', e.target.value)}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Input
+                            className="w-20 h-8 text-xs"
+                            placeholder="8532"
+                            value={strengthData[test.id]?.strength3 || ''}
+                            onChange={(e) => updateStrengthData(test.id, 'strength3', e.target.value)}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <div className="w-20 h-8 flex items-center justify-center text-xs font-medium bg-gray-50 rounded border">
+                            {calculateAverage(test.id) || '--'}
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
