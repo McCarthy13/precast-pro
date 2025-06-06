@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -126,7 +125,6 @@ const QCFreshConcreteTests = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Test ID</TableHead>
                       <TableHead>Date</TableHead>
                       <TableHead>Time</TableHead>
                       <TableHead>Mix Design</TableHead>
@@ -149,7 +147,6 @@ const QCFreshConcreteTests = () => {
                   <TableBody>
                     {freshTests.map((test) => (
                       <TableRow key={test.id}>
-                        <TableCell className="font-medium">{test.id}</TableCell>
                         <TableCell>{test.date}</TableCell>
                         <TableCell>{test.time}</TableCell>
                         <TableCell>{test.mixDesign}</TableCell>
