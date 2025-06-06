@@ -72,6 +72,12 @@ const FreshConcreteTestForm = () => {
 
   const isSelectAllChecked = allPieceIds.every(id => selectedPieces.has(id));
 
+  const handleSubmit = () => {
+    // Logic to submit the form and create a record
+    console.log('Form submitted with selected pieces:', selectedPieces.size);
+    // TODO: Add actual submission logic here
+  };
+
   return (
     <DocumentTemplate
       title="Fresh Concrete Test Data Form"
@@ -322,10 +328,9 @@ const FreshConcreteTestForm = () => {
       </Card>
 
       <div className="flex justify-end mt-6">
-        <div className="flex space-x-4">
-          <Button variant="outline">Save Draft</Button>
-          <Button>Submit for Review</Button>
-        </div>
+        <Button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700">
+          Submit
+        </Button>
       </div>
     </DocumentTemplate>
   );

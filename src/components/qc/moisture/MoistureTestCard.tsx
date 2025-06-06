@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -46,6 +45,12 @@ const MoistureTestCard: React.FC<MoistureTestCardProps> = ({ departmentName = ""
     setMoistureData(newData);
   };
 
+  const handleSubmit = () => {
+    // Logic to submit the moisture test data and create a record
+    console.log('Moisture test data submitted');
+    // TODO: Add actual submission logic here
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-end">
@@ -91,10 +96,9 @@ const MoistureTestCard: React.FC<MoistureTestCardProps> = ({ departmentName = ""
       </Card>
 
       <div className="flex justify-end">
-        <div className="flex space-x-4">
-          <Button variant="outline">Save Draft</Button>
-          <Button>Submit for Review</Button>
-        </div>
+        <Button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700">
+          Submit
+        </Button>
       </div>
     </div>
   );
