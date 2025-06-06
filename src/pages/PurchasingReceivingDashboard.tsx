@@ -1,10 +1,10 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Package, ShoppingCart, TruckIcon, Settings } from "lucide-react";
+import BatchMaterialTracker from "@/components/purchasing/BatchMaterialTracker";
 
 const PurchasingReceivingDashboard = () => {
   return (
@@ -98,13 +98,18 @@ const PurchasingReceivingDashboard = () => {
             <CardDescription>Manage procurement, vendors, and material receiving</CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="purchase-orders" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-4">
+            <Tabs defaultValue="batch-integration" className="space-y-6">
+              <TabsList className="grid w-full grid-cols-5">
+                <TabsTrigger value="batch-integration">Batch Integration</TabsTrigger>
                 <TabsTrigger value="purchase-orders">Purchase Orders</TabsTrigger>
                 <TabsTrigger value="receiving">Receiving</TabsTrigger>
                 <TabsTrigger value="vendors">Vendors</TabsTrigger>
                 <TabsTrigger value="inventory">Inventory</TabsTrigger>
               </TabsList>
+
+              <TabsContent value="batch-integration">
+                <BatchMaterialTracker />
+              </TabsContent>
 
               <TabsContent value="purchase-orders">
                 <Card>
