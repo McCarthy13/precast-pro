@@ -1,8 +1,11 @@
+
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ExternalLink } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import MoistureTestTable from './MoistureTestTable';
 
 interface MoistureTestData {
@@ -18,6 +21,10 @@ interface MoistureTestCardProps {
 }
 
 const MoistureTestCard: React.FC<MoistureTestCardProps> = ({ departmentName = "" }) => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [notes, setNotes] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [moistureData, setMoistureData] = useState<MoistureTestData[]>(
     Array(10).fill(null).map(() => ({
       date: undefined,
@@ -45,10 +52,60 @@ const MoistureTestCard: React.FC<MoistureTestCardProps> = ({ departmentName = ""
     setMoistureData(newData);
   };
 
-  const handleSubmit = () => {
-    // Logic to submit the moisture test data and create a record
-    console.log('Moisture test data submitted');
-    // TODO: Add actual submission logic here
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    
+    try {
+      // Filter out empty rows
+      const validData = moistureData.filter(row => 
+        row.date || row.binNumber || row.aggregate || row.wetWeight || row.dryWeight
+      );
+
+      if (validData.length === 0) {
+        toast({
+          title: "No Data to Submit",
+          description: "Please fill in at least one row of moisture test data.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Create the moisture test record
+      const record = {
+        id: `MT-${Date.now()}`,
+        departmentName: departmentName || "Unknown",
+        submittedAt: new Date().toISOString(),
+        testData: validData,
+        notes: notes,
+        status: 'completed'
+      };
+
+      // Store in localStorage for now (would be database in real implementation)
+      const existingRecords = JSON.parse(localStorage.getItem('moistureTestRecords') || '[]');
+      existingRecords.push(record);
+      localStorage.setItem('moistureTestRecords', JSON.stringify(existingRecords));
+
+      console.log('Moisture test record created:', record);
+
+      toast({
+        title: "Test Submitted Successfully",
+        description: `Moisture test record ${record.id} has been created with ${validData.length} test entries.`,
+      });
+
+      // Navigate back to the department page
+      navigate(-1);
+
+    } catch (error) {
+      console.error('Error submitting moisture test:', error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting the moisture test. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -89,6 +146,8 @@ const MoistureTestCard: React.FC<MoistureTestCardProps> = ({ departmentName = ""
         </CardHeader>
         <CardContent>
           <Textarea 
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
             placeholder="Enter any observations, equipment calibration notes, or additional comments..."
             rows={4}
           />
@@ -96,8 +155,12 @@ const MoistureTestCard: React.FC<MoistureTestCardProps> = ({ departmentName = ""
       </Card>
 
       <div className="flex justify-end">
-        <Button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700">
-          Submit
+        <Button 
+          onClick={handleSubmit} 
+          disabled={isSubmitting}
+          className="bg-blue-600 hover:bg-blue-700"
+        >
+          {isSubmitting ? 'Submitting...' : 'Submit'}
         </Button>
       </div>
     </div>
