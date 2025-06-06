@@ -1,13 +1,21 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, Plus, Thermometer, FlaskConical, Database } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Search, Plus, Thermometer, FlaskConical, Database, ArrowUpDown, Filter, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState, useMemo } from "react";
 
 const QCFreshConcreteTests = () => {
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [columnFilters, setColumnFilters] = useState<Record<string, string>>({});
+  const [showFilters, setShowFilters] = useState(false);
+
   const freshTests = [
     {
       id: "FCT-001",
@@ -48,6 +56,26 @@ const QCFreshConcreteTests = () => {
       staticSegregation: "Pass",
       technician: "Sarah Johnson",
       status: "Draft"
+    },
+    {
+      id: "FCT-003",
+      date: "2024-01-14",
+      time: "10:45",
+      mixDesign: "MD-001",
+      batchTicket: "BT-2024-0114-001",
+      pieces: "WP1-003, WP1-004",
+      slumpFlow: "6.0",
+      airContent: "6.0",
+      ambientTemp: "70",
+      concreteTemp: "67",
+      unitWeight: "144.8",
+      yield: "27.2",
+      relativeYield: "1.01",
+      t20: "13.0",
+      jRing: "Pass",
+      staticSegregation: "Pass",
+      technician: "Mike Wilson",
+      status: "Submitted"
     }
   ];
 
@@ -69,6 +97,68 @@ const QCFreshConcreteTests = () => {
       samplesCount: 18
     }
   ];
+
+  const columns = [
+    { key: 'date', label: 'Date' },
+    { key: 'time', label: 'Time' },
+    { key: 'mixDesign', label: 'Mix Design' },
+    { key: 'batchTicket', label: 'Batch Ticket' },
+    { key: 'pieces', label: 'Pieces' },
+    { key: 'slumpFlow', label: 'Slump Flow (in)' },
+    { key: 'airContent', label: 'Air Content (%)' },
+    { key: 'ambientTemp', label: 'Ambient Temp (°F)' },
+    { key: 'concreteTemp', label: 'Concrete Temp (°F)' },
+    { key: 'unitWeight', label: 'Unit Weight (lb/ft³)' },
+    { key: 'yield', label: 'Yield (ft³/yd³)' },
+    { key: 'relativeYield', label: 'Relative Yield' },
+    { key: 't20', label: 'T-20 (sec)' },
+    { key: 'jRing', label: 'J-Ring' },
+    { key: 'staticSegregation', label: 'Static Segregation' },
+    { key: 'technician', label: 'Technician' },
+    { key: 'status', label: 'Status' }
+  ];
+
+  const filteredAndSortedTests = useMemo(() => {
+    let filtered = freshTests;
+
+    // Apply search filter
+    if (searchTerm) {
+      filtered = filtered.filter(test =>
+        Object.values(test).some(value =>
+          value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    }
+
+    // Apply column filters
+    Object.entries(columnFilters).forEach(([column, filterValue]) => {
+      if (filterValue) {
+        filtered = filtered.filter(test =>
+          test[column as keyof typeof test]?.toString().toLowerCase().includes(filterValue.toLowerCase())
+        );
+      }
+    });
+
+    // Sort by date and time
+    return filtered.sort((a, b) => {
+      const dateA = new Date(`${a.date} ${a.time}`);
+      const dateB = new Date(`${b.date} ${b.time}`);
+      return sortOrder === 'desc' ? dateB.getTime() - dateA.getTime() : dateA.getTime() - dateB.getTime();
+    });
+  }, [searchTerm, columnFilters, sortOrder]);
+
+  const clearColumnFilter = (column: string) => {
+    setColumnFilters(prev => {
+      const updated = { ...prev };
+      delete updated[column];
+      return updated;
+    });
+  };
+
+  const clearAllFilters = () => {
+    setColumnFilters({});
+    setSearchTerm('');
+  };
 
   return (
     <div className="space-y-6">
@@ -96,15 +186,6 @@ const QCFreshConcreteTests = () => {
         </TabsList>
 
         <TabsContent value="fresh-tests" className="space-y-6">
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Search fresh concrete tests..."
-              className="pl-10"
-            />
-          </div>
-
           <Card>
             <CardHeader>
               <div className="flex justify-between items-start">
@@ -120,32 +201,106 @@ const QCFreshConcreteTests = () => {
                 </Button>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
+              {/* Search and Controls */}
+              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    <Input
+                      placeholder="Search all records..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 w-64"
+                    />
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowFilters(!showFilters)}
+                    className="flex items-center gap-2"
+                  >
+                    <Filter className="h-4 w-4" />
+                    Filter
+                  </Button>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  {(Object.keys(columnFilters).length > 0 || searchTerm) && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearAllFilters}
+                      className="text-red-600 hover:text-red-700"
+                    >
+                      Clear All
+                    </Button>
+                  )}
+                  <ToggleGroup
+                    type="single"
+                    value={sortOrder}
+                    onValueChange={(value) => value && setSortOrder(value as 'asc' | 'desc')}
+                  >
+                    <ToggleGroupItem value="desc" aria-label="Newest first">
+                      <ArrowUpDown className="h-4 w-4 mr-1" />
+                      Newest First
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="asc" aria-label="Oldest first">
+                      <ArrowUpDown className="h-4 w-4 mr-1" />
+                      Oldest First
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+              </div>
+
+              {/* Active Filters Display */}
+              {Object.keys(columnFilters).length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(columnFilters).map(([column, value]) => (
+                    <Badge key={column} variant="secondary" className="flex items-center gap-1">
+                      {columns.find(col => col.key === column)?.label}: {value}
+                      <button
+                        onClick={() => clearColumnFilter(column)}
+                        className="ml-1 hover:bg-gray-300 rounded-full p-0.5"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+              )}
+
+              {/* Column Filters */}
+              {showFilters && (
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2 p-4 bg-gray-50 rounded-lg">
+                  {columns.map((column) => (
+                    <div key={column.key} className="space-y-1">
+                      <label className="text-xs font-medium text-gray-600">{column.label}</label>
+                      <Input
+                        placeholder={`Filter ${column.label.toLowerCase()}...`}
+                        value={columnFilters[column.key] || ''}
+                        onChange={(e) => setColumnFilters(prev => ({
+                          ...prev,
+                          [column.key]: e.target.value
+                        }))}
+                        className="h-8 text-xs"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Time</TableHead>
-                      <TableHead>Mix Design</TableHead>
-                      <TableHead>Batch Ticket</TableHead>
-                      <TableHead>Pieces</TableHead>
-                      <TableHead>Slump Flow (in)</TableHead>
-                      <TableHead>Air Content (%)</TableHead>
-                      <TableHead>Ambient Temp (°F)</TableHead>
-                      <TableHead>Concrete Temp (°F)</TableHead>
-                      <TableHead>Unit Weight (lb/ft³)</TableHead>
-                      <TableHead>Yield (ft³/yd³)</TableHead>
-                      <TableHead>Relative Yield</TableHead>
-                      <TableHead>T-20 (sec)</TableHead>
-                      <TableHead>J-Ring</TableHead>
-                      <TableHead>Static Segregation</TableHead>
-                      <TableHead>Technician</TableHead>
-                      <TableHead>Status</TableHead>
+                      {columns.map((column) => (
+                        <TableHead key={column.key}>{column.label}</TableHead>
+                      ))}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {freshTests.map((test) => (
+                    {filteredAndSortedTests.map((test) => (
                       <TableRow key={test.id}>
                         <TableCell>{test.date}</TableCell>
                         <TableCell>{test.time}</TableCell>
