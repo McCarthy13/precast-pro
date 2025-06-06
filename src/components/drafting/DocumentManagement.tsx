@@ -7,8 +7,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Search, Filter, Upload, Download, Share2, Eye, FolderOpen, File, Archive, Shield, AlertTriangle, CheckCircle, Clock, Factory, PenTool, Calculator, Truck } from "lucide-react";
+import { useState } from "react";
 
 const DocumentManagement = () => {
+  const [activeTab, setActiveTab] = useState("departments");
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
+
   const departments = [
     {
       id: "qc",
@@ -116,6 +120,15 @@ const DocumentManagement = () => {
     }
   ];
 
+  const handleViewDocuments = (departmentName: string) => {
+    setSelectedDepartment(departmentName);
+    setActiveTab("documents");
+  };
+
+  const filteredDocuments = selectedDepartment 
+    ? documents.filter(doc => doc.department === selectedDepartment)
+    : documents;
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "approved":
@@ -144,7 +157,7 @@ const DocumentManagement = () => {
 
   return (
     <div className="space-y-6">
-      <Tabs defaultValue="departments" className="space-y-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="departments">Departments</TabsTrigger>
           <TabsTrigger value="documents">All Documents</TabsTrigger>
@@ -181,7 +194,11 @@ const DocumentManagement = () => {
                         <p className="text-xs text-gray-600">ISO Compliant</p>
                       </div>
                     </div>
-                    <Button variant="outline" className="w-full">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => handleViewDocuments(dept.name)}
+                    >
                       View Documents
                     </Button>
                   </CardContent>
@@ -201,18 +218,18 @@ const DocumentManagement = () => {
                 className="pl-10"
               />
             </div>
-            <Select>
+            <Select value={selectedDepartment || "all"} onValueChange={(value) => setSelectedDepartment(value === "all" ? null : value)}>
               <SelectTrigger className="w-48">
                 <Filter className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Filter by department" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Departments</SelectItem>
-                <SelectItem value="qc">Quality Control</SelectItem>
-                <SelectItem value="drafting">Drafting & Engineering</SelectItem>
-                <SelectItem value="production">Production</SelectItem>
-                <SelectItem value="estimating">Estimating & Sales</SelectItem>
-                <SelectItem value="field">Field Services</SelectItem>
+                <SelectItem value="Quality Control">Quality Control</SelectItem>
+                <SelectItem value="Drafting & Engineering">Drafting & Engineering</SelectItem>
+                <SelectItem value="Production">Production</SelectItem>
+                <SelectItem value="Estimating & Sales">Estimating & Sales</SelectItem>
+                <SelectItem value="Field Services">Field Services</SelectItem>
               </SelectContent>
             </Select>
             <Button className="bg-purple-600 hover:bg-purple-700">
@@ -221,12 +238,28 @@ const DocumentManagement = () => {
             </Button>
           </div>
 
+          {selectedDepartment && (
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary">
+                Filtered by: {selectedDepartment}
+              </Badge>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => setSelectedDepartment(null)}
+              >
+                Clear filter
+              </Button>
+            </div>
+          )}
+
           {/* Documents Table */}
           <Card>
             <CardHeader>
               <CardTitle>Document Library</CardTitle>
               <CardDescription>
                 Centralized document management with revision control and ISO compliance tracking
+                {selectedDepartment && ` - ${selectedDepartment} Department`}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -243,7 +276,7 @@ const DocumentManagement = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {documents.map((doc) => (
+                  {filteredDocuments.map((doc) => (
                     <TableRow key={doc.id}>
                       <TableCell>
                         <div className="flex items-center space-x-2">
