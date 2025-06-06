@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -191,7 +190,6 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Test ID</TableHead>
                     <TableHead>Date</TableHead>
                     <TableHead>Bin #</TableHead>
                     <TableHead>Aggregate</TableHead>
@@ -199,7 +197,6 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
                     <TableHead>Dry Weight (lbs)</TableHead>
                     <TableHead>Total Moisture (%)</TableHead>
                     <TableHead>Free Moisture (%)</TableHead>
-                    <TableHead>Submitted</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -212,7 +209,6 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
                     
                     return (
                       <TableRow key={`${entry.recordId}-${index}`}>
-                        <TableCell className="font-medium">{entry.recordId}</TableCell>
                         <TableCell>{formatTestDate(entry.date)}</TableCell>
                         <TableCell>{entry.binNumber}</TableCell>
                         <TableCell>{entry.aggregate}</TableCell>
@@ -220,7 +216,6 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
                         <TableCell>{entry.dryWeight}</TableCell>
                         <TableCell>{totalMoisture ? `${totalMoisture}%` : ''}</TableCell>
                         <TableCell>{freeMoisture ? `${freeMoisture}%` : ''}</TableCell>
-                        <TableCell>{formatDate(entry.submittedAt)}</TableCell>
                       </TableRow>
                     );
                   })}
