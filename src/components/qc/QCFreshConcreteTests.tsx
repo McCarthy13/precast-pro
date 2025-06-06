@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Search, Plus, Thermometer, FlaskConical, Database, ArrowUpDown, Filter, X } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -312,97 +313,100 @@ const QCFreshConcreteTests = () => {
                 </div>
               )}
 
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      {columns.map((column) => (
-                        <TableHead key={column.key}>{column.label}</TableHead>
-                      ))}
-                      <TableHead className="text-center font-semibold bg-blue-50" colSpan={5}>
-                        STRENGTH RESULTS
-                      </TableHead>
-                    </TableRow>
-                    <TableRow>
-                      {columns.map(() => (
-                        <TableHead key="spacer" className="p-0 h-0"></TableHead>
-                      ))}
-                      <TableHead className="text-xs">Release/Release Required</TableHead>
-                      <TableHead className="text-xs">28-Day Strength 1</TableHead>
-                      <TableHead className="text-xs">28-Day Strength 2</TableHead>
-                      <TableHead className="text-xs">28-Day Strength 3</TableHead>
-                      <TableHead className="text-xs">Average</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredAndSortedTests.map((test) => (
-                      <TableRow key={test.id}>
-                        <TableCell>{test.date}</TableCell>
-                        <TableCell>{test.time}</TableCell>
-                        <TableCell>{test.mixDesign}</TableCell>
-                        <TableCell>{test.batchTicket}</TableCell>
-                        <TableCell>{test.pieces}</TableCell>
-                        <TableCell>{test.slumpFlow}</TableCell>
-                        <TableCell>{test.airContent}</TableCell>
-                        <TableCell>{test.ambientTemp}</TableCell>
-                        <TableCell>{test.concreteTemp}</TableCell>
-                        <TableCell>{test.unitWeight}</TableCell>
-                        <TableCell>{test.yield}</TableCell>
-                        <TableCell>{test.relativeYield}</TableCell>
-                        <TableCell>{test.t20}</TableCell>
-                        <TableCell>
-                          <Badge className={test.jRing === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
-                            {test.jRing}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge className={test.staticSegregation === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
-                            {test.staticSegregation}
-                          </Badge>
-                        </TableCell>
-                        {/* Strength Results - Editable columns */}
-                        <TableCell>
-                          <Input
-                            className="w-24 h-8 text-xs"
-                            placeholder="5171/3500"
-                            value={strengthData[test.id]?.release || ''}
-                            onChange={(e) => updateStrengthData(test.id, 'release', e.target.value)}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Input
-                            className="w-20 h-8 text-xs"
-                            placeholder="8674"
-                            value={strengthData[test.id]?.strength1 || ''}
-                            onChange={(e) => updateStrengthData(test.id, 'strength1', e.target.value)}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Input
-                            className="w-20 h-8 text-xs"
-                            placeholder="8491"
-                            value={strengthData[test.id]?.strength2 || ''}
-                            onChange={(e) => updateStrengthData(test.id, 'strength2', e.target.value)}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Input
-                            className="w-20 h-8 text-xs"
-                            placeholder="8532"
-                            value={strengthData[test.id]?.strength3 || ''}
-                            onChange={(e) => updateStrengthData(test.id, 'strength3', e.target.value)}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <div className="w-20 h-8 flex items-center justify-center text-xs font-medium bg-gray-50 rounded border">
-                            {calculateAverage(test.id) || '--'}
-                          </div>
-                        </TableCell>
+              <ScrollArea className="w-full">
+                <div className="min-w-[1400px]">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        {columns.map((column) => (
+                          <TableHead key={column.key}>{column.label}</TableHead>
+                        ))}
+                        <TableHead className="text-center font-semibold bg-blue-50" colSpan={5}>
+                          STRENGTH RESULTS
+                        </TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                      <TableRow>
+                        {columns.map(() => (
+                          <TableHead key="spacer" className="p-0 h-0"></TableHead>
+                        ))}
+                        <TableHead className="text-xs">Release/Release Required</TableHead>
+                        <TableHead className="text-xs">28-Day Strength 1</TableHead>
+                        <TableHead className="text-xs">28-Day Strength 2</TableHead>
+                        <TableHead className="text-xs">28-Day Strength 3</TableHead>
+                        <TableHead className="text-xs">Average</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredAndSortedTests.map((test) => (
+                        <TableRow key={test.id}>
+                          <TableCell>{test.date}</TableCell>
+                          <TableCell>{test.time}</TableCell>
+                          <TableCell>{test.mixDesign}</TableCell>
+                          <TableCell>{test.batchTicket}</TableCell>
+                          <TableCell>{test.pieces}</TableCell>
+                          <TableCell>{test.slumpFlow}</TableCell>
+                          <TableCell>{test.airContent}</TableCell>
+                          <TableCell>{test.ambientTemp}</TableCell>
+                          <TableCell>{test.concreteTemp}</TableCell>
+                          <TableCell>{test.unitWeight}</TableCell>
+                          <TableCell>{test.yield}</TableCell>
+                          <TableCell>{test.relativeYield}</TableCell>
+                          <TableCell>{test.t20}</TableCell>
+                          <TableCell>
+                            <Badge className={test.jRing === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
+                              {test.jRing}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Badge className={test.staticSegregation === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
+                              {test.staticSegregation}
+                            </Badge>
+                          </TableCell>
+                          {/* Strength Results - Editable columns */}
+                          <TableCell>
+                            <Input
+                              className="w-24 h-8 text-xs"
+                              placeholder="5171/3500"
+                              value={strengthData[test.id]?.release || ''}
+                              onChange={(e) => updateStrengthData(test.id, 'release', e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              className="w-20 h-8 text-xs"
+                              placeholder="8674"
+                              value={strengthData[test.id]?.strength1 || ''}
+                              onChange={(e) => updateStrengthData(test.id, 'strength1', e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              className="w-20 h-8 text-xs"
+                              placeholder="8491"
+                              value={strengthData[test.id]?.strength2 || ''}
+                              onChange={(e) => updateStrengthData(test.id, 'strength2', e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              className="w-20 h-8 text-xs"
+                              placeholder="8532"
+                              value={strengthData[test.id]?.strength3 || ''}
+                              onChange={(e) => updateStrengthData(test.id, 'strength3', e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <div className="w-20 h-8 flex items-center justify-center text-xs font-medium bg-gray-50 rounded border">
+                              {calculateAverage(test.id) || '--'}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
             </CardContent>
           </Card>
         </TabsContent>
