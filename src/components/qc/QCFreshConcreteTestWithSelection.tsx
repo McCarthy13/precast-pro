@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 import PieceSelection from './PieceSelection';
 
 interface QCFreshConcreteTestWithSelectionProps {
@@ -23,8 +25,18 @@ const QCFreshConcreteTestWithSelection: React.FC<QCFreshConcreteTestWithSelectio
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Fresh Concrete Test - {departmentName}</CardTitle>
-        <CardDescription>Record fresh concrete test data for {departmentName.toLowerCase()} production</CardDescription>
+        <div className="flex justify-between items-start">
+          <div>
+            <CardTitle>Fresh Concrete Test - {departmentName}</CardTitle>
+            <CardDescription>Record fresh concrete test data for {departmentName.toLowerCase()} production</CardDescription>
+          </div>
+          <Button asChild className="bg-blue-600 hover:bg-blue-700">
+            <Link to="/templates/fresh-concrete-test">
+              <Plus className="h-4 w-4 mr-2" />
+              New Test Record
+            </Link>
+          </Button>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
