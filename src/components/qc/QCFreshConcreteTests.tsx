@@ -1,14 +1,13 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Search, Plus, Thermometer, FlaskConical, Database, ArrowUpDown, Filter, X } from "lucide-react";
+import { Thermometer, FlaskConical, Database, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useMemo } from "react";
+import FreshConcreteTestsTable from "./fresh-concrete/FreshConcreteTestsTable";
+import FreshConcreteTestsControls from "./fresh-concrete/FreshConcreteTestsControls";
+import CuringTanksTab from "./fresh-concrete/CuringTanksTab";
 
 const QCFreshConcreteTests = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
@@ -77,25 +76,6 @@ const QCFreshConcreteTests = () => {
       staticSegregation: "Pass",
       technician: "Mike Wilson",
       status: "Submitted"
-    }
-  ];
-
-  const curingTankRecords = [
-    {
-      id: "CT-001",
-      tankNumber: "Tank A",
-      temperature: "73°F ± 3°F",
-      lastCalibration: "2024-01-01",
-      status: "active",
-      samplesCount: 24
-    },
-    {
-      id: "CT-002",
-      tankNumber: "Tank B", 
-      temperature: "74°F ± 3°F",
-      lastCalibration: "2024-01-01",
-      status: "active",
-      samplesCount: 18
     }
   ];
 
@@ -225,227 +205,33 @@ const QCFreshConcreteTests = () => {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Search and Controls */}
-              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <Input
-                      placeholder="Search all records..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 w-64"
-                    />
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowFilters(!showFilters)}
-                    className="flex items-center gap-2"
-                  >
-                    <Filter className="h-4 w-4" />
-                    Filter
-                  </Button>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  {(Object.keys(columnFilters).length > 0 || searchTerm) && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={clearAllFilters}
-                      className="text-red-600 hover:text-red-700"
-                    >
-                      Clear All
-                    </Button>
-                  )}
-                  <ToggleGroup
-                    type="single"
-                    value={sortOrder}
-                    onValueChange={(value) => value && setSortOrder(value as 'asc' | 'desc')}
-                  >
-                    <ToggleGroupItem value="desc" aria-label="Newest first">
-                      <ArrowUpDown className="h-4 w-4 mr-1" />
-                      Newest First
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="asc" aria-label="Oldest first">
-                      <ArrowUpDown className="h-4 w-4 mr-1" />
-                      Oldest First
-                    </ToggleGroupItem>
-                  </ToggleGroup>
-                </div>
-              </div>
+              <FreshConcreteTestsControls
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                showFilters={showFilters}
+                setShowFilters={setShowFilters}
+                columnFilters={columnFilters}
+                setColumnFilters={setColumnFilters}
+                sortOrder={sortOrder}
+                setSortOrder={setSortOrder}
+                columns={columns}
+                clearColumnFilter={clearColumnFilter}
+                clearAllFilters={clearAllFilters}
+              />
 
-              {/* Active Filters Display */}
-              {Object.keys(columnFilters).length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {Object.entries(columnFilters).map(([column, value]) => (
-                    <Badge key={column} variant="secondary" className="flex items-center gap-1">
-                      {columns.find(col => col.key === column)?.label}: {value}
-                      <button
-                        onClick={() => clearColumnFilter(column)}
-                        className="ml-1 hover:bg-gray-300 rounded-full p-0.5"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </Badge>
-                  ))}
-                </div>
-              )}
-
-              {/* Column Filters */}
-              {showFilters && (
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2 p-4 bg-gray-50 rounded-lg">
-                  {columns.map((column) => (
-                    <div key={column.key} className="space-y-1">
-                      <label className="text-xs font-medium text-gray-600">{column.label}</label>
-                      <Input
-                        placeholder={`Filter ${column.label.toLowerCase()}...`}
-                        value={columnFilters[column.key] || ''}
-                        onChange={(e) => setColumnFilters(prev => ({
-                          ...prev,
-                          [column.key]: e.target.value
-                        }))}
-                        className="h-8 text-xs"
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <ScrollArea className="w-full">
-                <div className="min-w-[1400px]">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        {columns.map((column) => (
-                          <TableHead key={column.key}>{column.label}</TableHead>
-                        ))}
-                        <TableHead className="text-center font-semibold bg-blue-50" colSpan={5}>
-                          STRENGTH RESULTS
-                        </TableHead>
-                      </TableRow>
-                      <TableRow>
-                        {columns.map(() => (
-                          <TableHead key="spacer" className="p-0 h-0"></TableHead>
-                        ))}
-                        <TableHead className="text-xs">Release/Release Required</TableHead>
-                        <TableHead className="text-xs">28-Day Strength 1</TableHead>
-                        <TableHead className="text-xs">28-Day Strength 2</TableHead>
-                        <TableHead className="text-xs">28-Day Strength 3</TableHead>
-                        <TableHead className="text-xs">Average</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredAndSortedTests.map((test) => (
-                        <TableRow key={test.id}>
-                          <TableCell>{test.date}</TableCell>
-                          <TableCell>{test.time}</TableCell>
-                          <TableCell>{test.mixDesign}</TableCell>
-                          <TableCell>{test.batchTicket}</TableCell>
-                          <TableCell>{test.pieces}</TableCell>
-                          <TableCell>{test.slumpFlow}</TableCell>
-                          <TableCell>{test.airContent}</TableCell>
-                          <TableCell>{test.ambientTemp}</TableCell>
-                          <TableCell>{test.concreteTemp}</TableCell>
-                          <TableCell>{test.unitWeight}</TableCell>
-                          <TableCell>{test.yield}</TableCell>
-                          <TableCell>{test.relativeYield}</TableCell>
-                          <TableCell>{test.t20}</TableCell>
-                          <TableCell>
-                            <Badge className={test.jRing === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
-                              {test.jRing}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <Badge className={test.staticSegregation === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
-                              {test.staticSegregation}
-                            </Badge>
-                          </TableCell>
-                          {/* Strength Results - Editable columns */}
-                          <TableCell>
-                            <Input
-                              className="w-24 h-8 text-xs"
-                              placeholder="5171/3500"
-                              value={strengthData[test.id]?.release || ''}
-                              onChange={(e) => updateStrengthData(test.id, 'release', e.target.value)}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Input
-                              className="w-20 h-8 text-xs"
-                              placeholder="8674"
-                              value={strengthData[test.id]?.strength1 || ''}
-                              onChange={(e) => updateStrengthData(test.id, 'strength1', e.target.value)}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Input
-                              className="w-20 h-8 text-xs"
-                              placeholder="8491"
-                              value={strengthData[test.id]?.strength2 || ''}
-                              onChange={(e) => updateStrengthData(test.id, 'strength2', e.target.value)}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Input
-                              className="w-20 h-8 text-xs"
-                              placeholder="8532"
-                              value={strengthData[test.id]?.strength3 || ''}
-                              onChange={(e) => updateStrengthData(test.id, 'strength3', e.target.value)}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <div className="w-20 h-8 flex items-center justify-center text-xs font-medium bg-gray-50 rounded border">
-                              {calculateAverage(test.id) || '--'}
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
+              <FreshConcreteTestsTable
+                tests={filteredAndSortedTests}
+                columns={columns}
+                strengthData={strengthData}
+                updateStrengthData={updateStrengthData}
+                calculateAverage={calculateAverage}
+              />
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="curing-tanks" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Curing Tank Records</CardTitle>
-              <CardDescription>Monitor curing tank conditions and sample storage</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Tank ID</TableHead>
-                    <TableHead>Tank Number</TableHead>
-                    <TableHead>Temperature</TableHead>
-                    <TableHead>Last Calibration</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Samples Count</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {curingTankRecords.map((tank) => (
-                    <TableRow key={tank.id}>
-                      <TableCell className="font-medium">{tank.id}</TableCell>
-                      <TableCell>{tank.tankNumber}</TableCell>
-                      <TableCell>{tank.temperature}</TableCell>
-                      <TableCell>{tank.lastCalibration}</TableCell>
-                      <TableCell>
-                        <Badge className="bg-green-100 text-green-800">{tank.status}</Badge>
-                      </TableCell>
-                      <TableCell>{tank.samplesCount}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+          <CuringTanksTab />
         </TabsContent>
 
         <TabsContent value="neoprene-pads" className="space-y-6">
