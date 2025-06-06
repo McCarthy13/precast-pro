@@ -6,30 +6,49 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Search, Plus, Thermometer, FlaskConical, Database } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const QCFreshConcreteTests = () => {
   const freshTests = [
     {
       id: "FCT-001",
       date: "2024-01-15",
+      time: "09:30",
       mixDesign: "MD-001",
-      batchNumber: "B-2024-0115-01",
-      slump: "5.5 inches",
-      airContent: "6.2%",
-      temperature: "68°F",
-      unitWeight: "145.2 lb/ft³",
-      technician: "John Smith"
+      batchTicket: "BT-2024-0115-001",
+      pieces: "WP1-001, WP1-002, WP2-001",
+      slumpFlow: "5.5",
+      airContent: "6.2",
+      ambientTemp: "72",
+      concreteTemp: "68",
+      unitWeight: "145.2",
+      yield: "27.0",
+      relativeYield: "1.00",
+      t20: "12.5",
+      jRing: "Pass",
+      staticSegregation: "Pass",
+      technician: "John Smith",
+      status: "Submitted"
     },
     {
       id: "FCT-002",
       date: "2024-01-15",
+      time: "14:15",
       mixDesign: "MD-002",
-      batchNumber: "B-2024-0115-02",
-      slump: "4.0 inches",
-      airContent: "5.8%",
-      temperature: "72°F",
-      unitWeight: "147.8 lb/ft³",
-      technician: "Sarah Johnson"
+      batchTicket: "BT-2024-0115-002",
+      pieces: "WP3-001, WP3-002",
+      slumpFlow: "4.0",
+      airContent: "5.8",
+      ambientTemp: "75",
+      concreteTemp: "72",
+      unitWeight: "147.8",
+      yield: "26.8",
+      relativeYield: "0.99",
+      t20: "11.2",
+      jRing: "Pass",
+      staticSegregation: "Pass",
+      technician: "Sarah Johnson",
+      status: "Draft"
     }
   ];
 
@@ -59,10 +78,6 @@ const QCFreshConcreteTests = () => {
           <h2 className="text-2xl font-bold">Fresh Concrete Test Data</h2>
           <p className="text-gray-600">Record and track all fresh concrete tests, curing tanks, and neoprene pad usage</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700">
-          <Plus className="h-4 w-4 mr-2" />
-          New Test Record
-        </Button>
       </div>
 
       <Tabs defaultValue="fresh-tests" className="space-y-4">
@@ -93,40 +108,82 @@ const QCFreshConcreteTests = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>Fresh Concrete Test Records</CardTitle>
-              <CardDescription>Historical record of all fresh concrete tests</CardDescription>
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle>Fresh Concrete Test Records</CardTitle>
+                  <CardDescription>Historical record of all fresh concrete tests</CardDescription>
+                </div>
+                <Button asChild className="bg-blue-600 hover:bg-blue-700">
+                  <Link to="/templates/fresh-concrete-test">
+                    <Plus className="h-4 w-4 mr-2" />
+                    New Test Record
+                  </Link>
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Test ID</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Mix Design</TableHead>
-                    <TableHead>Batch #</TableHead>
-                    <TableHead>Slump</TableHead>
-                    <TableHead>Air Content</TableHead>
-                    <TableHead>Temperature</TableHead>
-                    <TableHead>Unit Weight</TableHead>
-                    <TableHead>Technician</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {freshTests.map((test) => (
-                    <TableRow key={test.id}>
-                      <TableCell className="font-medium">{test.id}</TableCell>
-                      <TableCell>{test.date}</TableCell>
-                      <TableCell>{test.mixDesign}</TableCell>
-                      <TableCell>{test.batchNumber}</TableCell>
-                      <TableCell>{test.slump}</TableCell>
-                      <TableCell>{test.airContent}</TableCell>
-                      <TableCell>{test.temperature}</TableCell>
-                      <TableCell>{test.unitWeight}</TableCell>
-                      <TableCell>{test.technician}</TableCell>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Test ID</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Time</TableHead>
+                      <TableHead>Mix Design</TableHead>
+                      <TableHead>Batch Ticket</TableHead>
+                      <TableHead>Pieces</TableHead>
+                      <TableHead>Slump Flow (in)</TableHead>
+                      <TableHead>Air Content (%)</TableHead>
+                      <TableHead>Ambient Temp (°F)</TableHead>
+                      <TableHead>Concrete Temp (°F)</TableHead>
+                      <TableHead>Unit Weight (lb/ft³)</TableHead>
+                      <TableHead>Yield (ft³/yd³)</TableHead>
+                      <TableHead>Relative Yield</TableHead>
+                      <TableHead>T-20 (sec)</TableHead>
+                      <TableHead>J-Ring</TableHead>
+                      <TableHead>Static Segregation</TableHead>
+                      <TableHead>Technician</TableHead>
+                      <TableHead>Status</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {freshTests.map((test) => (
+                      <TableRow key={test.id}>
+                        <TableCell className="font-medium">{test.id}</TableCell>
+                        <TableCell>{test.date}</TableCell>
+                        <TableCell>{test.time}</TableCell>
+                        <TableCell>{test.mixDesign}</TableCell>
+                        <TableCell>{test.batchTicket}</TableCell>
+                        <TableCell>{test.pieces}</TableCell>
+                        <TableCell>{test.slumpFlow}</TableCell>
+                        <TableCell>{test.airContent}</TableCell>
+                        <TableCell>{test.ambientTemp}</TableCell>
+                        <TableCell>{test.concreteTemp}</TableCell>
+                        <TableCell>{test.unitWeight}</TableCell>
+                        <TableCell>{test.yield}</TableCell>
+                        <TableCell>{test.relativeYield}</TableCell>
+                        <TableCell>{test.t20}</TableCell>
+                        <TableCell>
+                          <Badge className={test.jRing === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
+                            {test.jRing}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={test.staticSegregation === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
+                            {test.staticSegregation}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{test.technician}</TableCell>
+                        <TableCell>
+                          <Badge className={test.status === "Submitted" ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-800"}>
+                            {test.status}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
