@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Factory, FlaskConical, Droplets, BarChart3, TrendingUp, AlertTriangle, CheckCircle, Clock, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import QCWorkspaceSelector from "./QCWorkspaceSelector";
-import QCFreshConcreteTestWithSelection from "./QCFreshConcreteTestWithSelection";
+import QCFreshConcreteTests from "./QCFreshConcreteTests";
 
 interface QCMetrics {
   totalInspections: number;
@@ -196,10 +195,7 @@ const QCDepartmentModule: React.FC<QCDepartmentModuleProps> = ({
             </TabsContent>
 
             <TabsContent value="fresh-concrete">
-              <QCFreshConcreteTestWithSelection 
-                departmentName={departmentName}
-                scheduledPieces={scheduledPieces}
-              />
+              <QCFreshConcreteTests />
             </TabsContent>
 
             <TabsContent value="analytics">
