@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,12 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Search, Filter, Upload, Download, Share2, Eye, FolderOpen, File, Archive, Shield, AlertTriangle, CheckCircle, Clock, Factory, PenTool, Calculator, Truck } from "lucide-react";
+import { FileText, Search, Filter, Upload, Download, Share2, Eye, FolderOpen, File, Archive, Shield, AlertTriangle, CheckCircle, Clock, Factory, PenTool, Calculator, Truck, FlaskConical, Droplets } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const DocumentManagement = () => {
   const [activeTab, setActiveTab] = useState("departments");
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const departments = [
     {
@@ -21,7 +22,11 @@ const DocumentManagement = () => {
       color: "bg-blue-600",
       documents: 89,
       pending: 3,
-      compliant: 98
+      compliant: 98,
+      forms: [
+        { name: "Fresh Concrete Test", route: "/templates/fresh-concrete-test", icon: FlaskConical },
+        { name: "Moisture Test", route: "/templates/moisture-test", icon: Droplets }
+      ]
     },
     {
       id: "drafting",
@@ -62,6 +67,38 @@ const DocumentManagement = () => {
   ];
 
   const documents = [
+    {
+      id: "FORM-001",
+      name: "Fresh Concrete Test Form",
+      type: "Quality Form",
+      department: "Quality Control",
+      version: "Rev 1.0",
+      isoCompliant: true,
+      size: "Interactive Form",
+      uploadDate: "2024-01-15",
+      status: "current",
+      uploadedBy: "QC Department",
+      reviewedBy: "QC Manager",
+      nextReview: "2024-07-15",
+      isForm: true,
+      route: "/templates/fresh-concrete-test"
+    },
+    {
+      id: "FORM-002",
+      name: "Moisture Test Form",
+      type: "Quality Form", 
+      department: "Quality Control",
+      version: "Rev 1.0",
+      isoCompliant: true,
+      size: "Interactive Form",
+      uploadDate: "2024-01-15",
+      status: "current",
+      uploadedBy: "QC Department",
+      reviewedBy: "QC Manager",
+      nextReview: "2024-07-15",
+      isForm: true,
+      route: "/templates/moisture-test"
+    },
     {
       id: "DOC-001",
       name: "Project Alpha Specifications.pdf",
@@ -123,6 +160,10 @@ const DocumentManagement = () => {
   const handleViewDocuments = (departmentName: string) => {
     setSelectedDepartment(departmentName);
     setActiveTab("documents");
+  };
+
+  const handleFormAccess = (route: string) => {
+    navigate(route);
   };
 
   const filteredDocuments = selectedDepartment 
@@ -194,12 +235,36 @@ const DocumentManagement = () => {
                         <p className="text-xs text-gray-600">ISO Compliant</p>
                       </div>
                     </div>
+                    
+                    {dept.forms && dept.forms.length > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium text-gray-700">Quick Access Forms:</p>
+                        <div className="flex flex-col gap-2">
+                          {dept.forms.map((form, index) => {
+                            const FormIcon = form.icon;
+                            return (
+                              <Button
+                                key={index}
+                                variant="outline"
+                                size="sm"
+                                className="justify-start"
+                                onClick={() => handleFormAccess(form.route)}
+                              >
+                                <FormIcon className="h-4 w-4 mr-2" />
+                                {form.name}
+                              </Button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                    
                     <Button 
                       variant="outline" 
                       className="w-full"
                       onClick={() => handleViewDocuments(dept.name)}
                     >
-                      View Documents
+                      View All Documents
                     </Button>
                   </CardContent>
                 </Card>
@@ -312,12 +377,24 @@ const DocumentManagement = () => {
                       <TableCell className="text-sm">{doc.nextReview}</TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
-                          <Button variant="ghost" size="sm">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm">
-                            <Download className="h-4 w-4" />
-                          </Button>
+                          {doc.isForm ? (
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => handleFormAccess(doc.route)}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                          ) : (
+                            <>
+                              <Button variant="ghost" size="sm">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm">
+                                <Download className="h-4 w-4" />
+                              </Button>
+                            </>
+                          )}
                           <Button variant="ghost" size="sm">
                             <Share2 className="h-4 w-4" />
                           </Button>
