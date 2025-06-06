@@ -116,10 +116,10 @@ const FreshConcreteTestsControls = ({
               <Input
                 placeholder={`Filter ${column.label.toLowerCase()}...`}
                 value={columnFilters[column.key] || ''}
-                onChange={(e) => setColumnFilters(prev => ({
-                  ...prev,
+                onChange={(e) => setColumnFilters({
+                  ...columnFilters,
                   [column.key]: e.target.value
-                }))}
+                })}
                 className="h-8 text-xs"
               />
             </div>
