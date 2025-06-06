@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -167,11 +166,7 @@ const QCFreshConcreteTestWithSelection: React.FC<QCFreshConcreteTestWithSelectio
           />
         </div>
 
-        <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <Badge variant="outline">Draft</Badge>
-            <span className="text-sm text-gray-500">Form Status</span>
-          </div>
+        <div className="flex justify-end">
           <div className="flex space-x-4">
             <Button variant="outline">Save Draft</Button>
             <Button>Submit for Review</Button>

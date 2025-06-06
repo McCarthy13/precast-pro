@@ -321,11 +321,7 @@ const FreshConcreteTestForm = () => {
         </CardContent>
       </Card>
 
-      <div className="flex justify-between items-center mt-6">
-        <div className="flex items-center space-x-2">
-          <Badge variant="outline">Draft</Badge>
-          <span className="text-sm text-gray-500">Form Status</span>
-        </div>
+      <div className="flex justify-end mt-6">
         <div className="flex space-x-4">
           <Button variant="outline">Save Draft</Button>
           <Button>Submit for Review</Button>

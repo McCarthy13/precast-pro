@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -113,9 +112,7 @@ const QCFreshConcreteTests = () => {
     { key: 'relativeYield', label: 'Relative Yield' },
     { key: 't20', label: 'T-20 (sec)' },
     { key: 'jRing', label: 'J-Ring' },
-    { key: 'staticSegregation', label: 'Static Segregation' },
-    { key: 'technician', label: 'Technician' },
-    { key: 'status', label: 'Status' }
+    { key: 'staticSegregation', label: 'Static Segregation' }
   ];
 
   const filteredAndSortedTests = useMemo(() => {
@@ -323,12 +320,6 @@ const QCFreshConcreteTests = () => {
                         <TableCell>
                           <Badge className={test.staticSegregation === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
                             {test.staticSegregation}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>{test.technician}</TableCell>
-                        <TableCell>
-                          <Badge className={test.status === "Submitted" ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-800"}>
-                            {test.status}
                           </Badge>
                         </TableCell>
                       </TableRow>
