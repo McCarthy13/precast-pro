@@ -7,6 +7,7 @@ import { Factory, FlaskConical, Droplets, BarChart3, TrendingUp, AlertTriangle, 
 import { Link } from "react-router-dom";
 import QCWorkspaceSelector from "./QCWorkspaceSelector";
 import QCFreshConcreteTests from "./QCFreshConcreteTests";
+import MoistureTestCard from "./moisture/MoistureTestCard";
 
 interface QCMetrics {
   totalInspections: number;
@@ -186,6 +187,7 @@ const QCDepartmentModule: React.FC<QCDepartmentModuleProps> = ({
             <TabsList>
               <TabsTrigger value="workspace-inspection">Workspace Inspection</TabsTrigger>
               <TabsTrigger value="fresh-concrete">Fresh Concrete Tests</TabsTrigger>
+              <TabsTrigger value="moisture-tests">Moisture Tests</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="reports">Reports</TabsTrigger>
             </TabsList>
@@ -196,6 +198,10 @@ const QCDepartmentModule: React.FC<QCDepartmentModuleProps> = ({
 
             <TabsContent value="fresh-concrete">
               <QCFreshConcreteTests />
+            </TabsContent>
+
+            <TabsContent value="moisture-tests">
+              <MoistureTestCard departmentName={departmentName} />
             </TabsContent>
 
             <TabsContent value="analytics">
