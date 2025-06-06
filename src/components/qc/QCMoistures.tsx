@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, Droplets, Eye, Download } from "lucide-react";
+import { Search, Plus, Droplets, Eye, Download, ArrowLeft } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 
 interface MoistureTestRecord {
@@ -31,6 +31,18 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
   const navigate = useNavigate();
   const [records, setRecords] = useState<MoistureTestRecord[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedRecord, setSelectedRecord] = useState<MoistureTestRecord | null>(null);
+
+  const absorptionValues: { [key: string]: number } = {
+    "3/8\" Pea Gravel": 2.5,
+    "Fine Sand": 3.3,
+    "3/4\" Stone": 1.5,
+    "1/2\" Stone": 1.5,
+    "Coarse Sand": 2.8,
+    "1\" Stone": 1.2,
+    "Mason Sand": 3.0,
+    "#57 Stone": 1.8
+  };
 
   useEffect(() => {
     // Load moisture test records from localStorage
@@ -56,6 +68,10 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
     navigate('/templates/moisture-test');
   };
 
+  const handleBackToList = () => {
+    setSelectedRecord(null);
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -65,6 +81,128 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
       minute: '2-digit'
     });
   };
+
+  const formatTestDate = (date: Date | undefined | any) => {
+    if (!date) return '';
+    
+    // Handle the date object structure from the form
+    if (date && typeof date === 'object' && date.value) {
+      return new Date(date.value.iso || date.value.value).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    }
+    
+    // Handle regular date objects
+    if (date instanceof Date) {
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    }
+    
+    // Handle date strings
+    if (typeof date === 'string') {
+      return new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    }
+    
+    return '';
+  };
+
+  const calculateMoisture = (wetWeight: string, dryWeight: string, aggregate: string) => {
+    const wet = parseFloat(wetWeight);
+    const dry = parseFloat(dryWeight);
+    
+    if (isNaN(wet) || isNaN(dry) || dry === 0) {
+      return { totalMoisture: '', freeMoisture: '' };
+    }
+    
+    const totalMoisture = ((wet - dry) / dry) * 100;
+    const absorption = absorptionValues[aggregate] || 0;
+    const freeMoisture = totalMoisture - absorption;
+    
+    return {
+      totalMoisture: totalMoisture.toFixed(2),
+      freeMoisture: freeMoisture.toFixed(2)
+    };
+  };
+
+  if (selectedRecord) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" onClick={handleBackToList}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Records
+          </Button>
+          <div>
+            <h2 className="text-2xl font-bold">Moisture Test Details - {selectedRecord.id}</h2>
+            <p className="text-gray-600">
+              {selectedRecord.departmentName} • {formatDate(selectedRecord.submittedAt)}
+            </p>
+          </div>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Test Data</CardTitle>
+            <CardDescription>Detailed moisture test measurements</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Bin #</TableHead>
+                    <TableHead>Aggregate</TableHead>
+                    <TableHead>Wet Weight (lbs)</TableHead>
+                    <TableHead>Dry Weight (lbs)</TableHead>
+                    <TableHead>Total Moisture (%)</TableHead>
+                    <TableHead>Free Moisture (%)</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {selectedRecord.testData.map((row, index) => {
+                    const { totalMoisture, freeMoisture } = calculateMoisture(
+                      row.wetWeight, 
+                      row.dryWeight, 
+                      row.aggregate
+                    );
+                    
+                    return (
+                      <TableRow key={index}>
+                        <TableCell>{formatTestDate(row.date)}</TableCell>
+                        <TableCell>{row.binNumber}</TableCell>
+                        <TableCell>{row.aggregate}</TableCell>
+                        <TableCell>{row.wetWeight}</TableCell>
+                        <TableCell>{row.dryWeight}</TableCell>
+                        <TableCell>{totalMoisture ? `${totalMoisture}%` : ''}</TableCell>
+                        <TableCell>{freeMoisture ? `${freeMoisture}%` : ''}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+            
+            {selectedRecord.notes && (
+              <div className="mt-6">
+                <h4 className="font-semibold mb-2">Notes and Observations</h4>
+                <p className="text-gray-700 bg-gray-50 p-3 rounded">{selectedRecord.notes}</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -139,7 +277,11 @@ const QCMoistures: React.FC<QCMoisturesProps> = ({ departmentName }) => {
                       </TableCell>
                       <TableCell>
                         <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => setSelectedRecord(record)}
+                          >
                             <Eye className="h-4 w-4" />
                           </Button>
                           <Button variant="outline" size="sm">
