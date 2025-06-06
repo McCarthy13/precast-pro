@@ -1,20 +1,22 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import PieceSelection from '../PieceSelection';
 
 interface FreshConcreteTestData {
   date: string;
   time: string;
   mixDesign: string;
   batchTicket: string;
-  pieces: string;
+  pieces: string[];
   slumpFlow: string;
   airContent: string;
   ambientTemp: string;
@@ -25,7 +27,6 @@ interface FreshConcreteTestData {
   t20: string;
   jRing: string;
   staticSegregation: string;
-  technician: string;
 }
 
 interface FreshConcreteTestCardProps {
@@ -37,12 +38,13 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
   const { toast } = useToast();
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedPieces, setSelectedPieces] = useState<Set<string>>(new Set());
   const [testData, setTestData] = useState<FreshConcreteTestData>({
     date: '',
     time: '',
     mixDesign: '',
     batchTicket: '',
-    pieces: '',
+    pieces: [],
     slumpFlow: '',
     airContent: '',
     ambientTemp: '',
@@ -52,13 +54,59 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
     relativeYield: '',
     t20: '',
     jRing: '',
-    staticSegregation: '',
-    technician: ''
+    staticSegregation: ''
   });
 
-  const updateField = (field: keyof FreshConcreteTestData, value: string) => {
+  // Mock data for mix designs from QC module
+  const mixDesigns = [
+    { id: 'MD-001', name: 'Standard Wall Panel Mix - 5000 PSI', department: departmentName },
+    { id: 'MD-002', name: 'Double Tee Mix Design - 6000 PSI', department: departmentName },
+    { id: 'MD-003', name: 'Architectural Precast Mix - 4500 PSI', department: departmentName },
+  ];
+
+  // Mock data for batch tickets from batching software integration
+  const batchTickets = [
+    { id: 'BT-2024-0115-001', mixDesign: 'MD-001', yield: '27.0', batchSize: '1.0' },
+    { id: 'BT-2024-0115-002', mixDesign: 'MD-002', yield: '26.8', batchSize: '1.5' },
+    { id: 'BT-2024-0115-003', mixDesign: 'MD-001', yield: '27.2', batchSize: '2.0' },
+  ];
+
+  // Mock scheduled pieces data
+  const scheduledPieces = {
+    'Form A': [
+      { id: 'WP1-001', name: 'Wall Panel 1' },
+      { id: 'WP1-002', name: 'Wall Panel 2' },
+    ],
+    'Form B': [
+      { id: 'DT2-001', name: 'Double Tee 1' },
+      { id: 'DT2-002', name: 'Double Tee 2' },
+    ],
+  };
+
+  const updateField = (field: keyof FreshConcreteTestData, value: string | string[]) => {
     setTestData(prev => ({ ...prev, [field]: value }));
   };
+
+  // Calculate relative yield when batch ticket changes
+  useEffect(() => {
+    if (testData.batchTicket) {
+      const selectedBatch = batchTickets.find(batch => batch.id === testData.batchTicket);
+      if (selectedBatch) {
+        // Set yield from batch ticket
+        updateField('yield', selectedBatch.yield);
+        
+        // Calculate relative yield: Yield / (27 * Batch size)
+        const relativeYield = parseFloat(selectedBatch.yield) / (27 * parseFloat(selectedBatch.batchSize));
+        updateField('relativeYield', relativeYield.toFixed(3));
+      }
+    }
+  }, [testData.batchTicket]);
+
+  // Update pieces array when selection changes
+  useEffect(() => {
+    const piecesArray = Array.from(selectedPieces);
+    updateField('pieces', piecesArray);
+  }, [selectedPieces]);
 
   const handleCancel = () => {
     navigate(-1);
@@ -158,32 +206,36 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
 
             <div className="space-y-2">
               <Label htmlFor="mixDesign">Mix Design</Label>
-              <Input
-                id="mixDesign"
-                value={testData.mixDesign}
-                onChange={(e) => updateField('mixDesign', e.target.value)}
-                placeholder="e.g., MD-001"
-              />
+              <Select value={testData.mixDesign} onValueChange={(value) => updateField('mixDesign', value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select mix design" />
+                </SelectTrigger>
+                <SelectContent>
+                  {mixDesigns.map((design) => (
+                    <SelectItem key={design.id} value={design.id}>
+                      {design.id} - {design.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="batchTicket">Batch Ticket</Label>
-              <Input
-                id="batchTicket"
-                value={testData.batchTicket}
-                onChange={(e) => updateField('batchTicket', e.target.value)}
-                placeholder="e.g., BT-2024-0115-001"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="pieces">Pieces</Label>
-              <Input
-                id="pieces"
-                value={testData.pieces}
-                onChange={(e) => updateField('pieces', e.target.value)}
-                placeholder="e.g., WP1-001, WP1-002"
-              />
+              <Select value={testData.batchTicket} onValueChange={(value) => updateField('batchTicket', value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select batch ticket" />
+                </SelectTrigger>
+                <SelectContent>
+                  {batchTickets
+                    .filter(batch => !testData.mixDesign || batch.mixDesign === testData.mixDesign)
+                    .map((batch) => (
+                    <SelectItem key={batch.id} value={batch.id}>
+                      {batch.id} (Yield: {batch.yield}, Size: {batch.batchSize})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">
@@ -252,7 +304,9 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                 step="0.1"
                 value={testData.yield}
                 onChange={(e) => updateField('yield', e.target.value)}
-                placeholder="e.g., 27.0"
+                placeholder="Auto-filled from batch"
+                readOnly
+                className="bg-gray-50"
               />
             </div>
 
@@ -261,53 +315,64 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
               <Input
                 id="relativeYield"
                 type="number"
-                step="0.01"
+                step="0.001"
                 value={testData.relativeYield}
                 onChange={(e) => updateField('relativeYield', e.target.value)}
-                placeholder="e.g., 1.00"
+                placeholder="Auto-calculated"
+                readOnly
+                className="bg-gray-50"
               />
             </div>
+          </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="t20">T-20 (sec)</Label>
-              <Input
-                id="t20"
-                type="number"
-                step="0.1"
-                value={testData.t20}
-                onChange={(e) => updateField('t20', e.target.value)}
-                placeholder="e.g., 12.5"
-              />
-            </div>
+          {/* Pieces Selection */}
+          <PieceSelection
+            scheduledPieces={scheduledPieces}
+            selectedPieces={selectedPieces}
+            onSelectionChange={setSelectedPieces}
+          />
 
-            <div className="space-y-2">
-              <Label htmlFor="jRing">J-Ring</Label>
-              <Input
-                id="jRing"
-                value={testData.jRing}
-                onChange={(e) => updateField('jRing', e.target.value)}
-                placeholder="Pass/Fail"
-              />
-            </div>
+          {/* Additional Specifications */}
+          <div className="mt-6 border-t pt-6">
+            <h3 className="text-lg font-medium mb-4">Additional Specifications:</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="t20">T-20 (sec)</Label>
+                <Input
+                  id="t20"
+                  type="number"
+                  step="0.1"
+                  value={testData.t20}
+                  onChange={(e) => updateField('t20', e.target.value)}
+                  placeholder="e.g., 12.5"
+                />
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="staticSegregation">Static Segregation</Label>
-              <Input
-                id="staticSegregation"
-                value={testData.staticSegregation}
-                onChange={(e) => updateField('staticSegregation', e.target.value)}
-                placeholder="Pass/Fail"
-              />
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="jRing">J-Ring</Label>
+                <Select value={testData.jRing} onValueChange={(value) => updateField('jRing', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select result" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Pass">Pass</SelectItem>
+                    <SelectItem value="Fail">Fail</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="technician">Technician</Label>
-              <Input
-                id="technician"
-                value={testData.technician}
-                onChange={(e) => updateField('technician', e.target.value)}
-                placeholder="Technician name"
-              />
+              <div className="space-y-2">
+                <Label htmlFor="staticSegregation">Static Segregation</Label>
+                <Select value={testData.staticSegregation} onValueChange={(value) => updateField('staticSegregation', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select result" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Pass">Pass</SelectItem>
+                    <SelectItem value="Fail">Fail</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
           
