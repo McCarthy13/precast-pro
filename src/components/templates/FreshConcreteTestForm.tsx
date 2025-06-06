@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DocumentTemplate from './DocumentTemplate';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,9 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, ArrowLeft } from "lucide-react";
 
 const FreshConcreteTestForm = () => {
+  const navigate = useNavigate();
+
   // Mock data for pieces scheduled today
   const scheduledPieces = {
     "Form A": [
@@ -78,6 +81,10 @@ const FreshConcreteTestForm = () => {
     // TODO: Add actual submission logic here
   };
 
+  const handleBack = () => {
+    navigate(-1); // Go back to previous page
+  };
+
   return (
     <DocumentTemplate
       title="Fresh Concrete Test Data Form"
@@ -88,8 +95,12 @@ const FreshConcreteTestForm = () => {
       reviewDate="2024-07-15"
       approvedBy="QC Manager"
     >
-      {/* Document Management Link */}
-      <div className="flex justify-end mb-4">
+      {/* Header with Back button and Document Management Link */}
+      <div className="flex justify-between items-center mb-4">
+        <Button variant="outline" onClick={handleBack} className="flex items-center">
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back
+        </Button>
         <Button variant="outline" size="sm" asChild>
           <a href="/document-management" className="flex items-center">
             <ExternalLink className="h-4 w-4 mr-2" />
@@ -327,7 +338,10 @@ const FreshConcreteTestForm = () => {
         </CardContent>
       </Card>
 
-      <div className="flex justify-end mt-6">
+      <div className="flex justify-between items-center mt-6">
+        <Button variant="outline" onClick={handleBack}>
+          Cancel
+        </Button>
         <Button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700">
           Submit
         </Button>
