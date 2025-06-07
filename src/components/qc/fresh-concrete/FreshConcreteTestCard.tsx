@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import PieceSelection from '../PieceSelection';
+import { mixDesigns, batchTickets, scheduledPieces } from './mockData';
 
 interface FreshConcreteTestData {
   date: string;
@@ -60,38 +61,6 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
     staticSegregation: ''
   });
 
-  // Mock data for mix designs from QC module
-  const mixDesigns = [
-    { id: 'MD-001', name: 'Standard Wall Panel Mix - 5000 PSI', department: departmentName },
-    { id: 'MD-002', name: 'Double Tee Mix Design - 6000 PSI', department: departmentName },
-    { id: 'MD-003', name: 'Architectural Precast Mix - 4500 PSI', department: departmentName },
-  ];
-
-  // Mock data for batch tickets from batching software integration
-  const batchTickets = [
-    { id: '2401151', mixDesign: 'MD-001', yield: '27.0', batchSize: '1.0' },
-    { id: '2401152', mixDesign: 'MD-002', yield: '26.8', batchSize: '1.5' },
-    { id: '2401153', mixDesign: 'MD-001', yield: '27.2', batchSize: '2.0' },
-  ];
-
-  // Mock scheduled pieces data with updated naming
-  const scheduledPieces = {
-    'Job 5014': [
-      { id: '5014-C16', name: 'Column 16' },
-      { id: '5014-C17', name: 'Column 17' },
-      { id: '5014-B3', name: 'Beam 3' },
-    ],
-    'Job 5015': [
-      { id: '5015-W1', name: 'Wall Panel 1' },
-      { id: '5015-W2', name: 'Wall Panel 2' },
-      { id: '5015-W3', name: 'Wall Panel 3' },
-    ],
-    'Job 5016': [
-      { id: '5016-DT1', name: 'Double Tee 1' },
-      { id: '5016-DT2', name: 'Double Tee 2' },
-    ],
-  };
-
   const updateField = (field: keyof FreshConcreteTestData, value: string | string[]) => {
     setTestData(prev => ({ ...prev, [field]: value }));
   };
@@ -101,10 +70,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
     if (testData.batchTicket) {
       const selectedBatch = batchTickets.find(batch => batch.id === testData.batchTicket);
       if (selectedBatch) {
-        // Set yield from batch ticket
         updateField('yield', selectedBatch.yield);
-        
-        // Calculate relative yield: Yield / (27 * Batch size)
         const relativeYield = parseFloat(selectedBatch.yield) / (27 * parseFloat(selectedBatch.batchSize));
         updateField('relativeYield', relativeYield.toFixed(3));
       }
@@ -192,8 +158,8 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
           <CardDescription>Record fresh concrete test measurements</CardDescription>
         </CardHeader>
         <CardContent>
-          {/* Basic Information Section */}
           <div className="space-y-6">
+            {/* Basic Information Section */}
             <div>
               <h3 className="text-lg font-medium mb-4">Basic Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

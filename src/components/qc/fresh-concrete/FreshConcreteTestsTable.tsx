@@ -1,5 +1,3 @@
-
-
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,6 +9,7 @@ interface FreshTest {
   id: string;
   date: string;
   time: string;
+  job: string;
   mixDesign: string;
   batchTicket: string;
   pieces: string;
@@ -56,7 +55,6 @@ const FreshConcreteTestsTable = ({
     const releaseData = strengthData[testId]?.release || '';
     if (!releaseData || !releaseRequired) return '';
     
-    // Extract just the numerator part if it contains a slash
     let actualValue = releaseData;
     if (releaseData.includes('/')) {
       actualValue = releaseData.split('/')[0];
@@ -140,12 +138,13 @@ const FreshConcreteTestsTable = ({
 
   return (
     <ScrollArea className="w-full rounded-md border">
-      <div className="min-w-[1200px] w-full">
+      <div className="min-w-[1400px] w-full">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-12 text-xs leading-tight p-1">Date</TableHead>
               <TableHead className="w-10 text-xs leading-tight p-1">Time</TableHead>
+              <TableHead className="w-16 text-xs leading-tight p-1">Job</TableHead>
               <TableHead className="w-12 text-xs leading-tight p-1">Mix<br/>ID</TableHead>
               <TableHead className="w-16 text-xs leading-tight p-1">Batch<br/>#</TableHead>
               <TableHead className="w-20 text-xs leading-tight p-1">Pieces</TableHead>
@@ -180,6 +179,7 @@ const FreshConcreteTestsTable = ({
               <TableHead className="p-0 h-0"></TableHead>
               <TableHead className="p-0 h-0"></TableHead>
               <TableHead className="p-0 h-0"></TableHead>
+              <TableHead className="p-0 h-0"></TableHead>
               
               <TableHead className="w-28 text-xs leading-tight p-1 min-w-28 max-w-28">Release/<br/>Required</TableHead>
               <TableHead className="w-14 text-xs leading-tight p-1">Submit<br/>Release</TableHead>
@@ -200,6 +200,7 @@ const FreshConcreteTestsTable = ({
               }>
                 <TableCell className="text-xs p-1">{test.date}</TableCell>
                 <TableCell className="text-xs p-1">{test.time}</TableCell>
+                <TableCell className="text-xs p-1 font-medium">{test.job}</TableCell>
                 <TableCell className="text-xs p-1">{test.mixDesign}</TableCell>
                 <TableCell className="text-xs p-1">{test.batchTicket}</TableCell>
                 <TableCell className="text-xs p-1">{test.pieces}</TableCell>
@@ -219,7 +220,6 @@ const FreshConcreteTestsTable = ({
                     value={formatReleaseValue(test.id, test.releaseRequired)}
                     disabled={isReleaseSubmitted(test.id)}
                     onChange={(e) => {
-                      // Only allow editing the numerator part
                       const value = e.target.value;
                       const slashIndex = value.lastIndexOf('/');
                       if (slashIndex !== -1) {
@@ -326,4 +326,3 @@ const FreshConcreteTestsTable = ({
 };
 
 export default FreshConcreteTestsTable;
-
