@@ -180,7 +180,7 @@ const FreshConcreteTestsTable = ({
               <TableHead className="p-0 h-0"></TableHead>
               <TableHead className="p-0 h-0"></TableHead>
               
-              <TableHead className="w-20 text-xs leading-tight p-1">Release/<br/>Required</TableHead>
+              <TableHead className="w-18 text-xs leading-tight p-1">Release/<br/>Required</TableHead>
               <TableHead className="w-14 text-xs leading-tight p-1">Submit<br/>Release</TableHead>
               <TableHead className="w-12 text-xs leading-tight p-1">28-Day<br/>#1</TableHead>
               <TableHead className="w-12 text-xs leading-tight p-1">28-Day<br/>#2</TableHead>
