@@ -1,3 +1,4 @@
+
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -138,22 +139,22 @@ const FreshConcreteTestsTable = ({
 
   return (
     <ScrollArea className="w-full rounded-md border">
-      <div className="min-w-[1400px] w-full">
+      <div className="min-w-[1200px] w-full">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-16 text-xs leading-tight p-1">Date</TableHead>
-              <TableHead className="w-12 text-xs leading-tight p-1">Time</TableHead>
-              <TableHead className="w-16 text-xs leading-tight p-1">Mix ID</TableHead>
-              <TableHead className="w-20 text-xs leading-tight p-1">Batch #</TableHead>
-              <TableHead className="w-24 text-xs leading-tight p-1">Pieces</TableHead>
-              <TableHead className="w-14 text-xs leading-tight p-1">Slump<br/>(in)</TableHead>
-              <TableHead className="w-12 text-xs leading-tight p-1">Air<br/>(%)</TableHead>
-              <TableHead className="w-14 text-xs leading-tight p-1">Amb<br/>Temp</TableHead>
-              <TableHead className="w-14 text-xs leading-tight p-1">Conc<br/>Temp</TableHead>
-              <TableHead className="w-14 text-xs leading-tight p-1">Unit<br/>Wt</TableHead>
-              <TableHead className="w-12 text-xs leading-tight p-1">Yield</TableHead>
-              <TableHead className="w-12 text-xs leading-tight p-1">Rel<br/>Yield</TableHead>
+              <TableHead className="w-12 text-xs leading-tight p-1">Date</TableHead>
+              <TableHead className="w-10 text-xs leading-tight p-1">Time</TableHead>
+              <TableHead className="w-12 text-xs leading-tight p-1">Mix<br/>ID</TableHead>
+              <TableHead className="w-16 text-xs leading-tight p-1">Batch<br/>#</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-1">Pieces</TableHead>
+              <TableHead className="w-12 text-xs leading-tight p-1">Slump<br/>(Flow)<br/>(in)</TableHead>
+              <TableHead className="w-10 text-xs leading-tight p-1">Air<br/>(%)</TableHead>
+              <TableHead className="w-12 text-xs leading-tight p-1">Amb<br/>Temp<br/>(°F)</TableHead>
+              <TableHead className="w-12 text-xs leading-tight p-1">Conc<br/>Temp<br/>(°F)</TableHead>
+              <TableHead className="w-12 text-xs leading-tight p-1">Unit<br/>Wt<br/>(lb/ft³)</TableHead>
+              <TableHead className="w-10 text-xs leading-tight p-1">Yield<br/>(ft³)</TableHead>
+              <TableHead className="w-10 text-xs leading-tight p-1">Rel<br/>Yield</TableHead>
               <TableHead className="text-center font-semibold bg-blue-50 text-xs leading-tight p-1" colSpan={2}>
                 RELEASE RESULTS
               </TableHead>
@@ -179,16 +180,16 @@ const FreshConcreteTestsTable = ({
               <TableHead className="p-0 h-0"></TableHead>
               <TableHead className="p-0 h-0"></TableHead>
               
-              <TableHead className="w-20 text-xs leading-tight p-1">Release/<br/>Required</TableHead>
-              <TableHead className="w-16 text-xs leading-tight p-1">Submit<br/>Release</TableHead>
-              <TableHead className="w-14 text-xs leading-tight p-1">28-Day<br/>#1</TableHead>
-              <TableHead className="w-14 text-xs leading-tight p-1">28-Day<br/>#2</TableHead>
-              <TableHead className="w-14 text-xs leading-tight p-1">28-Day<br/>#3</TableHead>
-              <TableHead className="w-20 text-xs leading-tight p-1">Average/<br/>Required</TableHead>
-              <TableHead className="w-16 text-xs leading-tight p-1">Submit<br/>28-Day</TableHead>
-              <TableHead className="w-12 text-xs leading-tight p-1">T-20<br/>(sec)</TableHead>
-              <TableHead className="w-12 text-xs leading-tight p-1">J-Ring</TableHead>
-              <TableHead className="w-14 text-xs leading-tight p-1">Static<br/>Seg</TableHead>
+              <TableHead className="w-18 text-xs leading-tight p-1">Release/<br/>Required</TableHead>
+              <TableHead className="w-14 text-xs leading-tight p-1">Submit<br/>Release</TableHead>
+              <TableHead className="w-12 text-xs leading-tight p-1">28-Day<br/>#1</TableHead>
+              <TableHead className="w-12 text-xs leading-tight p-1">28-Day<br/>#2</TableHead>
+              <TableHead className="w-12 text-xs leading-tight p-1">28-Day<br/>#3</TableHead>
+              <TableHead className="w-18 text-xs leading-tight p-1">Average/<br/>Required</TableHead>
+              <TableHead className="w-14 text-xs leading-tight p-1">Submit<br/>28-Day</TableHead>
+              <TableHead className="w-10 text-xs leading-tight p-1">T-20<br/>(sec)</TableHead>
+              <TableHead className="w-10 text-xs leading-tight p-1">J-Ring</TableHead>
+              <TableHead className="w-12 text-xs leading-tight p-1">Static<br/>Seg</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
