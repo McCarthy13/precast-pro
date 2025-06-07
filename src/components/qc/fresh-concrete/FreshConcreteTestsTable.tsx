@@ -1,4 +1,3 @@
-
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -16,6 +15,7 @@ interface FreshTest {
   ambientTemp: string;
   concreteTemp: string;
   unitWeight: string;
+  releaseRequired: string;
   yield: string;
   relativeYield: string;
   t20: string;
@@ -45,6 +45,28 @@ const FreshConcreteTestsTable = ({
   updateStrengthData,
   calculateAverage
 }: FreshConcreteTestsTableProps) => {
+
+  const getReleaseColor = (testId: string, releaseRequired: string) => {
+    const releaseData = strengthData[testId]?.release || '';
+    if (!releaseData || !releaseRequired) return '';
+    
+    const parts = releaseData.split('/');
+    if (parts.length !== 2) return '';
+    
+    const actual = parseFloat(parts[0]);
+    const required = parseFloat(releaseRequired);
+    
+    if (isNaN(actual) || isNaN(required)) return '';
+    
+    if (actual >= required) {
+      return 'text-green-600 font-semibold';
+    } else if (actual >= required - 300) {
+      return 'text-yellow-600 font-semibold';
+    } else {
+      return 'text-red-600 font-semibold';
+    }
+  };
+
   return (
     <ScrollArea className="w-full rounded-md border">
       <div className="min-w-[2000px] w-full">
@@ -57,6 +79,9 @@ const FreshConcreteTestsTable = ({
               <TableHead className="text-center font-semibold bg-blue-50 whitespace-nowrap" colSpan={5}>
                 STRENGTH RESULTS
               </TableHead>
+              <TableHead className="text-center font-semibold bg-gray-50 whitespace-nowrap" colSpan={3}>
+                ADDITIONAL SPECIFICATIONS
+              </TableHead>
             </TableRow>
             <TableRow>
               {columns.map(() => (
@@ -67,6 +92,9 @@ const FreshConcreteTestsTable = ({
               <TableHead className="text-xs whitespace-nowrap">28-Day Strength 2</TableHead>
               <TableHead className="text-xs whitespace-nowrap">28-Day Strength 3</TableHead>
               <TableHead className="text-xs whitespace-nowrap">Average</TableHead>
+              <TableHead className="text-xs whitespace-nowrap">T-20 (sec)</TableHead>
+              <TableHead className="text-xs whitespace-nowrap">J-Ring</TableHead>
+              <TableHead className="text-xs whitespace-nowrap">Static Segregation</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -82,24 +110,15 @@ const FreshConcreteTestsTable = ({
                 <TableCell className="whitespace-nowrap">{test.ambientTemp}</TableCell>
                 <TableCell className="whitespace-nowrap">{test.concreteTemp}</TableCell>
                 <TableCell className="whitespace-nowrap">{test.unitWeight}</TableCell>
+                <TableCell className="whitespace-nowrap">{test.releaseRequired}</TableCell>
                 <TableCell className="whitespace-nowrap">{test.yield}</TableCell>
                 <TableCell className="whitespace-nowrap">{test.relativeYield}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.t20}</TableCell>
-                <TableCell className="whitespace-nowrap">
-                  <Badge className={test.jRing === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
-                    {test.jRing}
-                  </Badge>
-                </TableCell>
-                <TableCell className="whitespace-nowrap">
-                  <Badge className={test.staticSegregation === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
-                    {test.staticSegregation}
-                  </Badge>
-                </TableCell>
+                
                 {/* Strength Results - Editable columns */}
                 <TableCell className="whitespace-nowrap">
                   <Input
-                    className="w-32 h-8 text-xs"
-                    placeholder="5171/3500"
+                    className={`w-32 h-8 text-xs ${getReleaseColor(test.id, test.releaseRequired)}`}
+                    placeholder={`5171/${test.releaseRequired || '3500'}`}
                     value={strengthData[test.id]?.release || ''}
                     onChange={(e) => updateStrengthData(test.id, 'release', e.target.value)}
                   />
@@ -132,6 +151,19 @@ const FreshConcreteTestsTable = ({
                   <div className="w-20 h-8 flex items-center justify-center text-xs font-medium bg-gray-50 rounded border">
                     {calculateAverage(test.id) || '--'}
                   </div>
+                </TableCell>
+
+                {/* Additional Specifications */}
+                <TableCell className="whitespace-nowrap">{test.t20}</TableCell>
+                <TableCell className="whitespace-nowrap">
+                  <Badge className={test.jRing === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
+                    {test.jRing}
+                  </Badge>
+                </TableCell>
+                <TableCell className="whitespace-nowrap">
+                  <Badge className={test.staticSegregation === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
+                    {test.staticSegregation}
+                  </Badge>
                 </TableCell>
               </TableRow>
             ))}

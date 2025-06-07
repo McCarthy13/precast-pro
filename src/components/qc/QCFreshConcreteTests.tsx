@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -29,6 +28,7 @@ const QCFreshConcreteTests = () => {
       ambientTemp: "72",
       concreteTemp: "68",
       unitWeight: "145.2",
+      releaseRequired: "3500",
       yield: "27.0",
       relativeYield: "1.00",
       t20: "12.5",
@@ -49,6 +49,7 @@ const QCFreshConcreteTests = () => {
       ambientTemp: "75",
       concreteTemp: "72",
       unitWeight: "147.8",
+      releaseRequired: "4000",
       yield: "26.8",
       relativeYield: "0.99",
       t20: "11.2",
@@ -69,6 +70,7 @@ const QCFreshConcreteTests = () => {
       ambientTemp: "70",
       concreteTemp: "67",
       unitWeight: "144.8",
+      releaseRequired: "3500",
       yield: "27.2",
       relativeYield: "1.01",
       t20: "13.0",
@@ -90,11 +92,9 @@ const QCFreshConcreteTests = () => {
     { key: 'ambientTemp', label: 'Ambient Temp (°F)' },
     { key: 'concreteTemp', label: 'Concrete Temp (°F)' },
     { key: 'unitWeight', label: 'Unit Weight (lb/ft³)' },
+    { key: 'releaseRequired', label: 'Release Required (psi)' },
     { key: 'yield', label: 'Yield (ft³/yd³)' },
-    { key: 'relativeYield', label: 'Relative Yield' },
-    { key: 't20', label: 'T-20 (sec)' },
-    { key: 'jRing', label: 'J-Ring' },
-    { key: 'staticSegregation', label: 'Static Segregation' }
+    { key: 'relativeYield', label: 'Relative Yield' }
   ];
 
   const updateStrengthData = (testId: string, field: string, value: string) => {
