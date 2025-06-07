@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import PieceSelection from '../PieceSelection';
-import { mixDesigns, batchTickets, scheduledPieces } from './mockData';
+import { mixDesigns, batchTickets, scheduledPieces, allForms } from './mockData';
 
 interface FreshConcreteTestData {
   date: string;
@@ -62,6 +62,20 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
     jRing: '',
     staticSegregation: ''
   });
+
+  // Filter forms based on selected date - only show forms with scheduled pieces
+  const getAvailableFormsForDate = () => {
+    if (!testData.date) {
+      return allForms; // Show all forms if no date selected
+    }
+    
+    // For demo purposes, we'll assume all forms have pieces scheduled for any selected date
+    // In a real application, this would check against actual scheduling data
+    return allForms.filter(form => {
+      // Check if this form has any scheduled pieces
+      return scheduledPieces[form.name] && scheduledPieces[form.name].length > 0;
+    });
+  };
 
   const updateField = (field: keyof FreshConcreteTestData, value: string | string[]) => {
     setTestData(prev => ({ ...prev, [field]: value }));
@@ -212,6 +226,22 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                 </div>
 
                 <div className="space-y-2">
+                  <Label htmlFor="form">Form/Workspace</Label>
+                  <Select value={testData.form} onValueChange={(value) => updateField('form', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select form/workspace" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {getAvailableFormsForDate().map((form) => (
+                        <SelectItem key={form.id} value={form.name}>
+                          {form.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
                   <Label htmlFor="mixDesign">Mix Design</Label>
                   <Select value={testData.mixDesign} onValueChange={(value) => updateField('mixDesign', value)}>
                     <SelectTrigger>
@@ -246,12 +276,15 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                 </div>
               </div>
 
-              {/* Pieces Selection */}
-              <PieceSelection
-                scheduledPieces={scheduledPieces}
-                selectedPieces={selectedPieces}
-                onSelectionChange={setSelectedPieces}
-              />
+              {/* Pieces Selection - only show if form is selected */}
+              {testData.form && (
+                <PieceSelection
+                  scheduledPieces={scheduledPieces}
+                  selectedPieces={selectedPieces}
+                  onSelectionChange={setSelectedPieces}
+                  selectedForm={testData.form}
+                />
+              )}
             </div>
 
             {/* Test Results Section */}
