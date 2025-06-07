@@ -102,24 +102,46 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
         return;
       }
 
-      const record = {
-        id: `FCT-${Date.now()}`,
+      // Extract job numbers and piece IDs from selected pieces
+      const allPieces = Object.values(scheduledPieces).flat();
+      const selectedPieceData = Array.from(selectedPieces).map(pieceId => {
+        const piece = allPieces.find(p => p.id === pieceId);
+        return piece ? { jobNumber: piece.jobNumber, pieceId: piece.pieceId } : null;
+      }).filter(Boolean);
+
+      // Group pieces by job number
+      const piecesByJob = selectedPieceData.reduce((acc, piece) => {
+        if (!piece) return acc;
+        if (!acc[piece.jobNumber]) {
+          acc[piece.jobNumber] = [];
+        }
+        acc[piece.jobNumber].push(piece.pieceId);
+        return acc;
+      }, {} as Record<string, string[]>);
+
+      // Create separate records for each job
+      const records = Object.entries(piecesByJob).map(([jobNumber, pieceIds]) => ({
+        id: `FCT-${Date.now()}-${jobNumber}`,
         departmentName: departmentName || "Unknown",
         submittedAt: new Date().toISOString(),
-        testData: testData,
+        testData: {
+          ...testData,
+          job: jobNumber,
+          pieces: pieceIds.join(', ')
+        },
         notes: notes,
         status: 'completed'
-      };
+      }));
 
       const existingRecords = JSON.parse(localStorage.getItem('freshConcreteTestRecords') || '[]');
-      existingRecords.push(record);
+      existingRecords.push(...records);
       localStorage.setItem('freshConcreteTestRecords', JSON.stringify(existingRecords));
 
-      console.log('Fresh concrete test record created:', record);
+      console.log('Fresh concrete test records created:', records);
 
       toast({
         title: "Test Submitted Successfully",
-        description: `Fresh concrete test record ${record.id} has been created.`,
+        description: `${records.length} fresh concrete test record(s) have been created.`,
       });
 
       const departmentRoute = departmentName ? departmentName.toLowerCase().replace(/\s+/g, '-') : 'precast';

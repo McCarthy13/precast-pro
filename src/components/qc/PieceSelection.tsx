@@ -6,6 +6,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 interface Piece {
   id: string;
   name: string;
+  jobNumber: string;
+  pieceId: string;
 }
 
 interface FormWithPieces {

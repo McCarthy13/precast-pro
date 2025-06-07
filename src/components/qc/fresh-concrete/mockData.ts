@@ -12,18 +12,18 @@ export const batchTickets = [
 ];
 
 export const scheduledPieces = {
-  '5014': [
-    { id: 'C16', name: 'Column 16' },
-    { id: 'C17', name: 'Column 17' },
-    { id: 'B3', name: 'Beam 3' },
+  'Form A': [
+    { id: '5014-C16', name: 'Column 16', jobNumber: '5014', pieceId: 'C16' },
+    { id: '5014-C17', name: 'Column 17', jobNumber: '5014', pieceId: 'C17' },
+    { id: '5014-B3', name: 'Beam 3', jobNumber: '5014', pieceId: 'B3' },
   ],
-  '5015': [
-    { id: 'W1', name: 'Wall Panel 1' },
-    { id: 'W2', name: 'Wall Panel 2' },
-    { id: 'W3', name: 'Wall Panel 3' },
+  'Form B': [
+    { id: '5015-W1', name: 'Wall Panel 1', jobNumber: '5015', pieceId: 'W1' },
+    { id: '5015-W2', name: 'Wall Panel 2', jobNumber: '5015', pieceId: 'W2' },
+    { id: '5015-W3', name: 'Wall Panel 3', jobNumber: '5015', pieceId: 'W3' },
   ],
-  '5016': [
-    { id: 'DT1', name: 'Double Tee 1' },
-    { id: 'DT2', name: 'Double Tee 2' },
+  'Form C': [
+    { id: '5016-DT1', name: 'Double Tee 1', jobNumber: '5016', pieceId: 'DT1' },
+    { id: '5016-DT2', name: 'Double Tee 2', jobNumber: '5016', pieceId: 'DT2' },
   ],
 };
