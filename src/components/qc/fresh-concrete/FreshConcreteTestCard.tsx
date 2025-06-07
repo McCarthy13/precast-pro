@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -70,20 +69,26 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
 
   // Mock data for batch tickets from batching software integration
   const batchTickets = [
-    { id: 'BT-2024-0115-001', mixDesign: 'MD-001', yield: '27.0', batchSize: '1.0' },
-    { id: 'BT-2024-0115-002', mixDesign: 'MD-002', yield: '26.8', batchSize: '1.5' },
-    { id: 'BT-2024-0115-003', mixDesign: 'MD-001', yield: '27.2', batchSize: '2.0' },
+    { id: '2401151', mixDesign: 'MD-001', yield: '27.0', batchSize: '1.0' },
+    { id: '2401152', mixDesign: 'MD-002', yield: '26.8', batchSize: '1.5' },
+    { id: '2401153', mixDesign: 'MD-001', yield: '27.2', batchSize: '2.0' },
   ];
 
-  // Mock scheduled pieces data
+  // Mock scheduled pieces data with updated naming
   const scheduledPieces = {
-    'Form A': [
-      { id: 'WP1-001', name: 'Wall Panel 1' },
-      { id: 'WP1-002', name: 'Wall Panel 2' },
+    'Job 5014': [
+      { id: '5014-C16', name: 'Column 16' },
+      { id: '5014-C17', name: 'Column 17' },
+      { id: '5014-B3', name: 'Beam 3' },
     ],
-    'Form B': [
-      { id: 'DT2-001', name: 'Double Tee 1' },
-      { id: 'DT2-002', name: 'Double Tee 2' },
+    'Job 5015': [
+      { id: '5015-W1', name: 'Wall Panel 1' },
+      { id: '5015-W2', name: 'Wall Panel 2' },
+      { id: '5015-W3', name: 'Wall Panel 3' },
+    ],
+    'Job 5016': [
+      { id: '5016-DT1', name: 'Double Tee 1' },
+      { id: '5016-DT2', name: 'Double Tee 2' },
     ],
   };
 
