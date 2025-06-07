@@ -44,6 +44,11 @@ interface FreshConcreteTestsTableProps {
   strengthData: Record<string, any>;
   updateStrengthData: (testId: string, field: string, value: string) => void;
   calculateAverage: (testId: string) => string;
+  showFilters: boolean;
+  columnFilters: Record<string, string>;
+  setColumnFilters: (filters: Record<string, string>) => void;
+  clearColumnFilter: (column: string) => void;
+  clearAllFilters: () => void;
 }
 
 const FreshConcreteTestsTable = ({
@@ -51,7 +56,12 @@ const FreshConcreteTestsTable = ({
   columns,
   strengthData,
   updateStrengthData,
-  calculateAverage
+  calculateAverage,
+  showFilters,
+  columnFilters,
+  setColumnFilters,
+  clearColumnFilter,
+  clearAllFilters
 }: FreshConcreteTestsTableProps) => {
   // Define fixed column widths for better control
   const columnWidths = {
