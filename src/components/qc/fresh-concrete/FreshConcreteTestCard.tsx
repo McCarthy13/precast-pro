@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { batchTickets, scheduledPieces, precastForms } from './mockData';
+import { batchTickets, scheduledPieces, getFormsByDepartment } from './mockData';
 import BasicInformationSection from './BasicInformationSection';
 import FormsSelectionSection from './FormsSelectionSection';
 import TestResultsSection from './TestResultsSection';
@@ -36,7 +36,7 @@ interface FreshConcreteTestCardProps {
   departmentName?: string;
 }
 
-const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmentName = "" }) => {
+const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmentName = "Precast" }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [notes, setNotes] = useState('');
@@ -63,6 +63,13 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
     jRing: '',
     staticSegregation: ''
   });
+
+  // Get department-specific forms with proper normalization
+  const normalizedDept = departmentName.toLowerCase().replace(/\s+/g, '-');
+  const departmentForms = getFormsByDepartment(normalizedDept);
+
+  console.log('FreshConcreteTestCard - Department:', departmentName, 'Normalized:', normalizedDept);
+  console.log('FreshConcreteTestCard - Forms:', departmentForms);
 
   const updateField = (field: keyof FreshConcreteTestData, value: string | string[]) => {
     setTestData(prev => ({ ...prev, [field]: value }));
@@ -94,7 +101,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
 
   const handleSelectAllForms = (checked: boolean) => {
     if (checked) {
-      const allFormNames = precastForms.map(form => form.name);
+      const allFormNames = departmentForms.map(form => form.name);
       setSelectedForms(new Set(allFormNames));
       
       // Also select all pieces from all forms
@@ -237,8 +244,8 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
 
       <Card>
         <CardHeader>
-          <CardTitle>Fresh Concrete Test Data Entry{departmentName && ` - ${departmentName}`}</CardTitle>
-          <CardDescription>Record fresh concrete test measurements</CardDescription>
+          <CardTitle>Fresh Concrete Test Data Entry - {departmentName}</CardTitle>
+          <CardDescription>Record fresh concrete test measurements for {departmentName.toLowerCase()} production</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -253,6 +260,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
               handleSelectAllForms={handleSelectAllForms}
               handleFormToggle={handleFormToggle}
               handlePieceToggle={handlePieceToggle}
+              departmentName={departmentName}
             />
 
             <TestResultsSection

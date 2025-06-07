@@ -2,7 +2,7 @@
 import React from 'react';
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { precastForms, scheduledPieces } from './mockData';
+import { getFormsByDepartment, scheduledPieces } from './mockData';
 
 interface FormsSelectionSectionProps {
   selectedForms: Set<string>;
@@ -10,6 +10,7 @@ interface FormsSelectionSectionProps {
   handleSelectAllForms: (checked: boolean) => void;
   handleFormToggle: (formName: string, checked: boolean) => void;
   handlePieceToggle: (pieceId: string, checked: boolean) => void;
+  departmentName?: string;
 }
 
 const FormsSelectionSection: React.FC<FormsSelectionSectionProps> = ({
@@ -17,8 +18,16 @@ const FormsSelectionSection: React.FC<FormsSelectionSectionProps> = ({
   selectedPieces,
   handleSelectAllForms,
   handleFormToggle,
-  handlePieceToggle
+  handlePieceToggle,
+  departmentName = "Precast"
 }) => {
+  // Normalize department name and get forms specific to the department
+  const normalizedDept = departmentName.toLowerCase().replace(/\s+/g, '-');
+  const departmentForms = getFormsByDepartment(normalizedDept);
+
+  console.log('FormsSelectionSection - Department:', departmentName, 'Normalized:', normalizedDept);
+  console.log('FormsSelectionSection - Forms:', departmentForms);
+
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between mb-3">
@@ -26,7 +35,7 @@ const FormsSelectionSection: React.FC<FormsSelectionSectionProps> = ({
         <div className="flex items-center space-x-2">
           <Checkbox
             id="selectAllForms"
-            checked={selectedForms.size === precastForms.length}
+            checked={selectedForms.size === departmentForms.length}
             onCheckedChange={(checked) => handleSelectAllForms(checked as boolean)}
           />
           <Label htmlFor="selectAllForms" className="text-sm cursor-pointer font-medium">
@@ -36,7 +45,7 @@ const FormsSelectionSection: React.FC<FormsSelectionSectionProps> = ({
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
-        {precastForms.map((form) => {
+        {departmentForms.map((form) => {
           const formPieces = scheduledPieces[form.name] || [];
           const isFormSelected = selectedForms.has(form.name);
           
