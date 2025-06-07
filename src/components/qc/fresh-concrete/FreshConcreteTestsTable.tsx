@@ -1,3 +1,4 @@
+
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -189,6 +190,20 @@ const FreshConcreteTestsTable = ({
     return strengthData[testId]?.strengthSubmitted === 'true';
   };
 
+  // Helper function to get the form identifier
+  const getFormIdentifier = (test: FreshTest) => {
+    if (test.formSubmissionId) {
+      // Extract a more readable form identifier from the submission ID
+      const parts = test.formSubmissionId.split('-');
+      if (parts.length >= 2) {
+        return `Form ${parts[0]}-${parts[1]}`;
+      }
+      return `Form ${test.formSubmissionId.slice(0, 8)}`;
+    }
+    // Fallback to using first part of test ID
+    return `Form ${test.id.split('-')[1] || 'Unknown'}`;
+  };
+
   return (
     <ScrollArea className="w-full rounded-md border">
       <Table className="table-auto">
@@ -197,6 +212,7 @@ const FreshConcreteTestsTable = ({
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Date</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Time</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Job</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Form</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Mix<br/>ID</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Batch<br/>#</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Pieces</TableHead>
@@ -219,6 +235,7 @@ const FreshConcreteTestsTable = ({
           </TableRow>
           <TableRow>
             {/* Spacer cells for main columns */}
+            <TableHead className="p-0 h-0"></TableHead>
             <TableHead className="p-0 h-0"></TableHead>
             <TableHead className="p-0 h-0"></TableHead>
             <TableHead className="p-0 h-0"></TableHead>
@@ -275,6 +292,13 @@ const FreshConcreteTestsTable = ({
                   className="h-6 text-[10px] px-1 border-none bg-transparent font-medium"
                   value={getFieldValue(test, 'job')}
                   onChange={(e) => handleTestDataUpdate(test.id, 'job', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent font-medium"
+                  value={getFormIdentifier(test)}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'form', e.target.value)}
                 />
               </TableCell>
               <TableCell className="px-1 py-1">
@@ -416,7 +440,7 @@ const FreshConcreteTestsTable = ({
                 />
               </TableCell>
               <TableCell className="px-1 py-1">
-                <div className={`h-6 flex items-center justify-center text-[10px] font-medium bg-gray-50 rounded border px-1 ${getAverageColor(test.id, getFieldValue(test, 'strengthRequired'))}`}>
+                <div className={`h-6 flex items-center justify-center text-xs font-medium bg-gray-50 rounded border px-1 ${getAverageColor(test.id, getFieldValue(test, 'strengthRequired'))}`}>
                   {calculateAverage(test.id) || '--'}
                 </div>
               </TableCell>
