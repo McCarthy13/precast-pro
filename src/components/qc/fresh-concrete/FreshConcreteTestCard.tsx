@@ -301,7 +301,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                 </div>
               </div>
 
-              {/* Forms/Workspaces Selection with Always Visible Pieces */}
+              {/* Forms/Workspaces Selection with 3-Column Layout */}
               <div className="mt-6">
                 <div className="flex items-center justify-between mb-3">
                   <Label className="text-base font-medium">Select Forms/Workspaces and Pieces</Label>
@@ -317,14 +317,14 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                   </div>
                 </div>
                 
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {precastForms.map((form) => {
                     const formPieces = scheduledPieces[form.name] || [];
                     const isFormSelected = selectedForms.has(form.name);
                     
                     return (
-                      <div key={form.id} className="border rounded-lg p-4">
-                        <div className="flex items-center space-x-2 mb-3">
+                      <div key={form.id} className="border rounded-md p-3">
+                        <div className="flex items-center space-x-2 mb-2">
                           <Checkbox
                             id={form.name}
                             checked={isFormSelected}
@@ -333,37 +333,32 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                           <Label htmlFor={form.name} className="text-sm cursor-pointer font-medium">
                             {form.name}
                           </Label>
-                          <span className="text-xs text-gray-500">
-                            ({formPieces.length} pieces)
+                          <span className="text-xs text-muted-foreground">
+                            ({formPieces.length})
                           </span>
                         </div>
                         
                         {/* Always show pieces for each form */}
                         {formPieces.length > 0 && (
-                          <div className="ml-6 space-y-2 border-l-2 border-gray-200 pl-4">
-                            <Label className="text-xs font-medium text-gray-600 uppercase tracking-wide">
-                              Pieces for {form.name}
-                            </Label>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                              {formPieces.map((piece) => (
-                                <div key={piece.id} className="flex items-center space-x-2">
-                                  <Checkbox
-                                    id={piece.id}
-                                    checked={selectedPieces.has(piece.id)}
-                                    onCheckedChange={(checked) => handlePieceToggle(piece.id, checked as boolean)}
-                                  />
-                                  <Label htmlFor={piece.id} className="text-xs cursor-pointer">
-                                    {piece.jobNumber}-{piece.pieceId}
-                                  </Label>
-                                </div>
-                              ))}
-                            </div>
+                          <div className="ml-5 space-y-1 border-l border-border pl-2">
+                            {formPieces.map((piece) => (
+                              <div key={piece.id} className="flex items-center space-x-2">
+                                <Checkbox
+                                  id={piece.id}
+                                  checked={selectedPieces.has(piece.id)}
+                                  onCheckedChange={(checked) => handlePieceToggle(piece.id, checked as boolean)}
+                                />
+                                <Label htmlFor={piece.id} className="text-xs cursor-pointer">
+                                  {piece.jobNumber}-{piece.pieceId}
+                                </Label>
+                              </div>
+                            ))}
                           </div>
                         )}
                         
                         {formPieces.length === 0 && (
-                          <div className="ml-6 text-xs text-gray-500 italic">
-                            No pieces scheduled for this form
+                          <div className="ml-5 text-xs text-muted-foreground italic">
+                            No pieces scheduled
                           </div>
                         )}
                       </div>
