@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,15 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import PieceSelection from '../PieceSelection';
 import { mixDesigns, batchTickets, scheduledPieces, precastForms } from './mockData';
 
 interface FreshConcreteTestData {
   date: string;
   time: string;
-  form: string;
+  forms: string[];
   mixDesign: string;
   batchTicket: string;
   pieces: string[];
@@ -42,10 +43,11 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedPieces, setSelectedPieces] = useState<Set<string>>(new Set());
+  const [selectedForms, setSelectedForms] = useState<Set<string>>(new Set());
   const [testData, setTestData] = useState<FreshConcreteTestData>({
     date: '',
     time: '',
-    form: '',
+    forms: [],
     mixDesign: '',
     batchTicket: '',
     pieces: [],
@@ -63,11 +65,6 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
     staticSegregation: ''
   });
 
-  // Show all precast forms for now since we don't have scheduling module
-  const getAvailableFormsForDate = () => {
-    return precastForms; // Show all precast forms regardless of date
-  };
-
   const updateField = (field: keyof FreshConcreteTestData, value: string | string[]) => {
     setTestData(prev => ({ ...prev, [field]: value }));
   };
@@ -84,11 +81,44 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
     }
   }, [testData.batchTicket]);
 
+  // Update forms array when selection changes
+  useEffect(() => {
+    const formsArray = Array.from(selectedForms);
+    updateField('forms', formsArray);
+  }, [selectedForms]);
+
   // Update pieces array when selection changes
   useEffect(() => {
     const piecesArray = Array.from(selectedPieces);
     updateField('pieces', piecesArray);
   }, [selectedPieces]);
+
+  const handleFormToggle = (formName: string, checked: boolean) => {
+    const newSelection = new Set(selectedForms);
+    if (checked) {
+      newSelection.add(formName);
+    } else {
+      newSelection.delete(formName);
+      // Also remove all pieces from this form
+      const formPieces = scheduledPieces[formName] || [];
+      const newPieceSelection = new Set(selectedPieces);
+      formPieces.forEach(piece => {
+        newPieceSelection.delete(piece.id);
+      });
+      setSelectedPieces(newPieceSelection);
+    }
+    setSelectedForms(newSelection);
+  };
+
+  const handlePieceToggle = (pieceId: string, checked: boolean) => {
+    const newSelection = new Set(selectedPieces);
+    if (checked) {
+      newSelection.add(pieceId);
+    } else {
+      newSelection.delete(pieceId);
+    }
+    setSelectedPieces(newSelection);
+  };
 
   const handleCancel = () => {
     navigate(-1);
@@ -132,7 +162,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
       // Create separate records for each job
       const records = Object.entries(piecesByJob).map(([jobNumber, pieceIds]) => ({
         id: `FCT-${Date.now()}-${jobNumber}`,
-        formSubmissionId: formSubmissionId, // Add the form submission ID
+        formSubmissionId: formSubmissionId,
         departmentName: departmentName || "Unknown",
         submittedAt: new Date().toISOString(),
         testData: {
@@ -217,22 +247,6 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="form">Form/Workspace</Label>
-                  <Select value={testData.form} onValueChange={(value) => updateField('form', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select form/workspace" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {getAvailableFormsForDate().map((form) => (
-                        <SelectItem key={form.id} value={form.name}>
-                          {form.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
                   <Label htmlFor="mixDesign">Mix Design</Label>
                   <Select value={testData.mixDesign} onValueChange={(value) => updateField('mixDesign', value)}>
                     <SelectTrigger>
@@ -267,14 +281,56 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                 </div>
               </div>
 
-              {/* Pieces Selection - show when form is selected */}
-              {testData.form && (
-                <PieceSelection
-                  scheduledPieces={scheduledPieces}
-                  selectedPieces={selectedPieces}
-                  onSelectionChange={setSelectedPieces}
-                  selectedForm={testData.form}
-                />
+              {/* Forms/Workspaces Selection */}
+              <div className="mt-6">
+                <Label className="text-base font-medium">Select Forms/Workspaces</Label>
+                <div className="mt-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {precastForms.map((form) => (
+                    <div key={form.id} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={form.name}
+                        checked={selectedForms.has(form.name)}
+                        onCheckedChange={(checked) => handleFormToggle(form.name, checked as boolean)}
+                      />
+                      <Label htmlFor={form.name} className="text-sm cursor-pointer">
+                        {form.name}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Pieces Selection - show for selected forms */}
+              {selectedForms.size > 0 && (
+                <div className="mt-6">
+                  <Label className="text-base font-medium">Select Pieces</Label>
+                  <div className="mt-3 space-y-4 max-h-60 overflow-y-auto">
+                    {Array.from(selectedForms).map((formName) => {
+                      const formPieces = scheduledPieces[formName] || [];
+                      if (formPieces.length === 0) return null;
+                      
+                      return (
+                        <div key={formName} className="border rounded-lg p-4">
+                          <h4 className="font-medium text-sm mb-2 text-gray-700">{formName}</h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            {formPieces.map((piece) => (
+                              <div key={piece.id} className="flex items-center space-x-2">
+                                <Checkbox
+                                  id={piece.id}
+                                  checked={selectedPieces.has(piece.id)}
+                                  onCheckedChange={(checked) => handlePieceToggle(piece.id, checked as boolean)}
+                                />
+                                <Label htmlFor={piece.id} className="text-xs cursor-pointer">
+                                  {piece.name} (Job: {piece.jobNumber}, Piece: {piece.pieceId})
+                                </Label>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               )}
             </div>
 
