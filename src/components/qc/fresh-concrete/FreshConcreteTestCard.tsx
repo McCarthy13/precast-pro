@@ -1,15 +1,15 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { mixDesigns, batchTickets, scheduledPieces, precastForms } from './mockData';
+import { batchTickets, scheduledPieces, precastForms } from './mockData';
+import BasicInformationSection from './BasicInformationSection';
+import FormsSelectionSection from './FormsSelectionSection';
+import TestResultsSection from './TestResultsSection';
+import NotesSection from './NotesSection';
 
 interface FreshConcreteTestData {
   date: string;
@@ -242,289 +242,23 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            {/* Basic Information Section */}
-            <div>
-              <h3 className="text-lg font-medium mb-4">Basic Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="date">Date</Label>
-                  <Input
-                    id="date"
-                    type="date"
-                    value={testData.date}
-                    onChange={(e) => updateField('date', e.target.value)}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="time">Time</Label>
-                  <Input
-                    id="time"
-                    type="time"
-                    value={testData.time}
-                    onChange={(e) => updateField('time', e.target.value)}
-                  />
-                </div>
+            <BasicInformationSection
+              testData={testData}
+              updateField={updateField}
+            />
 
-                <div className="space-y-2">
-                  <Label htmlFor="mixDesign">Mix Design</Label>
-                  <Select value={testData.mixDesign} onValueChange={(value) => updateField('mixDesign', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select mix design" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {mixDesigns.map((design) => (
-                        <SelectItem key={design.id} value={design.id}>
-                          {design.id} - {design.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+            <FormsSelectionSection
+              selectedForms={selectedForms}
+              selectedPieces={selectedPieces}
+              handleSelectAllForms={handleSelectAllForms}
+              handleFormToggle={handleFormToggle}
+              handlePieceToggle={handlePieceToggle}
+            />
 
-                <div className="space-y-2">
-                  <Label htmlFor="batchTicket">Batch Ticket</Label>
-                  <Select value={testData.batchTicket} onValueChange={(value) => updateField('batchTicket', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select batch ticket" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {batchTickets
-                        .filter(batch => !testData.mixDesign || batch.mixDesign === testData.mixDesign)
-                        .map((batch) => (
-                        <SelectItem key={batch.id} value={batch.id}>
-                          {batch.id} (Yield: {batch.yield}, Size: {batch.batchSize})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {/* Forms/Workspaces Selection with 8-Column Layout */}
-              <div className="mt-6">
-                <div className="flex items-center justify-between mb-3">
-                  <Label className="text-base font-medium">Select Forms/Workspaces and Pieces</Label>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="selectAllForms"
-                      checked={selectedForms.size === precastForms.length}
-                      onCheckedChange={(checked) => handleSelectAllForms(checked as boolean)}
-                    />
-                    <Label htmlFor="selectAllForms" className="text-sm cursor-pointer font-medium">
-                      Select All
-                    </Label>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
-                  {precastForms.map((form) => {
-                    const formPieces = scheduledPieces[form.name] || [];
-                    const isFormSelected = selectedForms.has(form.name);
-                    
-                    return (
-                      <div key={form.id} className="border rounded-md p-3">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <Checkbox
-                            id={form.name}
-                            checked={isFormSelected}
-                            onCheckedChange={(checked) => handleFormToggle(form.name, checked as boolean)}
-                          />
-                          <Label htmlFor={form.name} className="text-sm cursor-pointer font-medium">
-                            {form.name}
-                          </Label>
-                          <span className="text-xs text-muted-foreground">
-                            ({formPieces.length})
-                          </span>
-                        </div>
-                        
-                        {/* Always show pieces for each form */}
-                        {formPieces.length > 0 && (
-                          <div className="ml-5 space-y-1 border-l border-border pl-2">
-                            {formPieces.map((piece) => (
-                              <div key={piece.id} className="flex items-center space-x-2">
-                                <Checkbox
-                                  id={piece.id}
-                                  checked={selectedPieces.has(piece.id)}
-                                  onCheckedChange={(checked) => handlePieceToggle(piece.id, checked as boolean)}
-                                />
-                                <Label htmlFor={piece.id} className="text-xs cursor-pointer">
-                                  {piece.pieceId}
-                                </Label>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                        
-                        {formPieces.length === 0 && (
-                          <div className="ml-5 text-xs text-muted-foreground italic">
-                            No pieces scheduled
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* Test Results Section */}
-            <div className="border-t pt-6">
-              <h3 className="text-lg font-medium mb-4">Test Results</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="slumpFlow">Slump Flow (in)</Label>
-                  <Input
-                    id="slumpFlow"
-                    type="number"
-                    step="0.25"
-                    value={testData.slumpFlow}
-                    onChange={(e) => updateField('slumpFlow', e.target.value)}
-                    placeholder="e.g., 5.5"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="airContent">Air Content (%)</Label>
-                  <Input
-                    id="airContent"
-                    type="number"
-                    step="0.1"
-                    value={testData.airContent}
-                    onChange={(e) => updateField('airContent', e.target.value)}
-                    placeholder="e.g., 6.2"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="ambientTemp">Ambient Temperature (°F)</Label>
-                  <Input
-                    id="ambientTemp"
-                    type="number"
-                    value={testData.ambientTemp}
-                    onChange={(e) => updateField('ambientTemp', e.target.value)}
-                    placeholder="e.g., 72"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="concreteTemp">Concrete Temperature (°F)</Label>
-                  <Input
-                    id="concreteTemp"
-                    type="number"
-                    value={testData.concreteTemp}
-                    onChange={(e) => updateField('concreteTemp', e.target.value)}
-                    placeholder="e.g., 68"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="unitWeight">Unit Weight (lb/ft³)</Label>
-                  <Input
-                    id="unitWeight"
-                    type="number"
-                    step="0.1"
-                    value={testData.unitWeight}
-                    onChange={(e) => updateField('unitWeight', e.target.value)}
-                    placeholder="e.g., 145.2"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="releaseRequired">Release Required (psi)</Label>
-                  <Input
-                    id="releaseRequired"
-                    type="number"
-                    value={testData.releaseRequired}
-                    onChange={(e) => updateField('releaseRequired', e.target.value)}
-                    placeholder="e.g., 3500"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="strengthRequired">28-Day Strength Required (psi)</Label>
-                  <Input
-                    id="strengthRequired"
-                    type="number"
-                    value={testData.strengthRequired}
-                    onChange={(e) => updateField('strengthRequired', e.target.value)}
-                    placeholder="e.g., 5000"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="yield">Yield (ft³/yd³)</Label>
-                  <Input
-                    id="yield"
-                    type="number"
-                    step="0.1"
-                    value={testData.yield}
-                    onChange={(e) => updateField('yield', e.target.value)}
-                    placeholder="Auto-filled from batch"
-                    readOnly
-                    className="bg-gray-50"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="relativeYield">Relative Yield</Label>
-                  <Input
-                    id="relativeYield"
-                    type="number"
-                    step="0.001"
-                    value={testData.relativeYield}
-                    onChange={(e) => updateField('relativeYield', e.target.value)}
-                    placeholder="Auto-calculated"
-                    readOnly
-                    className="bg-gray-50"
-                  />
-                </div>
-              </div>
-
-              {/* Additional Specifications */}
-              <div className="mt-6 border-t pt-6">
-                <h4 className="text-md font-medium mb-4">Additional Specifications:</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="t20">T-20 (sec)</Label>
-                    <Input
-                      id="t20"
-                      type="number"
-                      step="0.1"
-                      value={testData.t20}
-                      onChange={(e) => updateField('t20', e.target.value)}
-                      placeholder="e.g., 12.5"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="jRing">J-Ring</Label>
-                    <Select value={testData.jRing} onValueChange={(value) => updateField('jRing', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select result" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Pass">Pass</SelectItem>
-                        <SelectItem value="Fail">Fail</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="staticSegregation">Static Segregation</Label>
-                    <Select value={testData.staticSegregation} onValueChange={(value) => updateField('staticSegregation', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select result" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Pass">Pass</SelectItem>
-                        <SelectItem value="Fail">Fail</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <TestResultsSection
+              testData={testData}
+              updateField={updateField}
+            />
           </div>
           
           <div className="mt-6 text-sm text-gray-600 space-y-1">
@@ -535,20 +269,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Notes and Observations</CardTitle>
-          <CardDescription>Additional comments and observations</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Textarea 
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Enter any observations, equipment calibration notes, or additional comments..."
-            rows={4}
-          />
-        </CardContent>
-      </Card>
+      <NotesSection notes={notes} setNotes={setNotes} />
 
       <div className="flex justify-between">
         <Button variant="outline" onClick={handleCancel}>
