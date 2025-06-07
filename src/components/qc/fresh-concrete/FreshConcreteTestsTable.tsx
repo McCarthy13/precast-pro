@@ -196,26 +196,26 @@ const FreshConcreteTestsTable = ({
         <Table className="w-auto">
           <TableHeader>
             <TableRow>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[80px]">Date</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[60px]">Time</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[120px]">Job</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[60px]">Mix<br/>ID</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[70px]">Batch<br/>#</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[60px]">Pieces</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[80px]">Slump<br/>(Flow)<br/>(in)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[50px]">Air<br/>(%)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[70px]">Amb<br/>Temp<br/>(°F)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[70px]">Conc<br/>Temp<br/>(°F)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[80px]">Unit<br/>Wt<br/>(lb/ft³)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[60px]">Yield<br/>(ft³)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[70px]">Rel<br/>Yield</TableHead>
-              <TableHead className="text-center font-semibold bg-blue-50 text-xs leading-tight px-3 py-2 min-w-[200px]" colSpan={2}>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Date</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Time</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Job</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Mix<br/>ID</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Batch<br/>#</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Pieces</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Slump<br/>(Flow)<br/>(in)</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Air<br/>(%)</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Amb<br/>Temp<br/>(°F)</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Conc<br/>Temp<br/>(°F)</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Unit<br/>Wt<br/>(lb/ft³)</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Yield<br/>(ft³)</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Rel<br/>Yield</TableHead>
+              <TableHead className="text-center font-semibold bg-blue-50 text-xs leading-tight px-3 py-2" colSpan={2}>
                 RELEASE RESULTS
               </TableHead>
-              <TableHead className="text-center font-semibold bg-purple-50 text-xs leading-tight px-3 py-2 min-w-[400px]" colSpan={5}>
+              <TableHead className="text-center font-semibold bg-purple-50 text-xs leading-tight px-3 py-2" colSpan={5}>
                 28-DAY STRENGTH RESULTS
               </TableHead>
-              <TableHead className="text-center font-semibold bg-gray-50 text-xs leading-tight px-3 py-2 min-w-[200px]" colSpan={3}>
+              <TableHead className="text-center font-semibold bg-gray-50 text-xs leading-tight px-3 py-2" colSpan={3}>
                 ADDITIONAL SPECS
               </TableHead>
             </TableRow>
@@ -235,16 +235,16 @@ const FreshConcreteTestsTable = ({
               <TableHead className="p-0 h-0"></TableHead>
               <TableHead className="p-0 h-0"></TableHead>
               
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[100px]">Release/<br/>Required</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[80px]">Submit<br/>Release</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[70px]">28-Day<br/>#1</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[70px]">28-Day<br/>#2</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[70px]">28-Day<br/>#3</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[100px]">Average/<br/>Required</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[80px]">Submit<br/>28-Day</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[60px]">T-20<br/>(sec)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[60px]">J-Ring</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap min-w-[60px]">Static<br/>Seg</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Release/<br/>Required</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Submit<br/>Release</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">28-Day<br/>#1</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">28-Day<br/>#2</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">28-Day<br/>#3</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Average/<br/>Required</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Submit<br/>28-Day</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">T-20<br/>(sec)</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">J-Ring</TableHead>
+              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Static<br/>Seg</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
