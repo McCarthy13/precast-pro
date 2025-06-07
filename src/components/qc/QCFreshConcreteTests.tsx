@@ -276,7 +276,7 @@ const QCFreshConcreteTests = () => {
                     className="flex items-center"
                   >
                     <Database className="h-4 w-4 mr-2" />
-                    Find Oldest Incomplete
+                    28-Day Strength Input
                   </Button>
                   <Button asChild className="bg-blue-600 hover:bg-blue-700">
                     <Link to="/templates/fresh-concrete-test">
