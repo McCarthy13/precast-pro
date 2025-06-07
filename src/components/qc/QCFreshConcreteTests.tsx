@@ -15,10 +15,6 @@ const QCFreshConcreteTests = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [strengthData, setStrengthData] = useState<Record<string, any>>({});
   const [submittedRecords, setSubmittedRecords] = useState<any[]>([]);
-  
-  // Add state for department and form filters
-  const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [selectedForm, setSelectedForm] = useState('');
 
   // Load submitted records from localStorage
   useEffect(() => {
@@ -195,11 +191,6 @@ const QCFreshConcreteTests = () => {
     }
   };
 
-  const handleNewTest = () => {
-    // Navigate to new test form
-    window.location.href = '/templates/fresh-concrete-test';
-  };
-
   const filteredAndSortedTests = useMemo(() => {
     let filtered = freshTests;
 
@@ -296,13 +287,17 @@ const QCFreshConcreteTests = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <FreshConcreteTestsControls
-                onNewTest={handleNewTest}
-                selectedDepartment={selectedDepartment}
-                onDepartmentChange={setSelectedDepartment}
-                selectedForm={selectedForm}
-                onFormChange={setSelectedForm}
                 searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
+                setSearchTerm={setSearchTerm}
+                showFilters={showFilters}
+                setShowFilters={setShowFilters}
+                columnFilters={columnFilters}
+                setColumnFilters={setColumnFilters}
+                sortOrder={sortOrder}
+                setSortOrder={setSortOrder}
+                columns={columns}
+                clearColumnFilter={clearColumnFilter}
+                clearAllFilters={clearAllFilters}
               />
 
               <FreshConcreteTestsTable
