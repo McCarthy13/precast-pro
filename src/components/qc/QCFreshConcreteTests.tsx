@@ -205,6 +205,37 @@ const QCFreshConcreteTests = () => {
     setSearchTerm('');
   };
 
+  const findOldestIncompleteRecord = () => {
+    // Find records that don't have a completed 28-day average
+    const incompleteRecords = filteredAndSortedTests.filter(test => {
+      const average = calculateAverage(test.id);
+      return !average || average === '';
+    });
+
+    if (incompleteRecords.length === 0) {
+      console.log('All records have completed 28-day averages');
+      return;
+    }
+
+    // Sort by date/time to find the oldest
+    const oldestRecord = incompleteRecords.sort((a, b) => {
+      const dateA = new Date(`${a.date} ${a.time}`);
+      const dateB = new Date(`${b.date} ${b.time}`);
+      return dateA.getTime() - dateB.getTime();
+    })[0];
+
+    // Scroll to the record in the table
+    const element = document.getElementById(`test-row-${oldestRecord.id}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Add a temporary highlight effect
+      element.style.backgroundColor = '#fef3c7';
+      setTimeout(() => {
+        element.style.backgroundColor = '';
+      }, 3000);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -238,12 +269,22 @@ const QCFreshConcreteTests = () => {
                   <CardTitle>Fresh Concrete Test Records</CardTitle>
                   <CardDescription>Historical record of all fresh concrete tests</CardDescription>
                 </div>
-                <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                  <Link to="/templates/fresh-concrete-test">
-                    <Plus className="h-4 w-4 mr-2" />
-                    New Test Record
-                  </Link>
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={findOldestIncompleteRecord}
+                    className="flex items-center"
+                  >
+                    <Database className="h-4 w-4 mr-2" />
+                    Find Oldest Incomplete
+                  </Button>
+                  <Button asChild className="bg-blue-600 hover:bg-blue-700">
+                    <Link to="/templates/fresh-concrete-test">
+                      <Plus className="h-4 w-4 mr-2" />
+                      New Test Record
+                    </Link>
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
