@@ -1,85 +1,22 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Filter, Search, Download } from "lucide-react";
+import { Plus, Search, Download, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { getFormsByDepartment } from "@/data/productionForms";
 
 interface FreshConcreteTestsControlsProps {
   onNewTest: () => void;
-  selectedDepartment: string;
-  onDepartmentChange: (department: string) => void;
-  selectedForm: string;
-  onFormChange: (form: string) => void;
   searchTerm: string;
   onSearchChange: (term: string) => void;
 }
 
 const FreshConcreteTestsControls: React.FC<FreshConcreteTestsControlsProps> = ({
   onNewTest,
-  selectedDepartment,
-  onDepartmentChange,
-  selectedForm,
-  onFormChange,
   searchTerm,
   onSearchChange
 }) => {
-  // Get available forms based on selected department
-  const getAvailableForms = () => {
-    if (!selectedDepartment) return [];
-    
-    switch (selectedDepartment) {
-      case 'precast':
-        return ['BL1', 'BL2', 'BL3', 'BL6', 'EPB-E', 'EPB-W', 'WPB-E', 'WPB-W', 'COL', 'STADIA', 'MILD'];
-      case 'wall-panels':
-        return Array.from({ length: 24 }, (_, i) => `WP${i + 1}`);
-      case 'extruded':
-        return ['EXT1', 'EXT2', 'EXT3', 'EXT4', 'EXT5', 'EXT6', 'EXT7', 'EXT8'];
-      case 'flexicore':
-        const flexicoreForms = getFormsByDepartment('flexicore');
-        return flexicoreForms.map(form => form.id);
-      default:
-        return [];
-    }
-  };
-
-  const availableForms = getAvailableForms();
-
   return (
     <div className="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4">
-      {/* Department Filter */}
-      <div className="flex-1">
-        <Select value={selectedDepartment} onValueChange={onDepartmentChange}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select Department" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="precast">Precast</SelectItem>
-            <SelectItem value="wall-panels">Wall Panels</SelectItem>
-            <SelectItem value="extruded">Extruded</SelectItem>
-            <SelectItem value="flexicore">Flexicore</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Form Filter */}
-      <div className="flex-1">
-        <Select value={selectedForm} onValueChange={onFormChange} disabled={!selectedDepartment}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select Form" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Forms</SelectItem>
-            {availableForms.map((form) => (
-              <SelectItem key={form} value={form}>
-                {form}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
       {/* Search */}
       <div className="flex-1">
         <div className="relative">

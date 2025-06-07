@@ -15,8 +15,6 @@ const QCFreshConcreteTests = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [strengthData, setStrengthData] = useState<Record<string, any>>({});
   const [submittedRecords, setSubmittedRecords] = useState<any[]>([]);
-  const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [selectedForm, setSelectedForm] = useState('');
 
   // Load submitted records from localStorage
   useEffect(() => {
@@ -295,10 +293,6 @@ const QCFreshConcreteTests = () => {
             <CardContent className="space-y-4">
               <FreshConcreteTestsControls
                 onNewTest={handleNewTest}
-                selectedDepartment={selectedDepartment}
-                onDepartmentChange={setSelectedDepartment}
-                selectedForm={selectedForm}
-                onFormChange={setSelectedForm}
                 searchTerm={searchTerm}
                 onSearchChange={setSearchTerm}
               />
