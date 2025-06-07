@@ -295,6 +295,8 @@ const QCFreshConcreteTests = () => {
                 onNewTest={handleNewTest}
                 searchTerm={searchTerm}
                 onSearchChange={setSearchTerm}
+                showFilters={showFilters}
+                onToggleFilters={() => setShowFilters(!showFilters)}
               />
 
               <FreshConcreteTestsTable
@@ -303,6 +305,11 @@ const QCFreshConcreteTests = () => {
                 strengthData={strengthData}
                 updateStrengthData={updateStrengthData}
                 calculateAverage={calculateAverage}
+                showFilters={showFilters}
+                columnFilters={columnFilters}
+                setColumnFilters={setColumnFilters}
+                clearColumnFilter={clearColumnFilter}
+                clearAllFilters={clearAllFilters}
               />
             </CardContent>
           </Card>

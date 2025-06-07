@@ -8,12 +8,16 @@ interface FreshConcreteTestsControlsProps {
   onNewTest: () => void;
   searchTerm: string;
   onSearchChange: (term: string) => void;
+  showFilters: boolean;
+  onToggleFilters: () => void;
 }
 
 const FreshConcreteTestsControls: React.FC<FreshConcreteTestsControlsProps> = ({
   onNewTest,
   searchTerm,
-  onSearchChange
+  onSearchChange,
+  showFilters,
+  onToggleFilters
 }) => {
   return (
     <div className="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4">
@@ -36,7 +40,12 @@ const FreshConcreteTestsControls: React.FC<FreshConcreteTestsControlsProps> = ({
           <Download className="h-4 w-4 mr-2" />
           Export
         </Button>
-        <Button variant="outline" size="sm">
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={onToggleFilters}
+          className={showFilters ? "bg-blue-50 border-blue-300" : ""}
+        >
           <Filter className="h-4 w-4 mr-2" />
           More Filters
         </Button>
