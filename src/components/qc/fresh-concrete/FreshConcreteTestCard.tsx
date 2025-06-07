@@ -119,9 +119,13 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
         return acc;
       }, {} as Record<string, string[]>);
 
+      // Generate a unique form submission ID
+      const formSubmissionId = `FSI-${Date.now()}`;
+
       // Create separate records for each job
       const records = Object.entries(piecesByJob).map(([jobNumber, pieceIds]) => ({
         id: `FCT-${Date.now()}-${jobNumber}`,
+        formSubmissionId: formSubmissionId, // Add the form submission ID
         departmentName: departmentName || "Unknown",
         submittedAt: new Date().toISOString(),
         testData: {

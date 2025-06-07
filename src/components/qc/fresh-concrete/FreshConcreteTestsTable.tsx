@@ -1,3 +1,4 @@
+
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ interface FreshTest {
   technician: string;
   status: string;
   submitted?: boolean;
+  formSubmissionId?: string; // Added to track which form submission created this record
 }
 
 interface Column {
@@ -50,6 +52,30 @@ const FreshConcreteTestsTable = ({
   updateStrengthData,
   calculateAverage
 }: FreshConcreteTestsTableProps) => {
+
+  // Group tests by form submission ID to sync 28-day strength data
+  const getFormSubmissionGroup = (testId: string) => {
+    const test = tests.find(t => t.id === testId);
+    if (!test?.formSubmissionId) return [testId];
+    
+    return tests
+      .filter(t => t.formSubmissionId === test.formSubmissionId)
+      .map(t => t.id);
+  };
+
+  // Enhanced update function that syncs 28-day strength data across form submission groups
+  const handleStrengthDataUpdate = (testId: string, field: string, value: string) => {
+    if (field.startsWith('strength') || field === 'strengthSubmitted') {
+      // For 28-day strength fields, update all records in the same form submission group
+      const groupIds = getFormSubmissionGroup(testId);
+      groupIds.forEach(id => {
+        updateStrengthData(id, field, value);
+      });
+    } else {
+      // For release data, update only the specific record
+      updateStrengthData(testId, field, value);
+    }
+  };
 
   const getReleaseColor = (testId: string, releaseRequired: string) => {
     const releaseData = strengthData[testId]?.release || '';
@@ -114,8 +140,12 @@ const FreshConcreteTestsTable = ({
   };
 
   const handleSubmit28Day = (testId: string) => {
-    updateStrengthData(testId, 'strengthSubmitted', 'true');
-    console.log(`28-day strength data for ${testId} submitted for finalization`);
+    // Submit 28-day data for all records in the same form submission group
+    const groupIds = getFormSubmissionGroup(testId);
+    groupIds.forEach(id => {
+      updateStrengthData(id, 'strengthSubmitted', 'true');
+    });
+    console.log(`28-day strength data for group containing ${testId} submitted for finalization`);
   };
 
   const isReleaseComplete = (testId: string) => {
@@ -228,9 +258,9 @@ const FreshConcreteTestsTable = ({
                       const slashIndex = value.lastIndexOf('/');
                       if (slashIndex !== -1) {
                         const numerator = value.substring(0, slashIndex);
-                        updateStrengthData(test.id, 'release', numerator);
+                        handleStrengthDataUpdate(test.id, 'release', numerator);
                       } else {
-                        updateStrengthData(test.id, 'release', value);
+                        handleStrengthDataUpdate(test.id, 'release', value);
                       }
                     }}
                   />
@@ -261,7 +291,7 @@ const FreshConcreteTestsTable = ({
                     value={strengthData[test.id]?.strength1 || ''}
                     disabled={is28DaySubmitted(test.id)}
                     maxLength={5}
-                    onChange={(e) => updateStrengthData(test.id, 'strength1', e.target.value)}
+                    onChange={(e) => handleStrengthDataUpdate(test.id, 'strength1', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="p-1">
@@ -271,7 +301,7 @@ const FreshConcreteTestsTable = ({
                     value={strengthData[test.id]?.strength2 || ''}
                     disabled={is28DaySubmitted(test.id)}
                     maxLength={5}
-                    onChange={(e) => updateStrengthData(test.id, 'strength2', e.target.value)}
+                    onChange={(e) => handleStrengthDataUpdate(test.id, 'strength2', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="p-1">
@@ -281,7 +311,7 @@ const FreshConcreteTestsTable = ({
                     value={strengthData[test.id]?.strength3 || ''}
                     disabled={is28DaySubmitted(test.id)}
                     maxLength={5}
-                    onChange={(e) => updateStrengthData(test.id, 'strength3', e.target.value)}
+                    onChange={(e) => handleStrengthDataUpdate(test.id, 'strength3', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="p-1 w-28 min-w-28 max-w-28">

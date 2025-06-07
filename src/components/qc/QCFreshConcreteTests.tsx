@@ -44,7 +44,8 @@ const QCFreshConcreteTests = () => {
     jRing: record.testData.jRing,
     staticSegregation: record.testData.staticSegregation,
     technician: "System",
-    status: "Submitted"
+    status: "Submitted",
+    formSubmissionId: record.formSubmissionId || record.id.split('-')[0] + '-' + record.id.split('-')[1] // Extract submission ID from record ID
   }));
 
   const freshTests = [
