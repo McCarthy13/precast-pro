@@ -301,7 +301,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                 </div>
               </div>
 
-              {/* Forms/Workspaces Selection with 4-Column Layout */}
+              {/* Forms/Workspaces Selection with 8-Column Layout */}
               <div className="mt-6">
                 <div className="flex items-center justify-between mb-3">
                   <Label className="text-base font-medium">Select Forms/Workspaces and Pieces</Label>
@@ -317,7 +317,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
                   {precastForms.map((form) => {
                     const formPieces = scheduledPieces[form.name] || [];
                     const isFormSelected = selectedForms.has(form.name);
