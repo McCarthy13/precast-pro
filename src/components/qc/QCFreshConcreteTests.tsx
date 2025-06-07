@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Thermometer, FlaskConical, Database, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import FreshConcreteTestsTable from "./fresh-concrete/FreshConcreteTestsTable";
 import FreshConcreteTestsControls from "./fresh-concrete/FreshConcreteTestsControls";
 import CuringTanksTab from "./fresh-concrete/CuringTanksTab";
@@ -14,114 +14,78 @@ const QCFreshConcreteTests = () => {
   const [columnFilters, setColumnFilters] = useState<Record<string, string>>({});
   const [showFilters, setShowFilters] = useState(false);
   const [strengthData, setStrengthData] = useState<Record<string, any>>({});
-  const [freshTests, setFreshTests] = useState<any[]>([]);
 
-  // Load fresh concrete test records from localStorage
-  useEffect(() => {
-    const loadRecords = () => {
-      const savedRecords = localStorage.getItem('freshConcreteTestRecords');
-      if (savedRecords) {
-        const records = JSON.parse(savedRecords);
-        const formattedTests = records.map((record: any) => ({
-          id: record.id,
-          date: record.testData.date,
-          time: record.testData.time,
-          job: record.testData.job,
-          mixDesign: record.testData.mixDesign,
-          batchTicket: record.testData.batchTicket,
-          pieces: record.testData.pieces,
-          slumpFlow: record.testData.slumpFlow,
-          airContent: record.testData.airContent,
-          ambientTemp: record.testData.ambientTemp,
-          concreteTemp: record.testData.concreteTemp,
-          unitWeight: record.testData.unitWeight,
-          releaseRequired: record.testData.releaseRequired,
-          strengthRequired: record.testData.strengthRequired,
-          yield: record.testData.yield,
-          relativeYield: record.testData.relativeYield,
-          t20: record.testData.t20,
-          jRing: record.testData.jRing,
-          staticSegregation: record.testData.staticSegregation,
-          technician: "Current User", // Default since not captured in form
-          status: record.status === 'completed' ? 'Submitted' : 'Draft'
-        }));
-        setFreshTests(formattedTests);
-      } else {
-        // Fallback to mock data if no records exist
-        setFreshTests([
-          {
-            id: "FCT-001",
-            date: "2024-01-15",
-            time: "09:30",
-            job: "5014",
-            mixDesign: "MD-001",
-            batchTicket: "2401151",
-            pieces: "C16, C17, B3",
-            slumpFlow: "5.5",
-            airContent: "6.2",
-            ambientTemp: "72",
-            concreteTemp: "68",
-            unitWeight: "145.2",
-            releaseRequired: "3500",
-            strengthRequired: "5000",
-            yield: "27.0",
-            relativeYield: "1.00",
-            t20: "12.5",
-            jRing: "Pass",
-            staticSegregation: "Pass",
-            technician: "John Smith",
-            status: "Submitted"
-          },
-          {
-            id: "FCT-002",
-            date: "2024-01-15",
-            time: "14:15",
-            job: "5015",
-            mixDesign: "MD-002",
-            batchTicket: "2401152",
-            pieces: "W1, W2",
-            slumpFlow: "4.0",
-            airContent: "5.8",
-            ambientTemp: "75",
-            concreteTemp: "72",
-            unitWeight: "147.8",
-            releaseRequired: "4000",
-            strengthRequired: "6000",
-            yield: "26.8",
-            relativeYield: "0.99",
-            t20: "11.2",
-            jRing: "Pass",
-            staticSegregation: "Pass",
-            technician: "Sarah Johnson",
-            status: "Draft"
-          }
-        ]);
-      }
-    };
-
-    loadRecords();
-
-    // Listen for storage changes to update when new records are added
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'freshConcreteTestRecords') {
-        loadRecords();
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    
-    // Also listen for custom events when records are added in the same tab
-    const handleRecordsUpdated = () => {
-      loadRecords();
-    };
-    
-    window.addEventListener('freshConcreteRecordsUpdated', handleRecordsUpdated);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('freshConcreteRecordsUpdated', handleRecordsUpdated);
-    };
-  }, []);
+  const freshTests = [
+    {
+      id: "FCT-001",
+      date: "2024-01-15",
+      time: "09:30",
+      job: "5014",
+      mixDesign: "MD-001",
+      batchTicket: "2401151",
+      pieces: "C16, C17, B3",
+      slumpFlow: "5.5",
+      airContent: "6.2",
+      ambientTemp: "72",
+      concreteTemp: "68",
+      unitWeight: "145.2",
+      releaseRequired: "3500",
+      strengthRequired: "5000",
+      yield: "27.0",
+      relativeYield: "1.00",
+      t20: "12.5",
+      jRing: "Pass",
+      staticSegregation: "Pass",
+      technician: "John Smith",
+      status: "Submitted"
+    },
+    {
+      id: "FCT-002",
+      date: "2024-01-15",
+      time: "14:15",
+      job: "5015",
+      mixDesign: "MD-002",
+      batchTicket: "2401152",
+      pieces: "W1, W2",
+      slumpFlow: "4.0",
+      airContent: "5.8",
+      ambientTemp: "75",
+      concreteTemp: "72",
+      unitWeight: "147.8",
+      releaseRequired: "4000",
+      strengthRequired: "6000",
+      yield: "26.8",
+      relativeYield: "0.99",
+      t20: "11.2",
+      jRing: "Pass",
+      staticSegregation: "Pass",
+      technician: "Sarah Johnson",
+      status: "Draft"
+    },
+    {
+      id: "FCT-003",
+      date: "2024-01-14",
+      time: "10:45",
+      job: "5016",
+      mixDesign: "MD-001",
+      batchTicket: "2401143",
+      pieces: "DT1, DT2",
+      slumpFlow: "6.0",
+      airContent: "6.0",
+      ambientTemp: "70",
+      concreteTemp: "67",
+      unitWeight: "144.8",
+      releaseRequired: "3500",
+      strengthRequired: "5000",
+      yield: "27.2",
+      relativeYield: "1.01",
+      t20: "13.0",
+      jRing: "Pass",
+      staticSegregation: "Pass",
+      technician: "Mike Wilson",
+      status: "Submitted"
+    }
+  ];
 
   const columns = [
     { key: 'date', label: 'Date' },
@@ -190,7 +154,7 @@ const QCFreshConcreteTests = () => {
       const dateB = new Date(`${b.date} ${b.time}`);
       return sortOrder === 'desc' ? dateB.getTime() - dateA.getTime() : dateA.getTime() - dateB.getTime();
     });
-  }, [freshTests, searchTerm, columnFilters, sortOrder]);
+  }, [searchTerm, columnFilters, sortOrder]);
 
   const clearColumnFilter = (column: string) => {
     setColumnFilters(prev => {
@@ -203,37 +167,6 @@ const QCFreshConcreteTests = () => {
   const clearAllFilters = () => {
     setColumnFilters({});
     setSearchTerm('');
-  };
-
-  const findOldestIncompleteRecord = () => {
-    // Find records that don't have a completed 28-day average
-    const incompleteRecords = filteredAndSortedTests.filter(test => {
-      const average = calculateAverage(test.id);
-      return !average || average === '';
-    });
-
-    if (incompleteRecords.length === 0) {
-      console.log('All records have completed 28-day averages');
-      return;
-    }
-
-    // Sort by date/time to find the oldest
-    const oldestRecord = incompleteRecords.sort((a, b) => {
-      const dateA = new Date(`${a.date} ${a.time}`);
-      const dateB = new Date(`${b.date} ${b.time}`);
-      return dateA.getTime() - dateB.getTime();
-    })[0];
-
-    // Scroll to the record in the table
-    const element = document.getElementById(`test-row-${oldestRecord.id}`);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // Add a temporary highlight effect
-      element.style.backgroundColor = '#fef3c7';
-      setTimeout(() => {
-        element.style.backgroundColor = '';
-      }, 3000);
-    }
   };
 
   return (
@@ -269,22 +202,12 @@ const QCFreshConcreteTests = () => {
                   <CardTitle>Fresh Concrete Test Records</CardTitle>
                   <CardDescription>Historical record of all fresh concrete tests</CardDescription>
                 </div>
-                <div className="flex gap-2">
-                  <Button 
-                    variant="outline" 
-                    onClick={findOldestIncompleteRecord}
-                    className="flex items-center"
-                  >
-                    <Database className="h-4 w-4 mr-2" />
-                    28-Day Strength Input
-                  </Button>
-                  <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                    <Link to="/templates/fresh-concrete-test">
-                      <Plus className="h-4 w-4 mr-2" />
-                      New Test Record
-                    </Link>
-                  </Button>
-                </div>
+                <Button asChild className="bg-blue-600 hover:bg-blue-700">
+                  <Link to="/templates/fresh-concrete-test">
+                    <Plus className="h-4 w-4 mr-2" />
+                    New Test Record
+                  </Link>
+                </Button>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
