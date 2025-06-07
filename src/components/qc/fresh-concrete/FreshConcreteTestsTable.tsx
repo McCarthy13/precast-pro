@@ -207,10 +207,10 @@ const FreshConcreteTestsTable = ({
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Unit<br/>Wt<br/>(lb/ft³)</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Yield<br/>(ft³)</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Rel<br/>Yield</TableHead>
-            <TableHead className="text-center font-semibold bg-blue-50 text-xs px-2 py-2" colSpan={2}>
+            <TableHead className="text-center font-semibold bg-blue-50 text-xs px-2 py-2" colSpan={3}>
               RELEASE RESULTS
             </TableHead>
-            <TableHead className="text-center font-semibold bg-purple-50 text-xs px-2 py-2" colSpan={5}>
+            <TableHead className="text-center font-semibold bg-purple-50 text-xs px-2 py-2" colSpan={6}>
               28-DAY STRENGTH RESULTS
             </TableHead>
             <TableHead className="text-center font-semibold bg-gray-50 text-xs px-2 py-2" colSpan={3}>
@@ -233,12 +233,14 @@ const FreshConcreteTestsTable = ({
             <TableHead className="p-0 h-0"></TableHead>
             <TableHead className="p-0 h-0"></TableHead>
             
-            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Release/<br/>Required</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Release</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Required</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Submit<br/>Release</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">28-Day<br/>#1</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">28-Day<br/>#2</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">28-Day<br/>#3</TableHead>
-            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Average/<br/>Required</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Average</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Required</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Submit<br/>28-Day</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">T-20<br/>(sec)</TableHead>
             <TableHead className="px-2 py-2 text-xs whitespace-nowrap">J-Ring</TableHead>
@@ -346,23 +348,22 @@ const FreshConcreteTestsTable = ({
                 />
               </TableCell>
               
-              {/* Release Results */}
+              {/* Release Results - Now separated */}
               <TableCell className="px-1 py-1">
                 <Input
-                  className={`h-6 text-[10px] px-1 ${getReleaseColor(test.id, getFieldValue(test, 'releaseRequired'))}`}
-                  placeholder={`5171/${getFieldValue(test, 'releaseRequired') || '3500'}`}
-                  value={formatReleaseValue(test.id, getFieldValue(test, 'releaseRequired'))}
+                  className={`h-6 text-[10px] px-1 text-center ${getReleaseColor(test.id, getFieldValue(test, 'releaseRequired'))}`}
+                  placeholder="5171"
+                  value={strengthData[test.id]?.release || ''}
                   disabled={isReleaseSubmitted(test.id)}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    const slashIndex = value.lastIndexOf('/');
-                    if (slashIndex !== -1) {
-                      const numerator = value.substring(0, slashIndex);
-                      handleStrengthDataUpdate(test.id, 'release', numerator);
-                    } else {
-                      handleStrengthDataUpdate(test.id, 'release', value);
-                    }
-                  }}
+                  onChange={(e) => handleStrengthDataUpdate(test.id, 'release', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent text-center"
+                  value={getFieldValue(test, 'releaseRequired')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'releaseRequired', e.target.value)}
+                  placeholder="3500"
                 />
               </TableCell>
               <TableCell className="px-1 py-1">
@@ -383,7 +384,7 @@ const FreshConcreteTestsTable = ({
                 )}
               </TableCell>
 
-              {/* 28-Day Strength Results */}
+              {/* 28-Day Strength Results - Now separated */}
               <TableCell className="px-1 py-1">
                 <Input
                   className="h-6 text-[10px] text-center px-1"
@@ -416,8 +417,16 @@ const FreshConcreteTestsTable = ({
               </TableCell>
               <TableCell className="px-1 py-1">
                 <div className={`h-6 flex items-center justify-center text-[10px] font-medium bg-gray-50 rounded border px-1 ${getAverageColor(test.id, getFieldValue(test, 'strengthRequired'))}`}>
-                  {formatAverageValue(test.id, getFieldValue(test, 'strengthRequired'))}
+                  {calculateAverage(test.id) || '--'}
                 </div>
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent text-center"
+                  value={getFieldValue(test, 'strengthRequired')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'strengthRequired', e.target.value)}
+                  placeholder="5000"
+                />
               </TableCell>
               <TableCell className="px-1 py-1">
                 {is28DaySubmitted(test.id) ? (
