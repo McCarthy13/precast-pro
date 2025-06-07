@@ -1,3 +1,4 @@
+
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -181,9 +182,9 @@ const FreshConcreteTestsTable = ({
               
               <TableHead className="w-21 text-xs leading-tight p-1">Release/<br/>Required</TableHead>
               <TableHead className="w-14 text-xs leading-tight p-1">Submit<br/>Release</TableHead>
-              <TableHead className="w-12 text-xs leading-tight p-1">28-Day<br/>#1</TableHead>
-              <TableHead className="w-12 text-xs leading-tight p-1">28-Day<br/>#2</TableHead>
-              <TableHead className="w-12 text-xs leading-tight p-1">28-Day<br/>#3</TableHead>
+              <TableHead className="w-16 text-xs leading-tight p-1">28-Day<br/>#1</TableHead>
+              <TableHead className="w-16 text-xs leading-tight p-1">28-Day<br/>#2</TableHead>
+              <TableHead className="w-16 text-xs leading-tight p-1">28-Day<br/>#3</TableHead>
               <TableHead className="w-20 text-xs leading-tight p-1">Average/<br/>Required</TableHead>
               <TableHead className="w-14 text-xs leading-tight p-1">Submit<br/>28-Day</TableHead>
               <TableHead className="w-10 text-xs leading-tight p-1">T-20<br/>(sec)</TableHead>
