@@ -27,6 +27,7 @@ import ClientPortalDashboard from "./pages/ClientPortalDashboard";
 import ResearchDevelopmentDashboard from "./pages/ResearchDevelopmentDashboard";
 import FreshConcreteTestFormPage from "./pages/FreshConcreteTestFormPage";
 import WallPanelsFreshConcreteTestFormPage from "./pages/WallPanelsFreshConcreteTestFormPage";
+import ExtrudedFreshConcreteTestFormPage from "./pages/ExtrudedFreshConcreteTestFormPage";
 import FlexicoreFreshConcreteTestFormPage from "./pages/FlexicoreFreshConcreteTestFormPage";
 import DoubleTeesFreshConcreteTestFormPage from "./pages/DoubleTeesFreshConcreteTestFormPage";
 import MoistureTestForm from "./components/templates/MoistureTestForm";
@@ -70,6 +71,7 @@ const App: React.FC = () => (
         <Route path="/research-development" element={<ResearchDevelopmentDashboard />} />
         <Route path="/templates/fresh-concrete-test" element={<FreshConcreteTestFormPage />} />
         <Route path="/templates/wall-panels-fresh-concrete-test" element={<WallPanelsFreshConcreteTestFormPage />} />
+        <Route path="/templates/extruded-fresh-concrete-test" element={<ExtrudedFreshConcreteTestFormPage />} />
         <Route path="/templates/flexicore-fresh-concrete-test" element={<FlexicoreFreshConcreteTestFormPage />} />
         <Route path="/templates/double-tees-fresh-concrete-test" element={<DoubleTeesFreshConcreteTestFormPage />} />
         <Route path="/templates/moisture-test" element={<MoistureTestForm />} />
