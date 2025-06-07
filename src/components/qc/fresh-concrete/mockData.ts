@@ -1,3 +1,4 @@
+
 // Mock data for Fresh Concrete Test forms
 
 export interface MixDesign {
@@ -68,40 +69,56 @@ export const allForms: Form[] = [
 
 export const scheduledPieces: { [formName: string]: Piece[] } = {
   "BL1": [
-    { id: "piece-1", name: "Beam B1", jobNumber: "5014", pieceId: "B0001" },
-    { id: "piece-2", name: "Beam B2", jobNumber: "5014", pieceId: "B0002" }
+    { id: "piece-1", name: "Prestressed Beam", jobNumber: "5014", pieceId: "5014-B14" },
+    { id: "piece-2", name: "Prestressed Beam", jobNumber: "5014", pieceId: "5014-B15" },
+    { id: "piece-3", name: "Prestressed Beam", jobNumber: "5018", pieceId: "5018-B22" },
+    { id: "piece-4", name: "Prestressed Beam", jobNumber: "5018", pieceId: "5018-B23" }
   ],
   "BL2": [
-    { id: "piece-3", name: "Beam B3", jobNumber: "5015", pieceId: "B0003" },
-    { id: "piece-4", name: "Beam B4", jobNumber: "5015", pieceId: "B0004" }
+    { id: "piece-5", name: "Prestressed Beam", jobNumber: "5015", pieceId: "5015-B08" },
+    { id: "piece-6", name: "Prestressed Beam", jobNumber: "5015", pieceId: "5015-B09" },
+    { id: "piece-7", name: "Prestressed Beam", jobNumber: "5019", pieceId: "5019-B31" }
   ],
   "BL3": [
-    { id: "piece-5", name: "Beam B5", jobNumber: "5016", pieceId: "B0005" }
+    { id: "piece-8", name: "Prestressed Beam", jobNumber: "5016", pieceId: "5016-B42" },
+    { id: "piece-9", name: "Prestressed Beam", jobNumber: "5016", pieceId: "5016-B43" }
   ],
   "BL6": [
-    { id: "piece-6", name: "Beam B6", jobNumber: "5017", pieceId: "B0006" }
+    { id: "piece-10", name: "Prestressed Beam", jobNumber: "5017", pieceId: "5017-B18" },
+    { id: "piece-11", name: "Prestressed Beam", jobNumber: "5020", pieceId: "5020-B05" }
   ],
   "EPB-E": [
-    { id: "piece-7", name: "Column C1", jobNumber: "5018", pieceId: "C0001" },
-    { id: "piece-8", name: "Column C2", jobNumber: "5018", pieceId: "C0002" }
+    { id: "piece-12", name: "Precast Panel", jobNumber: "5021", pieceId: "5021-P101" },
+    { id: "piece-13", name: "Precast Panel", jobNumber: "5021", pieceId: "5021-P102" },
+    { id: "piece-14", name: "Precast Panel", jobNumber: "5022", pieceId: "5022-P205" }
   ],
   "EPB-W": [
-    { id: "piece-9", name: "Column C3", jobNumber: "5019", pieceId: "C0003" }
+    { id: "piece-15", name: "Precast Panel", jobNumber: "5023", pieceId: "5023-P301" },
+    { id: "piece-16", name: "Precast Panel", jobNumber: "5023", pieceId: "5023-P302" }
   ],
   "WPB-E": [
-    { id: "piece-10", name: "Slab S1", jobNumber: "5020", pieceId: "S0001" }
+    { id: "piece-17", name: "Wall Panel", jobNumber: "5024", pieceId: "5024-W401" },
+    { id: "piece-18", name: "Wall Panel", jobNumber: "5024", pieceId: "5024-W402" },
+    { id: "piece-19", name: "Wall Panel", jobNumber: "5025", pieceId: "5025-W501" }
   ],
   "WPB-W": [
-    { id: "piece-11", name: "Slab S2", jobNumber: "5021", pieceId: "S0002" }
+    { id: "piece-20", name: "Wall Panel", jobNumber: "5026", pieceId: "5026-W601" },
+    { id: "piece-21", name: "Wall Panel", jobNumber: "5026", pieceId: "5026-W602" }
   ],
   "MS": [
-    { id: "piece-12", name: "Mild Steel MS1", jobNumber: "5022", pieceId: "M0001" }
+    { id: "piece-22", name: "Mild Steel Element", jobNumber: "5027", pieceId: "5027-MS01" },
+    { id: "piece-23", name: "Mild Steel Element", jobNumber: "5027", pieceId: "5027-MS02" },
+    { id: "piece-24", name: "Mild Steel Element", jobNumber: "5028", pieceId: "5028-MS15" }
   ],
   "COL": [
-    { id: "piece-13", name: "Column C4", jobNumber: "5023", pieceId: "C0004" },
-    { id: "piece-14", name: "Column C5", jobNumber: "5023", pieceId: "C0005" }
+    { id: "piece-25", name: "Precast Column", jobNumber: "5029", pieceId: "5029-C701" },
+    { id: "piece-26", name: "Precast Column", jobNumber: "5029", pieceId: "5029-C702" },
+    { id: "piece-27", name: "Precast Column", jobNumber: "5030", pieceId: "5030-C801" },
+    { id: "piece-28", name: "Precast Column", jobNumber: "5030", pieceId: "5030-C802" }
   ],
   "STAD": [
-    { id: "piece-15", name: "Stadia ST1", jobNumber: "5024", pieceId: "M0002" }
+    { id: "piece-29", name: "Stadium Riser", jobNumber: "5031", pieceId: "5031-SR01" },
+    { id: "piece-30", name: "Stadium Riser", jobNumber: "5031", pieceId: "5031-SR02" },
+    { id: "piece-31", name: "Stadium Riser", jobNumber: "5032", pieceId: "5032-SR15" }
   ]
 };
