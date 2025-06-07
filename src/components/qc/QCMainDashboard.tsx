@@ -119,7 +119,7 @@ const QCMainDashboard = () => {
       {/* Department Navigation */}
       <Card>
         <CardHeader>
-          <CardTitle>QC by Production Department</CardTitle>
+          <CardTitle>QC by Department</CardTitle>
           <CardDescription>Access quality control operations for each production department</CardDescription>
         </CardHeader>
         <CardContent>

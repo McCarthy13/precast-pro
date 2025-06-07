@@ -1,15 +1,44 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Thermometer, FlaskConical, Database, Plus, Target } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useMemo, useEffect } from "react";
 import FreshConcreteTestsTable from "./fresh-concrete/FreshConcreteTestsTable";
 import FreshConcreteTestsControls from "./fresh-concrete/FreshConcreteTestsControls";
 import CuringTanksTab from "./fresh-concrete/CuringTanksTab";
 
 const QCFreshConcreteTests = () => {
+  const location = useLocation();
+  
+  // Determine the current department from the URL
+  const getCurrentDepartment = () => {
+    if (location.pathname.includes('/wall-panels')) return 'wall-panels';
+    if (location.pathname.includes('/precast')) return 'precast';
+    if (location.pathname.includes('/extruded')) return 'extruded';
+    if (location.pathname.includes('/flexicore')) return 'flexicore';
+    if (location.pathname.includes('/double-tees')) return 'double-tees';
+    return 'precast'; // default
+  };
+
+  const currentDepartment = getCurrentDepartment();
+
+  // Get the correct form URL based on department
+  const getFormUrl = () => {
+    switch (currentDepartment) {
+      case 'wall-panels':
+        return '/templates/wall-panels-fresh-concrete-test';
+      case 'extruded':
+        return '/templates/extruded-fresh-concrete-test';
+      case 'flexicore':
+        return '/templates/flexicore-fresh-concrete-test';
+      case 'double-tees':
+        return '/templates/double-tees-fresh-concrete-test';
+      default:
+        return '/templates/fresh-concrete-test';
+    }
+  };
+
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [searchTerm, setSearchTerm] = useState('');
   const [columnFilters, setColumnFilters] = useState<Record<string, string>>({});
@@ -235,8 +264,8 @@ const QCFreshConcreteTests = () => {
   };
 
   const handleNewTest = () => {
-    // Navigate to new test form
-    window.location.href = '/templates/fresh-concrete-test';
+    // Navigate to department-specific test form
+    window.location.href = getFormUrl();
   };
 
   return (
@@ -283,7 +312,7 @@ const QCFreshConcreteTests = () => {
                     Input 28-Day Strengths
                   </Button>
                   <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                    <Link to="/templates/fresh-concrete-test">
+                    <Link to={getFormUrl()}>
                       <Plus className="h-4 w-4 mr-2" />
                       New Test Record
                     </Link>
