@@ -1,3 +1,4 @@
+
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -52,72 +53,35 @@ const FreshConcreteTestsTable = ({
   updateStrengthData,
   calculateAverage
 }: FreshConcreteTestsTableProps) => {
-  const [columnWidths, setColumnWidths] = useState<Record<string, number>>({});
-  const measureRef = useRef<HTMLDivElement>(null);
-
-  // Calculate optimal column widths based on content
-  useEffect(() => {
-    const calculateColumnWidths = () => {
-      if (!measureRef.current) return;
-
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-      if (!context) return;
-
-      // Set font to match table styling
-      context.font = '12px system-ui, -apple-system, sans-serif';
-
-      const widths: Record<string, number> = {};
-
-      // Define all columns with their data and headers
-      const columnData = [
-        { key: 'date', header: 'Date', samples: tests.map(t => formatDate(t.date) || '00/00/00') },
-        { key: 'time', header: 'Time', samples: tests.map(t => getFieldValue(t, 'time') || '00:00') },
-        { key: 'mixDesign', header: 'Mix ID', samples: tests.map(t => getFieldValue(t, 'mixDesign') || 'MD-000') },
-        { key: 'batchTicket', header: 'Batch #', samples: tests.map(t => getFieldValue(t, 'batchTicket') || '0000000') },
-        { key: 'form', header: 'Form', samples: tests.map(t => getFormIdentifier(t)) },
-        { key: 'job', header: 'Job', samples: tests.map(t => getFieldValue(t, 'job') || '0000') },
-        { key: 'pieces', header: 'Pieces', samples: tests.map(t => getFieldValue(t, 'pieces') || 'C00, C00, B0') },
-        { key: 'slumpFlow', header: 'Slump (Flow) (in)', samples: tests.map(t => getFieldValue(t, 'slumpFlow') || '00.00') },
-        { key: 'airContent', header: 'Air (%)', samples: tests.map(t => getFieldValue(t, 'airContent') || '00.0') },
-        { key: 'ambientTemp', header: 'Amb Temp (°F)', samples: tests.map(t => getFieldValue(t, 'ambientTemp') || '000') },
-        { key: 'concreteTemp', header: 'Conc Temp (°F)', samples: tests.map(t => getFieldValue(t, 'concreteTemp') || '000') },
-        { key: 'unitWeight', header: 'Unit Wt (lb/ft³)', samples: tests.map(t => getFieldValue(t, 'unitWeight') || '000.0') },
-        { key: 'yield', header: 'Yield (ft³)', samples: tests.map(t => getFieldValue(t, 'yield') || '00.0') },
-        { key: 'relativeYield', header: 'Rel Yield', samples: tests.map(t => getFieldValue(t, 'relativeYield') || '0.000') },
-        { key: 'release', header: 'Release', samples: ['00000'] },
-        { key: 'releaseRequired', header: 'Required', samples: ['0000'] },
-        { key: 'releaseSubmit', header: 'Submit Release', samples: ['Submit'] },
-        { key: 'strength1', header: '28-Day #1', samples: ['00000'] },
-        { key: 'strength2', header: '28-Day #2', samples: ['00000'] },
-        { key: 'strength3', header: '28-Day #3', samples: ['00000'] },
-        { key: 'average', header: 'Average', samples: ['00000'] },
-        { key: 'strengthRequired', header: 'Required', samples: ['0000'] },
-        { key: 'strengthSubmit', header: 'Submit 28-Day', samples: ['Submit'] },
-        { key: 't20', header: 'T-20 (sec)', samples: tests.map(t => getFieldValue(t, 't20') || '00.0') },
-        { key: 'jRing', header: 'J-Ring', samples: tests.map(t => getFieldValue(t, 'jRing') || 'Pass') },
-        { key: 'staticSegregation', header: 'Static Seg', samples: tests.map(t => getFieldValue(t, 'staticSegregation') || 'Pass') }
-      ];
-
-      columnData.forEach(({ key, header, samples }) => {
-        // Measure header width
-        let maxWidth = context.measureText(header).width;
-
-        // Measure all sample data widths
-        samples.forEach(sample => {
-          const width = context.measureText(sample).width;
-          maxWidth = Math.max(maxWidth, width);
-        });
-
-        // Add padding for input fields and cells (24px total padding)
-        widths[key] = Math.max(maxWidth + 24, 60); // minimum 60px width
-      });
-
-      setColumnWidths(widths);
-    };
-
-    calculateColumnWidths();
-  }, [tests, strengthData]);
+  // Define fixed column widths for better control
+  const columnWidths = {
+    date: 90,
+    time: 70,
+    mixDesign: 80,
+    batchTicket: 90,
+    form: 100,
+    job: 70,
+    pieces: 120,
+    slumpFlow: 90,
+    airContent: 70,
+    ambientTemp: 85,
+    concreteTemp: 85,
+    unitWeight: 95,
+    yield: 80,
+    relativeYield: 85,
+    release: 90,
+    releaseRequired: 85,
+    releaseSubmit: 100,
+    strength1: 90,
+    strength2: 90,
+    strength3: 90,
+    average: 90,
+    strengthRequired: 85,
+    strengthSubmit: 110,
+    t20: 80,
+    jRing: 80,
+    staticSegregation: 90
+  };
 
   // Group tests by form submission ID to sync 28-day strength data
   const getFormSubmissionGroup = (testId: string) => {
@@ -208,22 +172,6 @@ const FreshConcreteTestsTable = ({
     }
   };
 
-  const formatReleaseValue = (testId: string, releaseRequired: string) => {
-    const releaseActual = strengthData[testId]?.release || '';
-    if (!releaseActual) {
-      return `/${releaseRequired || '3500'}`;
-    }
-    return `${releaseActual}/${releaseRequired || '3500'}`;
-  };
-
-  const formatAverageValue = (testId: string, strengthRequired: string) => {
-    const average = calculateAverage(testId);
-    if (!average) {
-      return `/${strengthRequired || '5000'}`;
-    }
-    return `${average}/${strengthRequired || '5000'}`;
-  };
-
   const handleSubmitRelease = (testId: string) => {
     updateStrengthData(testId, 'releaseSubmitted', 'true');
     console.log(`Release data for ${testId} submitted for finalization`);
@@ -271,25 +219,25 @@ const FreshConcreteTestsTable = ({
   };
 
   return (
-    <div ref={measureRef}>
+    <div>
       <ScrollArea className="w-full rounded-md border">
-        <Table className="table-fixed min-w-full">
+        <Table className="min-w-max">
           <TableHeader>
             <TableRow>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.date || 80}px`}}>Date</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.time || 60}px`}}>Time</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.mixDesign || 60}px`}}>Mix<br/>ID</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.batchTicket || 70}px`}}>Batch<br/>#</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.form || 80}px`}}>Form</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.job || 60}px`}}>Job</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.pieces || 100}px`}}>Pieces</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.slumpFlow || 80}px`}}>Slump<br/>(Flow)<br/>(in)</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.airContent || 60}px`}}>Air<br/>(%)</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.ambientTemp || 70}px`}}>Amb<br/>Temp<br/>(°F)</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.concreteTemp || 70}px`}}>Conc<br/>Temp<br/>(°F)</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.unitWeight || 80}px`}}>Unit<br/>Wt<br/>(lb/ft³)</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.yield || 70}px`}}>Yield<br/>(ft³)</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.relativeYield || 70}px`}}>Rel<br/>Yield</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.date}px`, minWidth: `${columnWidths.date}px`}}>Date</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.time}px`, minWidth: `${columnWidths.time}px`}}>Time</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.mixDesign}px`, minWidth: `${columnWidths.mixDesign}px`}}>Mix<br/>ID</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.batchTicket}px`, minWidth: `${columnWidths.batchTicket}px`}}>Batch<br/>#</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.form}px`, minWidth: `${columnWidths.form}px`}}>Form</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.job}px`, minWidth: `${columnWidths.job}px`}}>Job</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.pieces}px`, minWidth: `${columnWidths.pieces}px`}}>Pieces</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.slumpFlow}px`, minWidth: `${columnWidths.slumpFlow}px`}}>Slump<br/>(Flow)<br/>(in)</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.airContent}px`, minWidth: `${columnWidths.airContent}px`}}>Air<br/>(%)</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.ambientTemp}px`, minWidth: `${columnWidths.ambientTemp}px`}}>Amb<br/>Temp<br/>(°F)</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.concreteTemp}px`, minWidth: `${columnWidths.concreteTemp}px`}}>Conc<br/>Temp<br/>(°F)</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.unitWeight}px`, minWidth: `${columnWidths.unitWeight}px`}}>Unit<br/>Wt<br/>(lb/ft³)</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.yield}px`, minWidth: `${columnWidths.yield}px`}}>Yield<br/>(ft³)</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.relativeYield}px`, minWidth: `${columnWidths.relativeYield}px`}}>Rel<br/>Yield</TableHead>
               <TableHead className="text-center font-semibold bg-blue-50 text-xs px-2 py-2 whitespace-nowrap" colSpan={3}>
                 RELEASE RESULTS
               </TableHead>
@@ -306,18 +254,18 @@ const FreshConcreteTestsTable = ({
                 <TableHead key={i} className="p-0 h-0"></TableHead>
               ))}
               
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.release || 80}px`}}>Release</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.releaseRequired || 70}px`}}>Required</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.releaseSubmit || 80}px`}}>Submit<br/>Release</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.strength1 || 80}px`}}>28-Day<br/>#1</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.strength2 || 80}px`}}>28-Day<br/>#2</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.strength3 || 80}px`}}>28-Day<br/>#3</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.average || 80}px`}}>Average</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.strengthRequired || 70}px`}}>Required</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.strengthSubmit || 80}px`}}>Submit<br/>28-Day</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.t20 || 70}px`}}>T-20<br/>(sec)</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.jRing || 70}px`}}>J-Ring</TableHead>
-              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.staticSegregation || 70}px`}}>Static<br/>Seg</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.release}px`, minWidth: `${columnWidths.release}px`}}>Release</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.releaseRequired}px`, minWidth: `${columnWidths.releaseRequired}px`}}>Required</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.releaseSubmit}px`, minWidth: `${columnWidths.releaseSubmit}px`}}>Submit<br/>Release</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.strength1}px`, minWidth: `${columnWidths.strength1}px`}}>28-Day<br/>#1</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.strength2}px`, minWidth: `${columnWidths.strength2}px`}}>28-Day<br/>#2</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.strength3}px`, minWidth: `${columnWidths.strength3}px`}}>28-Day<br/>#3</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.average}px`, minWidth: `${columnWidths.average}px`}}>Average</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.strengthRequired}px`, minWidth: `${columnWidths.strengthRequired}px`}}>Required</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.strengthSubmit}px`, minWidth: `${columnWidths.strengthSubmit}px`}}>Submit<br/>28-Day</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.t20}px`, minWidth: `${columnWidths.t20}px`}}>T-20<br/>(sec)</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.jRing}px`, minWidth: `${columnWidths.jRing}px`}}>J-Ring</TableHead>
+              <TableHead className="px-2 py-2 text-xs whitespace-nowrap" style={{width: `${columnWidths.staticSegregation}px`, minWidth: `${columnWidths.staticSegregation}px`}}>Static<br/>Seg</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -329,98 +277,98 @@ const FreshConcreteTestsTable = ({
                   (isReleaseSubmitted(test.id) && is28DaySubmitted(test.id)) ? 'bg-green-50' : ''
                 }
               >
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.date || 80}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.date}px`, minWidth: `${columnWidths.date}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent w-full"
                     value={formatDate(getFieldValue(test, 'date'))}
                     onChange={(e) => handleTestDataUpdate(test.id, 'date', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.time || 60}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.time}px`, minWidth: `${columnWidths.time}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent w-full"
                     value={getFieldValue(test, 'time')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'time', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.mixDesign || 60}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.mixDesign}px`, minWidth: `${columnWidths.mixDesign}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent w-full"
                     value={getFieldValue(test, 'mixDesign')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'mixDesign', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.batchTicket || 70}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.batchTicket}px`, minWidth: `${columnWidths.batchTicket}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent w-full"
                     value={getFieldValue(test, 'batchTicket')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'batchTicket', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.form || 80}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.form}px`, minWidth: `${columnWidths.form}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent font-medium w-full"
                     value={getFormIdentifier(test)}
                     onChange={(e) => handleTestDataUpdate(test.id, 'form', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.job || 60}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.job}px`, minWidth: `${columnWidths.job}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent font-medium w-full"
                     value={getFieldValue(test, 'job')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'job', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.pieces || 100}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.pieces}px`, minWidth: `${columnWidths.pieces}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent w-full"
                     value={getFieldValue(test, 'pieces')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'pieces', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.slumpFlow || 80}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.slumpFlow}px`, minWidth: `${columnWidths.slumpFlow}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent text-center w-full"
                     value={getFieldValue(test, 'slumpFlow')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'slumpFlow', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.airContent || 60}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.airContent}px`, minWidth: `${columnWidths.airContent}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent text-center w-full"
                     value={getFieldValue(test, 'airContent')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'airContent', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.ambientTemp || 70}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.ambientTemp}px`, minWidth: `${columnWidths.ambientTemp}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent text-center w-full"
                     value={getFieldValue(test, 'ambientTemp')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'ambientTemp', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.concreteTemp || 70}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.concreteTemp}px`, minWidth: `${columnWidths.concreteTemp}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent text-center w-full"
                     value={getFieldValue(test, 'concreteTemp')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'concreteTemp', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.unitWeight || 80}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.unitWeight}px`, minWidth: `${columnWidths.unitWeight}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent text-center w-full"
                     value={getFieldValue(test, 'unitWeight')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'unitWeight', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.yield || 70}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.yield}px`, minWidth: `${columnWidths.yield}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent text-center w-full"
                     value={getFieldValue(test, 'yield')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'yield', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.relativeYield || 70}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.relativeYield}px`, minWidth: `${columnWidths.relativeYield}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent text-center w-full"
                     value={getFieldValue(test, 'relativeYield')}
@@ -429,7 +377,7 @@ const FreshConcreteTestsTable = ({
                 </TableCell>
                 
                 {/* Release Results */}
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.release || 80}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.release}px`, minWidth: `${columnWidths.release}px`}}>
                   <Input
                     className={`text-xs px-1 text-center w-full ${getReleaseColor(test.id, getFieldValue(test, 'releaseRequired'))}`}
                     placeholder="5171"
@@ -438,7 +386,7 @@ const FreshConcreteTestsTable = ({
                     onChange={(e) => handleStrengthDataUpdate(test.id, 'release', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.releaseRequired || 70}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.releaseRequired}px`, minWidth: `${columnWidths.releaseRequired}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent text-center w-full"
                     value={getFieldValue(test, 'releaseRequired')}
@@ -446,7 +394,7 @@ const FreshConcreteTestsTable = ({
                     placeholder="3500"
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.releaseSubmit || 80}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.releaseSubmit}px`, minWidth: `${columnWidths.releaseSubmit}px`}}>
                   {isReleaseSubmitted(test.id) ? (
                     <Badge className="bg-green-100 text-green-800 flex items-center gap-1 text-xs px-1 py-0 h-6 w-full justify-center">
                       <CheckCircle className="h-2 w-2" />
@@ -465,7 +413,7 @@ const FreshConcreteTestsTable = ({
                 </TableCell>
 
                 {/* 28-Day Strength Results */}
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strength1 || 80}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strength1}px`, minWidth: `${columnWidths.strength1}px`}}>
                   <Input
                     className="text-xs text-center px-1 w-full"
                     placeholder="8674"
@@ -475,7 +423,7 @@ const FreshConcreteTestsTable = ({
                     onChange={(e) => handleStrengthDataUpdate(test.id, 'strength1', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strength2 || 80}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strength2}px`, minWidth: `${columnWidths.strength2}px`}}>
                   <Input
                     className="text-xs text-center px-1 w-full"
                     placeholder="8491"
@@ -485,7 +433,7 @@ const FreshConcreteTestsTable = ({
                     onChange={(e) => handleStrengthDataUpdate(test.id, 'strength2', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strength3 || 80}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strength3}px`, minWidth: `${columnWidths.strength3}px`}}>
                   <Input
                     className="text-xs text-center px-1 w-full"
                     placeholder="8532"
@@ -495,12 +443,12 @@ const FreshConcreteTestsTable = ({
                     onChange={(e) => handleStrengthDataUpdate(test.id, 'strength3', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.average || 80}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.average}px`, minWidth: `${columnWidths.average}px`}}>
                   <div className={`h-6 flex items-center justify-center text-sm font-medium bg-gray-50 rounded border px-1 w-full ${getAverageColor(test.id, getFieldValue(test, 'strengthRequired'))}`}>
                     {calculateAverage(test.id) || '--'}
                   </div>
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strengthRequired || 70}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strengthRequired}px`, minWidth: `${columnWidths.strengthRequired}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent text-center w-full"
                     value={getFieldValue(test, 'strengthRequired')}
@@ -508,7 +456,7 @@ const FreshConcreteTestsTable = ({
                     placeholder="5000"
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strengthSubmit || 80}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strengthSubmit}px`, minWidth: `${columnWidths.strengthSubmit}px`}}>
                   {is28DaySubmitted(test.id) ? (
                     <Badge className="bg-green-100 text-green-800 flex items-center gap-1 text-xs px-1 py-0 h-6 w-full justify-center">
                       <CheckCircle className="h-2 w-2" />
@@ -527,21 +475,21 @@ const FreshConcreteTestsTable = ({
                 </TableCell>
 
                 {/* Additional Specifications */}
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.t20 || 70}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.t20}px`, minWidth: `${columnWidths.t20}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent text-center w-full"
                     value={getFieldValue(test, 't20')}
                     onChange={(e) => handleTestDataUpdate(test.id, 't20', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.jRing || 70}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.jRing}px`, minWidth: `${columnWidths.jRing}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent w-full"
                     value={getFieldValue(test, 'jRing')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'jRing', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.staticSegregation || 70}px`}}>
+                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.staticSegregation}px`, minWidth: `${columnWidths.staticSegregation}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent w-full"
                     value={getFieldValue(test, 'staticSegregation')}
