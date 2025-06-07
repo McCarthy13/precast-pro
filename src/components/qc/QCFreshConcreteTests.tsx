@@ -1,9 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Thermometer, FlaskConical, Database, Plus } from "lucide-react";
+import { Thermometer, FlaskConical, Database, Plus, Target } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import FreshConcreteTestsTable from "./fresh-concrete/FreshConcreteTestsTable";
 import FreshConcreteTestsControls from "./fresh-concrete/FreshConcreteTestsControls";
 import CuringTanksTab from "./fresh-concrete/CuringTanksTab";
@@ -14,6 +14,38 @@ const QCFreshConcreteTests = () => {
   const [columnFilters, setColumnFilters] = useState<Record<string, string>>({});
   const [showFilters, setShowFilters] = useState(false);
   const [strengthData, setStrengthData] = useState<Record<string, any>>({});
+  const [submittedRecords, setSubmittedRecords] = useState<any[]>([]);
+
+  // Load submitted records from localStorage
+  useEffect(() => {
+    const records = JSON.parse(localStorage.getItem('freshConcreteTestRecords') || '[]');
+    setSubmittedRecords(records);
+  }, []);
+
+  // Convert submitted records to the format expected by the table
+  const convertedSubmittedRecords = submittedRecords.map(record => ({
+    id: record.id,
+    date: record.testData.date,
+    time: record.testData.time,
+    job: record.testData.job,
+    mixDesign: record.testData.mixDesign,
+    batchTicket: record.testData.batchTicket,
+    pieces: record.testData.pieces,
+    slumpFlow: record.testData.slumpFlow,
+    airContent: record.testData.airContent,
+    ambientTemp: record.testData.ambientTemp,
+    concreteTemp: record.testData.concreteTemp,
+    unitWeight: record.testData.unitWeight,
+    releaseRequired: record.testData.releaseRequired,
+    strengthRequired: record.testData.strengthRequired,
+    yield: record.testData.yield,
+    relativeYield: record.testData.relativeYield,
+    t20: record.testData.t20,
+    jRing: record.testData.jRing,
+    staticSegregation: record.testData.staticSegregation,
+    technician: "System",
+    status: "Submitted"
+  }));
 
   const freshTests = [
     {
@@ -84,7 +116,8 @@ const QCFreshConcreteTests = () => {
       staticSegregation: "Pass",
       technician: "Mike Wilson",
       status: "Submitted"
-    }
+    },
+    ...convertedSubmittedRecords
   ];
 
   const columns = [
@@ -127,6 +160,36 @@ const QCFreshConcreteTests = () => {
     return '';
   };
 
+  const findOldestRecordWithoutStrength = () => {
+    const recordsWithoutStrength = freshTests.filter(test => {
+      const average = calculateAverage(test.id);
+      const isSubmitted = strengthData[test.id]?.strengthSubmitted === 'true';
+      return !average && !isSubmitted;
+    });
+
+    if (recordsWithoutStrength.length === 0) return null;
+
+    return recordsWithoutStrength.sort((a, b) => {
+      const dateA = new Date(`${a.date} ${a.time}`);
+      const dateB = new Date(`${b.date} ${b.time}`);
+      return dateA.getTime() - dateB.getTime();
+    })[0];
+  };
+
+  const scrollToOldestRecord = () => {
+    const oldestRecord = findOldestRecordWithoutStrength();
+    if (oldestRecord) {
+      const element = document.getElementById(`test-row-${oldestRecord.id}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.classList.add('bg-yellow-100');
+        setTimeout(() => {
+          element.classList.remove('bg-yellow-100');
+        }, 3000);
+      }
+    }
+  };
+
   const filteredAndSortedTests = useMemo(() => {
     let filtered = freshTests;
 
@@ -154,7 +217,7 @@ const QCFreshConcreteTests = () => {
       const dateB = new Date(`${b.date} ${b.time}`);
       return sortOrder === 'desc' ? dateB.getTime() - dateA.getTime() : dateA.getTime() - dateB.getTime();
     });
-  }, [searchTerm, columnFilters, sortOrder]);
+  }, [searchTerm, columnFilters, sortOrder, freshTests]);
 
   const clearColumnFilter = (column: string) => {
     setColumnFilters(prev => {
@@ -202,12 +265,23 @@ const QCFreshConcreteTests = () => {
                   <CardTitle>Fresh Concrete Test Records</CardTitle>
                   <CardDescription>Historical record of all fresh concrete tests</CardDescription>
                 </div>
-                <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                  <Link to="/templates/fresh-concrete-test">
-                    <Plus className="h-4 w-4 mr-2" />
-                    New Test Record
-                  </Link>
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline"
+                    onClick={scrollToOldestRecord}
+                    disabled={!findOldestRecordWithoutStrength()}
+                    className="flex items-center"
+                  >
+                    <Target className="h-4 w-4 mr-2" />
+                    Find Oldest Missing Strength
+                  </Button>
+                  <Button asChild className="bg-blue-600 hover:bg-blue-700">
+                    <Link to="/templates/fresh-concrete-test">
+                      <Plus className="h-4 w-4 mr-2" />
+                      New Test Record
+                    </Link>
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">

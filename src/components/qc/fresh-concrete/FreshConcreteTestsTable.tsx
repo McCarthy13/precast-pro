@@ -195,9 +195,13 @@ const FreshConcreteTestsTable = ({
           </TableHeader>
           <TableBody>
             {tests.map((test) => (
-              <TableRow key={test.id} className={
-                (isReleaseSubmitted(test.id) && is28DaySubmitted(test.id)) ? 'bg-green-50' : ''
-              }>
+              <TableRow 
+                key={test.id} 
+                id={`test-row-${test.id}`}
+                className={
+                  (isReleaseSubmitted(test.id) && is28DaySubmitted(test.id)) ? 'bg-green-50' : ''
+                }
+              >
                 <TableCell className="text-xs p-1">{test.date}</TableCell>
                 <TableCell className="text-xs p-1">{test.time}</TableCell>
                 <TableCell className="text-xs p-1 font-medium">{test.job}</TableCell>
