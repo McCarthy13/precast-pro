@@ -1,4 +1,3 @@
-
 import React from "react";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
@@ -153,14 +152,9 @@ const Dashboard = () => {
       <div className="min-h-screen flex w-full">
         <AppSidebar />
         <SidebarInset className="flex-1">
-          <div className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-            <SidebarTrigger className="-ml-1" />
-            <h1 className="text-xl font-semibold">Construction Management Dashboard</h1>
-          </div>
-          
           <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex items-center justify-between space-y-2">
-              <h2 className="text-3xl font-bold tracking-tight">Welcome to ConCrete Solutions</h2>
+              <h2 className="text-3xl font-bold tracking-tight">PrecastPRO</h2>
               <div className="flex items-center space-x-2">
                 <Badge variant="outline">15 Active Departments</Badge>
               </div>
