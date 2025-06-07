@@ -181,12 +181,12 @@ const FreshConcreteTestsTable = ({
               <TableHead className="p-0 h-0"></TableHead>
               <TableHead className="p-0 h-0"></TableHead>
               
-              <TableHead className="w-21 text-xs leading-tight p-1">Release/<br/>Required</TableHead>
+              <TableHead className="w-28 text-xs leading-tight p-1 min-w-28 max-w-28">Release/<br/>Required</TableHead>
               <TableHead className="w-14 text-xs leading-tight p-1">Submit<br/>Release</TableHead>
               <TableHead className="w-20 text-xs leading-tight p-1">28-Day<br/>#1</TableHead>
               <TableHead className="w-20 text-xs leading-tight p-1">28-Day<br/>#2</TableHead>
               <TableHead className="w-20 text-xs leading-tight p-1">28-Day<br/>#3</TableHead>
-              <TableHead className="w-20 text-xs leading-tight p-1">Average/<br/>Required</TableHead>
+              <TableHead className="w-28 text-xs leading-tight p-1 min-w-28 max-w-28">Average/<br/>Required</TableHead>
               <TableHead className="w-14 text-xs leading-tight p-1">Submit<br/>28-Day</TableHead>
               <TableHead className="w-10 text-xs leading-tight p-1">T-20<br/>(sec)</TableHead>
               <TableHead className="w-10 text-xs leading-tight p-1">J-Ring</TableHead>
@@ -212,9 +212,9 @@ const FreshConcreteTestsTable = ({
                 <TableCell className="text-xs p-1 text-center">{test.relativeYield}</TableCell>
                 
                 {/* Release Results */}
-                <TableCell className="p-1">
+                <TableCell className="p-1 w-28 min-w-28 max-w-28">
                   <Input
-                    className={`w-full h-6 text-xs ${getReleaseColor(test.id, test.releaseRequired)}`}
+                    className={`w-full h-6 text-xs px-2 ${getReleaseColor(test.id, test.releaseRequired)}`}
                     placeholder={`5171/${test.releaseRequired || '3500'}`}
                     value={formatReleaseValue(test.id, test.releaseRequired)}
                     disabled={isReleaseSubmitted(test.id)}
@@ -252,7 +252,7 @@ const FreshConcreteTestsTable = ({
                 {/* 28-Day Strength Results */}
                 <TableCell className="p-1">
                   <Input
-                    className="w-full h-6 text-xs text-center"
+                    className="w-full h-6 text-xs text-center px-2"
                     placeholder="8674"
                     value={strengthData[test.id]?.strength1 || ''}
                     disabled={is28DaySubmitted(test.id)}
@@ -262,7 +262,7 @@ const FreshConcreteTestsTable = ({
                 </TableCell>
                 <TableCell className="p-1">
                   <Input
-                    className="w-full h-6 text-xs text-center"
+                    className="w-full h-6 text-xs text-center px-2"
                     placeholder="8491"
                     value={strengthData[test.id]?.strength2 || ''}
                     disabled={is28DaySubmitted(test.id)}
@@ -272,7 +272,7 @@ const FreshConcreteTestsTable = ({
                 </TableCell>
                 <TableCell className="p-1">
                   <Input
-                    className="w-full h-6 text-xs text-center"
+                    className="w-full h-6 text-xs text-center px-2"
                     placeholder="8532"
                     value={strengthData[test.id]?.strength3 || ''}
                     disabled={is28DaySubmitted(test.id)}
@@ -280,8 +280,8 @@ const FreshConcreteTestsTable = ({
                     onChange={(e) => updateStrengthData(test.id, 'strength3', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="p-1">
-                  <div className={`w-full h-6 flex items-center justify-center text-xs font-medium bg-gray-50 rounded border ${getAverageColor(test.id, test.strengthRequired)}`}>
+                <TableCell className="p-1 w-28 min-w-28 max-w-28">
+                  <div className={`w-full h-6 flex items-center justify-center text-xs font-medium bg-gray-50 rounded border px-2 ${getAverageColor(test.id, test.strengthRequired)}`}>
                     {formatAverageValue(test.id, test.strengthRequired)}
                   </div>
                 </TableCell>
