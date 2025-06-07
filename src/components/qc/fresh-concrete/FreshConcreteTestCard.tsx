@@ -63,18 +63,9 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
     staticSegregation: ''
   });
 
-  // Filter forms based on selected date - only show forms with scheduled pieces
+  // Show all precast forms for now since we don't have scheduling module
   const getAvailableFormsForDate = () => {
-    if (!testData.date) {
-      return precastForms; // Show all precast forms if no date selected
-    }
-    
-    // For demo purposes, we'll assume all forms have pieces scheduled for any selected date
-    // In a real application, this would check against actual scheduling data
-    return precastForms.filter(form => {
-      // Check if this form has any scheduled pieces
-      return scheduledPieces[form.name] && scheduledPieces[form.name].length > 0;
-    });
+    return precastForms; // Show all precast forms regardless of date
   };
 
   const updateField = (field: keyof FreshConcreteTestData, value: string | string[]) => {
@@ -276,7 +267,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                 </div>
               </div>
 
-              {/* Pieces Selection - only show if form is selected */}
+              {/* Pieces Selection - show when form is selected */}
               {testData.form && (
                 <PieceSelection
                   scheduledPieces={scheduledPieces}
