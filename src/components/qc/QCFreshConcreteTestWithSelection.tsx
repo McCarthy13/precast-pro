@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,9 +11,16 @@ import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import PieceSelection from './PieceSelection';
 
+interface Piece {
+  id: string;
+  name: string;
+  jobNumber: string;
+  pieceId: string;
+}
+
 interface QCFreshConcreteTestWithSelectionProps {
   departmentName: string;
-  scheduledPieces: { [formName: string]: Array<{ id: string; name: string }> };
+  scheduledPieces: { [formName: string]: Piece[] };
 }
 
 const QCFreshConcreteTestWithSelection: React.FC<QCFreshConcreteTestWithSelectionProps> = ({
