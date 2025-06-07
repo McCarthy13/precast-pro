@@ -14,6 +14,7 @@ import { mixDesigns, batchTickets, scheduledPieces } from './mockData';
 interface FreshConcreteTestData {
   date: string;
   time: string;
+  form: string; // Add form field
   mixDesign: string;
   batchTicket: string;
   pieces: string[];
@@ -44,6 +45,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
   const [testData, setTestData] = useState<FreshConcreteTestData>({
     date: '',
     time: '',
+    form: '', // Add form field
     mixDesign: '',
     batchTicket: '',
     pieces: [],
