@@ -1,4 +1,3 @@
-
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -214,18 +213,35 @@ const FreshConcreteTestsTable = ({
     return strengthData[testId]?.strengthSubmitted === 'true';
   };
 
-  // Helper function to get the form identifier
+  // Helper function to get the form identifier from the actual form data
   const getFormIdentifier = (test: FreshTest) => {
     if (test.formSubmissionId) {
-      // Extract a more readable form identifier from the submission ID
-      const parts = test.formSubmissionId.split('-');
-      if (parts.length >= 2) {
-        return `Form ${parts[0]}-${parts[1]}`;
+      // For submitted forms, extract a meaningful identifier
+      const timestamp = test.formSubmissionId.split('-')[1];
+      if (timestamp) {
+        const date = new Date(parseInt(timestamp));
+        const formattedDate = date.toLocaleDateString('en-US', { 
+          month: '2-digit', 
+          day: '2-digit' 
+        });
+        return `Form ${formattedDate}`;
       }
-      return `Form ${test.formSubmissionId.slice(0, 8)}`;
+      return `Form ${test.formSubmissionId.slice(-6)}`;
     }
-    // Fallback to using first part of test ID
-    return `Form ${test.id.split('-')[1] || 'Unknown'}`;
+    
+    // For existing test data, create a form identifier based on date and batch
+    if (test.date && test.batchTicket) {
+      const date = new Date(test.date);
+      const formattedDate = date.toLocaleDateString('en-US', { 
+        month: '2-digit', 
+        day: '2-digit' 
+      });
+      const batchSuffix = test.batchTicket.slice(-2);
+      return `Form ${formattedDate}-${batchSuffix}`;
+    }
+    
+    // Fallback
+    return `Form ${test.id.slice(-6)}`;
   };
 
   // Helper function to get Pass/Fail color
@@ -394,11 +410,9 @@ const FreshConcreteTestsTable = ({
                   />
                 </TableCell>
                 <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.form}px`, minWidth: `${columnWidths.form}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent font-medium w-full"
-                    value={getFormIdentifier(test)}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'form', e.target.value)}
-                  />
+                  <div className="text-xs px-1 font-medium text-center bg-gray-50 rounded border h-6 flex items-center justify-center">
+                    {getFormIdentifier(test)}
+                  </div>
                 </TableCell>
                 <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.job}px`, minWidth: `${columnWidths.job}px`}}>
                   <Input
