@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -354,7 +353,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                                     onCheckedChange={(checked) => handlePieceToggle(piece.id, checked as boolean)}
                                   />
                                   <Label htmlFor={piece.id} className="text-xs cursor-pointer">
-                                    {piece.name} (Job: {piece.jobNumber}, Piece: {piece.pieceId})
+                                    {piece.jobNumber}-{piece.pieceId}
                                   </Label>
                                 </div>
                               ))}
