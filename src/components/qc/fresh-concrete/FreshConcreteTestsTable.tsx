@@ -180,12 +180,12 @@ const FreshConcreteTestsTable = ({
               <TableHead className="p-0 h-0"></TableHead>
               <TableHead className="p-0 h-0"></TableHead>
               
-              <TableHead className="w-14 text-xs leading-tight p-1">Release/<br/>Required</TableHead>
+              <TableHead className="w-16 text-xs leading-tight p-1">Release/<br/>Required</TableHead>
               <TableHead className="w-14 text-xs leading-tight p-1">Submit<br/>Release</TableHead>
               <TableHead className="w-12 text-xs leading-tight p-1">28-Day<br/>#1</TableHead>
               <TableHead className="w-12 text-xs leading-tight p-1">28-Day<br/>#2</TableHead>
               <TableHead className="w-12 text-xs leading-tight p-1">28-Day<br/>#3</TableHead>
-              <TableHead className="w-18 text-xs leading-tight p-1">Average/<br/>Required</TableHead>
+              <TableHead className="w-16 text-xs leading-tight p-1">Average/<br/>Required</TableHead>
               <TableHead className="w-14 text-xs leading-tight p-1">Submit<br/>28-Day</TableHead>
               <TableHead className="w-10 text-xs leading-tight p-1">T-20<br/>(sec)</TableHead>
               <TableHead className="w-10 text-xs leading-tight p-1">J-Ring</TableHead>
