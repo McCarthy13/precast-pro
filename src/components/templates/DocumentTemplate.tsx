@@ -14,6 +14,7 @@ interface DocumentTemplateProps {
   approvedBy?: string;
   children: React.ReactNode;
   className?: string;
+  fullWidth?: boolean;
 }
 
 const DocumentTemplate = ({
@@ -25,10 +26,11 @@ const DocumentTemplate = ({
   reviewDate,
   approvedBy,
   children,
-  className = ""
+  className = "",
+  fullWidth = false
 }: DocumentTemplateProps) => {
   return (
-    <div className={`max-w-4xl mx-auto p-6 bg-white ${className}`}>
+    <div className={`${fullWidth ? 'w-full px-4' : 'max-w-4xl mx-auto'} p-6 bg-white ${className}`}>
       {/* Header with Logo and Company Info */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-4">

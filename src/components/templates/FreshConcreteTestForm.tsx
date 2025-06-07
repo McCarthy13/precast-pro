@@ -30,6 +30,7 @@ const FreshConcreteTestForm = () => {
         author="Quality Control Department"
         reviewDate="2024-07-15"
         approvedBy="QC Manager"
+        fullWidth={true}
       >
         <FreshConcreteTestCard />
       </DocumentTemplate>
