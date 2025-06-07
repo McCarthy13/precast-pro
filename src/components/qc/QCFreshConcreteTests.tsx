@@ -90,9 +90,9 @@ const QCFreshConcreteTests = () => {
   const columns = [
     { key: 'date', label: 'Date' },
     { key: 'time', label: 'Time' },
-    { key: 'job', label: 'Job' },
     { key: 'mixDesign', label: 'Mix Design' },
     { key: 'batchTicket', label: 'Batch Ticket' },
+    { key: 'job', label: 'Job' },
     { key: 'pieces', label: 'Pieces' },
     { key: 'slumpFlow', label: 'Slump Flow (in)' },
     { key: 'airContent', label: 'Air Content (%)' },
