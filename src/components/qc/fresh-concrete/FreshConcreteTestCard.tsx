@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,6 +23,7 @@ interface FreshConcreteTestData {
   concreteTemp: string;
   unitWeight: string;
   releaseRequired: string;
+  strengthRequired: string;
   yield: string;
   relativeYield: string;
   t20: string;
@@ -51,6 +53,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
     concreteTemp: '',
     unitWeight: '',
     releaseRequired: '',
+    strengthRequired: '',
     yield: '',
     relativeYield: '',
     t20: '',
@@ -322,6 +325,17 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                     value={testData.releaseRequired}
                     onChange={(e) => updateField('releaseRequired', e.target.value)}
                     placeholder="e.g., 3500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="strengthRequired">28-Day Strength Required (psi)</Label>
+                  <Input
+                    id="strengthRequired"
+                    type="number"
+                    value={testData.strengthRequired}
+                    onChange={(e) => updateField('strengthRequired', e.target.value)}
+                    placeholder="e.g., 5000"
                   />
                 </div>
 

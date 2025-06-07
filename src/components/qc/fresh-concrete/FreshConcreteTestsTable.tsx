@@ -1,5 +1,4 @@
 
-
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,6 +19,7 @@ interface FreshTest {
   concreteTemp: string;
   unitWeight: string;
   releaseRequired: string;
+  strengthRequired: string;
   yield: string;
   relativeYield: string;
   t20: string;
@@ -75,12 +75,38 @@ const FreshConcreteTestsTable = ({
     }
   };
 
+  const getAverageColor = (testId: string, strengthRequired: string) => {
+    const average = calculateAverage(testId);
+    if (!average || !strengthRequired) return '';
+    
+    const averageValue = parseFloat(average);
+    const required = parseFloat(strengthRequired);
+    
+    if (isNaN(averageValue) || isNaN(required)) return '';
+    
+    if (averageValue >= required) {
+      return 'text-green-600 font-semibold';
+    } else if (averageValue >= required - 300) {
+      return 'text-yellow-600 font-semibold';
+    } else {
+      return 'text-red-600 font-semibold';
+    }
+  };
+
   const formatReleaseValue = (testId: string, releaseRequired: string) => {
     const releaseActual = strengthData[testId]?.release || '';
     if (!releaseActual) {
       return `/${releaseRequired || '3500'}`;
     }
     return `${releaseActual}/${releaseRequired || '3500'}`;
+  };
+
+  const formatAverageValue = (testId: string, strengthRequired: string) => {
+    const average = calculateAverage(testId);
+    if (!average) {
+      return `/${strengthRequired || '5000'}`;
+    }
+    return `${average}/${strengthRequired || '5000'}`;
   };
 
   const handleSubmitRow = (testId: string) => {
@@ -124,7 +150,7 @@ const FreshConcreteTestsTable = ({
               <TableHead className="text-xs whitespace-nowrap">28-Day Strength 1</TableHead>
               <TableHead className="text-xs whitespace-nowrap">28-Day Strength 2</TableHead>
               <TableHead className="text-xs whitespace-nowrap">28-Day Strength 3</TableHead>
-              <TableHead className="text-xs whitespace-nowrap">Average</TableHead>
+              <TableHead className="text-xs whitespace-nowrap">Average 28-Day Strength/Required</TableHead>
               <TableHead className="text-xs whitespace-nowrap">T-20 (sec)</TableHead>
               <TableHead className="text-xs whitespace-nowrap">J-Ring</TableHead>
               <TableHead className="text-xs whitespace-nowrap">Static Segregation</TableHead>
@@ -195,8 +221,8 @@ const FreshConcreteTestsTable = ({
                   />
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
-                  <div className="w-20 h-8 flex items-center justify-center text-xs font-medium bg-gray-50 rounded border">
-                    {calculateAverage(test.id) || '--'}
+                  <div className={`w-32 h-8 flex items-center justify-center text-xs font-medium bg-gray-50 rounded border ${getAverageColor(test.id, test.strengthRequired)}`}>
+                    {formatAverageValue(test.id, test.strengthRequired)}
                   </div>
                 </TableCell>
 
@@ -242,4 +268,3 @@ const FreshConcreteTestsTable = ({
 };
 
 export default FreshConcreteTestsTable;
-
