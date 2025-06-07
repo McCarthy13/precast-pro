@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -56,7 +57,7 @@ const QCFreshConcreteTests = () => {
       job: "5014",
       mixDesign: "MD-001",
       batchTicket: "2401151",
-      pieces: "C16, C17, B3",
+      pieces: "5014-C0016, 5014-C0017, 5014-B0003",
       slumpFlow: "5.5",
       airContent: "6.2",
       ambientTemp: "72",
@@ -79,7 +80,7 @@ const QCFreshConcreteTests = () => {
       job: "5015",
       mixDesign: "MD-002",
       batchTicket: "2401152",
-      pieces: "W1, W2",
+      pieces: "5015-W0001, 5015-W0002",
       slumpFlow: "4.0",
       airContent: "5.8",
       ambientTemp: "75",
@@ -102,7 +103,7 @@ const QCFreshConcreteTests = () => {
       job: "5016",
       mixDesign: "MD-001",
       batchTicket: "2401143",
-      pieces: "DT1, DT2",
+      pieces: "5016-T0001, 5016-T0002",
       slumpFlow: "6.0",
       airContent: "6.0",
       ambientTemp: "70",

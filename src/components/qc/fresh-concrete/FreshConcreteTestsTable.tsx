@@ -92,6 +92,34 @@ const FreshConcreteTestsTable = ({
     staticSegregation: 90
   };
 
+  // Helper function to format pieces to XXXX-X0000 format
+  const formatPieces = (originalPieces: string, jobNumber: string) => {
+    if (!originalPieces || !jobNumber) return originalPieces;
+    
+    // Split pieces by comma and process each
+    const pieceArray = originalPieces.split(',').map(piece => piece.trim());
+    const formattedPieces = pieceArray.map(piece => {
+      // If already in correct format, return as-is
+      if (/^\d{4}-[A-Z]{1,2}\d{4}$/.test(piece)) {
+        return piece;
+      }
+      
+      // Extract product type letter and number from original format
+      const match = piece.match(/^([A-Z]{1,2})(\d+)$/);
+      if (match) {
+        const productType = match[1];
+        const pieceNumber = match[2].padStart(4, '0');
+        const shortJobNumber = jobNumber.padStart(4, '0');
+        return `${shortJobNumber}-${productType}${pieceNumber}`;
+      }
+      
+      // If format doesn't match expected pattern, return original
+      return piece;
+    });
+    
+    return formattedPieces.join(', ');
+  };
+
   // Group tests by form submission ID to sync 28-day strength data
   const getFormSubmissionGroup = (testId: string) => {
     const test = tests.find(t => t.id === testId);
@@ -257,11 +285,10 @@ const FreshConcreteTestsTable = ({
 
   // Handle filter updates
   const handleFilterChange = (column: string, value: string) => {
-    const updatedFilters = {
+    setColumnFilters({
       ...columnFilters,
       [column]: value
-    };
-    setColumnFilters(updatedFilters);
+    });
   };
 
   return (
@@ -424,7 +451,7 @@ const FreshConcreteTestsTable = ({
                 <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.pieces}px`, minWidth: `${columnWidths.pieces}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent w-full"
-                    value={getFieldValue(test, 'pieces')}
+                    value={formatPieces(getFieldValue(test, 'pieces'), getFieldValue(test, 'job'))}
                     onChange={(e) => handleTestDataUpdate(test.id, 'pieces', e.target.value)}
                   />
                 </TableCell>
