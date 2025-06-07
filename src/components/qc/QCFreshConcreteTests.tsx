@@ -273,7 +273,7 @@ const QCFreshConcreteTests = () => {
                     className="flex items-center"
                   >
                     <Target className="h-4 w-4 mr-2" />
-                    Find Oldest Missing Strength
+                    Input 28-Day Strengths
                   </Button>
                   <Button asChild className="bg-blue-600 hover:bg-blue-700">
                     <Link to="/templates/fresh-concrete-test">
