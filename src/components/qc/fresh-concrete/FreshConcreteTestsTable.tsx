@@ -1,8 +1,11 @@
 
+
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { CheckCircle } from "lucide-react";
 
 interface FreshTest {
   id: string;
@@ -24,6 +27,7 @@ interface FreshTest {
   staticSegregation: string;
   technician: string;
   status: string;
+  submitted?: boolean;
 }
 
 interface Column {
@@ -51,10 +55,13 @@ const FreshConcreteTestsTable = ({
     const releaseData = strengthData[testId]?.release || '';
     if (!releaseData || !releaseRequired) return '';
     
-    const parts = releaseData.split('/');
-    if (parts.length !== 2) return '';
+    // Extract just the numerator part if it contains a slash
+    let actualValue = releaseData;
+    if (releaseData.includes('/')) {
+      actualValue = releaseData.split('/')[0];
+    }
     
-    const actual = parseFloat(parts[0]);
+    const actual = parseFloat(actualValue);
     const required = parseFloat(releaseRequired);
     
     if (isNaN(actual) || isNaN(required)) return '';
@@ -76,6 +83,20 @@ const FreshConcreteTestsTable = ({
     return `${releaseActual}/${releaseRequired || '3500'}`;
   };
 
+  const handleSubmitRow = (testId: string) => {
+    updateStrengthData(testId, 'submitted', 'true');
+    console.log(`Row ${testId} submitted for finalization`);
+  };
+
+  const isRowComplete = (testId: string) => {
+    const data = strengthData[testId];
+    return data?.release && data?.strength1 && data?.strength2 && data?.strength3;
+  };
+
+  const isRowSubmitted = (testId: string) => {
+    return strengthData[testId]?.submitted === 'true';
+  };
+
   return (
     <ScrollArea className="w-full rounded-md border">
       <div className="min-w-[2000px] w-full">
@@ -91,6 +112,9 @@ const FreshConcreteTestsTable = ({
               <TableHead className="text-center font-semibold bg-gray-50 whitespace-nowrap" colSpan={3}>
                 ADDITIONAL SPECIFICATIONS
               </TableHead>
+              <TableHead className="text-center font-semibold bg-green-50 whitespace-nowrap">
+                ACTION
+              </TableHead>
             </TableRow>
             <TableRow>
               {columns.map(() => (
@@ -104,11 +128,12 @@ const FreshConcreteTestsTable = ({
               <TableHead className="text-xs whitespace-nowrap">T-20 (sec)</TableHead>
               <TableHead className="text-xs whitespace-nowrap">J-Ring</TableHead>
               <TableHead className="text-xs whitespace-nowrap">Static Segregation</TableHead>
+              <TableHead className="text-xs whitespace-nowrap">Submit</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {tests.map((test) => (
-              <TableRow key={test.id}>
+              <TableRow key={test.id} className={isRowSubmitted(test.id) ? 'bg-green-50' : ''}>
                 <TableCell className="whitespace-nowrap">{test.date}</TableCell>
                 <TableCell className="whitespace-nowrap">{test.time}</TableCell>
                 <TableCell className="whitespace-nowrap">{test.mixDesign}</TableCell>
@@ -128,6 +153,7 @@ const FreshConcreteTestsTable = ({
                     className={`w-32 h-8 text-xs ${getReleaseColor(test.id, test.releaseRequired)}`}
                     placeholder={`5171/${test.releaseRequired || '3500'}`}
                     value={formatReleaseValue(test.id, test.releaseRequired)}
+                    disabled={isRowSubmitted(test.id)}
                     onChange={(e) => {
                       // Only allow editing the numerator part
                       const value = e.target.value;
@@ -146,6 +172,7 @@ const FreshConcreteTestsTable = ({
                     className="w-24 h-8 text-xs"
                     placeholder="8674"
                     value={strengthData[test.id]?.strength1 || ''}
+                    disabled={isRowSubmitted(test.id)}
                     onChange={(e) => updateStrengthData(test.id, 'strength1', e.target.value)}
                   />
                 </TableCell>
@@ -154,6 +181,7 @@ const FreshConcreteTestsTable = ({
                     className="w-24 h-8 text-xs"
                     placeholder="8491"
                     value={strengthData[test.id]?.strength2 || ''}
+                    disabled={isRowSubmitted(test.id)}
                     onChange={(e) => updateStrengthData(test.id, 'strength2', e.target.value)}
                   />
                 </TableCell>
@@ -162,6 +190,7 @@ const FreshConcreteTestsTable = ({
                     className="w-24 h-8 text-xs"
                     placeholder="8532"
                     value={strengthData[test.id]?.strength3 || ''}
+                    disabled={isRowSubmitted(test.id)}
                     onChange={(e) => updateStrengthData(test.id, 'strength3', e.target.value)}
                   />
                 </TableCell>
@@ -183,6 +212,25 @@ const FreshConcreteTestsTable = ({
                     {test.staticSegregation}
                   </Badge>
                 </TableCell>
+
+                {/* Submit Action */}
+                <TableCell className="whitespace-nowrap">
+                  {isRowSubmitted(test.id) ? (
+                    <Badge className="bg-green-100 text-green-800 flex items-center gap-1">
+                      <CheckCircle className="h-3 w-3" />
+                      Submitted
+                    </Badge>
+                  ) : (
+                    <Button
+                      size="sm"
+                      className="h-8 text-xs"
+                      disabled={!isRowComplete(test.id)}
+                      onClick={() => handleSubmitRow(test.id)}
+                    >
+                      Submit
+                    </Button>
+                  )}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -194,3 +242,4 @@ const FreshConcreteTestsTable = ({
 };
 
 export default FreshConcreteTestsTable;
+
