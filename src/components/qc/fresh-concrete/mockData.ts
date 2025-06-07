@@ -1,4 +1,5 @@
 
+
 // Mock data for Fresh Concrete Test forms
 
 export interface MixDesign {
@@ -88,13 +89,13 @@ export const scheduledPieces: { [formName: string]: Piece[] } = {
     { id: "piece-11", name: "Prestressed Beam", jobNumber: "5020", pieceId: "5020-B05" }
   ],
   "EPB-E": [
-    { id: "piece-12", name: "Precast Panel", jobNumber: "5021", pieceId: "5021-P101" },
-    { id: "piece-13", name: "Precast Panel", jobNumber: "5021", pieceId: "5021-P102" },
-    { id: "piece-14", name: "Precast Panel", jobNumber: "5022", pieceId: "5022-P205" }
+    { id: "piece-12", name: "Solid Slab", jobNumber: "5021", pieceId: "5021-S101" },
+    { id: "piece-13", name: "Solid Slab", jobNumber: "5021", pieceId: "5021-S102" },
+    { id: "piece-14", name: "Solid Slab Section", jobNumber: "5022", pieceId: "5022-SS05" }
   ],
   "EPB-W": [
-    { id: "piece-15", name: "Precast Panel", jobNumber: "5023", pieceId: "5023-P301" },
-    { id: "piece-16", name: "Precast Panel", jobNumber: "5023", pieceId: "5023-P302" }
+    { id: "piece-15", name: "Solid Slab", jobNumber: "5023", pieceId: "5023-S301" },
+    { id: "piece-16", name: "Solid Slab Section", jobNumber: "5023", pieceId: "5023-SS12" }
   ],
   "WPB-E": [
     { id: "piece-17", name: "Wall Panel", jobNumber: "5024", pieceId: "5024-W401" },
@@ -122,3 +123,4 @@ export const scheduledPieces: { [formName: string]: Piece[] } = {
     { id: "piece-31", name: "Stadium Riser", jobNumber: "5032", pieceId: "5032-SR15" }
   ]
 };
+
