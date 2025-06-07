@@ -1,9 +1,8 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { Plus, Filter, Search, Download } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { getFormsByDepartment } from "@/data/productionForms";
@@ -50,27 +49,7 @@ const FreshConcreteTestsControls: React.FC<FreshConcreteTestsControlsProps> = ({
 
   return (
     <Card>
-      <CardHeader>
-        <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
-          <CardTitle className="flex items-center space-x-2">
-            <span>Fresh Concrete Tests</span>
-            <Badge variant="secondary">Quality Control</Badge>
-          </CardTitle>
-          
-          <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
-            <Button onClick={onNewTest} className="bg-blue-600 hover:bg-blue-700">
-              <Plus className="h-4 w-4 mr-2" />
-              New Test
-            </Button>
-            <Button variant="outline" size="sm">
-              <Download className="h-4 w-4 mr-2" />
-              Export
-            </Button>
-          </div>
-        </div>
-      </CardHeader>
-      
-      <CardContent>
+      <CardContent className="pt-6">
         <div className="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4">
           {/* Department Filter */}
           <div className="flex-1">
@@ -117,8 +96,16 @@ const FreshConcreteTestsControls: React.FC<FreshConcreteTestsControlsProps> = ({
             </div>
           </div>
 
-          {/* Additional Filters */}
+          {/* Action Buttons */}
           <div className="flex space-x-2">
+            <Button onClick={onNewTest} className="bg-blue-600 hover:bg-blue-700">
+              <Plus className="h-4 w-4 mr-2" />
+              New Test
+            </Button>
+            <Button variant="outline" size="sm">
+              <Download className="h-4 w-4 mr-2" />
+              Export
+            </Button>
             <Button variant="outline" size="sm">
               <Filter className="h-4 w-4 mr-2" />
               More Filters
