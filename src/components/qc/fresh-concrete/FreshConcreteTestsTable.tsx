@@ -1,4 +1,5 @@
 
+
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -182,9 +183,9 @@ const FreshConcreteTestsTable = ({
               
               <TableHead className="w-21 text-xs leading-tight p-1">Release/<br/>Required</TableHead>
               <TableHead className="w-14 text-xs leading-tight p-1">Submit<br/>Release</TableHead>
-              <TableHead className="w-16 text-xs leading-tight p-1">28-Day<br/>#1</TableHead>
-              <TableHead className="w-16 text-xs leading-tight p-1">28-Day<br/>#2</TableHead>
-              <TableHead className="w-16 text-xs leading-tight p-1">28-Day<br/>#3</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-1">28-Day<br/>#1</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-1">28-Day<br/>#2</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-1">28-Day<br/>#3</TableHead>
               <TableHead className="w-20 text-xs leading-tight p-1">Average/<br/>Required</TableHead>
               <TableHead className="w-14 text-xs leading-tight p-1">Submit<br/>28-Day</TableHead>
               <TableHead className="w-10 text-xs leading-tight p-1">T-20<br/>(sec)</TableHead>
@@ -255,6 +256,7 @@ const FreshConcreteTestsTable = ({
                     placeholder="8674"
                     value={strengthData[test.id]?.strength1 || ''}
                     disabled={is28DaySubmitted(test.id)}
+                    maxLength={5}
                     onChange={(e) => updateStrengthData(test.id, 'strength1', e.target.value)}
                   />
                 </TableCell>
@@ -264,6 +266,7 @@ const FreshConcreteTestsTable = ({
                     placeholder="8491"
                     value={strengthData[test.id]?.strength2 || ''}
                     disabled={is28DaySubmitted(test.id)}
+                    maxLength={5}
                     onChange={(e) => updateStrengthData(test.id, 'strength2', e.target.value)}
                   />
                 </TableCell>
@@ -273,6 +276,7 @@ const FreshConcreteTestsTable = ({
                     placeholder="8532"
                     value={strengthData[test.id]?.strength3 || ''}
                     disabled={is28DaySubmitted(test.id)}
+                    maxLength={5}
                     onChange={(e) => updateStrengthData(test.id, 'strength3', e.target.value)}
                   />
                 </TableCell>
@@ -322,3 +326,4 @@ const FreshConcreteTestsTable = ({
 };
 
 export default FreshConcreteTestsTable;
+
