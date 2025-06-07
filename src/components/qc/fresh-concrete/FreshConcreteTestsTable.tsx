@@ -1,3 +1,4 @@
+
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -67,6 +68,14 @@ const FreshConcreteTestsTable = ({
     }
   };
 
+  const formatReleaseValue = (testId: string, releaseRequired: string) => {
+    const releaseActual = strengthData[testId]?.release || '';
+    if (!releaseActual) {
+      return `/${releaseRequired || '3500'}`;
+    }
+    return `${releaseActual}/${releaseRequired || '3500'}`;
+  };
+
   return (
     <ScrollArea className="w-full rounded-md border">
       <div className="min-w-[2000px] w-full">
@@ -110,7 +119,6 @@ const FreshConcreteTestsTable = ({
                 <TableCell className="whitespace-nowrap">{test.ambientTemp}</TableCell>
                 <TableCell className="whitespace-nowrap">{test.concreteTemp}</TableCell>
                 <TableCell className="whitespace-nowrap">{test.unitWeight}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.releaseRequired}</TableCell>
                 <TableCell className="whitespace-nowrap">{test.yield}</TableCell>
                 <TableCell className="whitespace-nowrap">{test.relativeYield}</TableCell>
                 
@@ -119,8 +127,18 @@ const FreshConcreteTestsTable = ({
                   <Input
                     className={`w-32 h-8 text-xs ${getReleaseColor(test.id, test.releaseRequired)}`}
                     placeholder={`5171/${test.releaseRequired || '3500'}`}
-                    value={strengthData[test.id]?.release || ''}
-                    onChange={(e) => updateStrengthData(test.id, 'release', e.target.value)}
+                    value={formatReleaseValue(test.id, test.releaseRequired)}
+                    onChange={(e) => {
+                      // Only allow editing the numerator part
+                      const value = e.target.value;
+                      const slashIndex = value.lastIndexOf('/');
+                      if (slashIndex !== -1) {
+                        const numerator = value.substring(0, slashIndex);
+                        updateStrengthData(test.id, 'release', numerator);
+                      } else {
+                        updateStrengthData(test.id, 'release', value);
+                      }
+                    }}
                   />
                 </TableCell>
                 <TableCell className="whitespace-nowrap">

@@ -92,7 +92,6 @@ const QCFreshConcreteTests = () => {
     { key: 'ambientTemp', label: 'Ambient Temp (°F)' },
     { key: 'concreteTemp', label: 'Concrete Temp (°F)' },
     { key: 'unitWeight', label: 'Unit Weight (lb/ft³)' },
-    { key: 'releaseRequired', label: 'Release Required (psi)' },
     { key: 'yield', label: 'Yield (ft³/yd³)' },
     { key: 'relativeYield', label: 'Relative Yield' }
   ];
