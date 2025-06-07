@@ -1,4 +1,3 @@
-
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -139,37 +138,57 @@ const FreshConcreteTestsTable = ({
 
   return (
     <ScrollArea className="w-full rounded-md border">
-      <div className="min-w-[2000px] w-full">
+      <div className="min-w-[1600px] w-full">
         <Table>
           <TableHeader>
             <TableRow>
-              {columns.map((column) => (
-                <TableHead key={column.key} className="whitespace-nowrap">{column.label}</TableHead>
-              ))}
-              <TableHead className="text-center font-semibold bg-blue-50 whitespace-nowrap" colSpan={2}>
+              <TableHead className="w-20 text-xs leading-tight p-2">Date</TableHead>
+              <TableHead className="w-16 text-xs leading-tight p-2">Time</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-2">Mix Design</TableHead>
+              <TableHead className="w-24 text-xs leading-tight p-2">Batch Ticket</TableHead>
+              <TableHead className="w-32 text-xs leading-tight p-2">Pieces</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-2">Slump Flow (in)</TableHead>
+              <TableHead className="w-18 text-xs leading-tight p-2">Air Content (%)</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-2">Ambient Temp (°F)</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-2">Concrete Temp (°F)</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-2">Unit Weight (lb/ft³)</TableHead>
+              <TableHead className="w-18 text-xs leading-tight p-2">Yield (ft³/yd³)</TableHead>
+              <TableHead className="w-18 text-xs leading-tight p-2">Relative Yield</TableHead>
+              <TableHead className="text-center font-semibold bg-blue-50 text-xs leading-tight p-2" colSpan={2}>
                 RELEASE RESULTS
               </TableHead>
-              <TableHead className="text-center font-semibold bg-purple-50 whitespace-nowrap" colSpan={4}>
+              <TableHead className="text-center font-semibold bg-purple-50 text-xs leading-tight p-2" colSpan={4}>
                 28-DAY STRENGTH RESULTS
               </TableHead>
-              <TableHead className="text-center font-semibold bg-gray-50 whitespace-nowrap" colSpan={3}>
-                ADDITIONAL SPECIFICATIONS
+              <TableHead className="text-center font-semibold bg-gray-50 text-xs leading-tight p-2" colSpan={3}>
+                ADDITIONAL SPECS
               </TableHead>
             </TableRow>
             <TableRow>
-              {columns.map(() => (
-                <TableHead key="spacer" className="p-0 h-0"></TableHead>
-              ))}
-              <TableHead className="text-xs whitespace-nowrap">Release/Release Required</TableHead>
-              <TableHead className="text-xs whitespace-nowrap">Submit Release</TableHead>
-              <TableHead className="text-xs whitespace-nowrap">28-Day Strength 1</TableHead>
-              <TableHead className="text-xs whitespace-nowrap">28-Day Strength 2</TableHead>
-              <TableHead className="text-xs whitespace-nowrap">28-Day Strength 3</TableHead>
-              <TableHead className="text-xs whitespace-nowrap">Average 28-Day Strength/Required</TableHead>
-              <TableHead className="text-xs whitespace-nowrap">Submit 28-Day</TableHead>
-              <TableHead className="text-xs whitespace-nowrap">T-20 (sec)</TableHead>
-              <TableHead className="text-xs whitespace-nowrap">J-Ring</TableHead>
-              <TableHead className="text-xs whitespace-nowrap">Static Segregation</TableHead>
+              {/* Spacer cells for main columns */}
+              <TableHead className="p-0 h-0"></TableHead>
+              <TableHead className="p-0 h-0"></TableHead>
+              <TableHead className="p-0 h-0"></TableHead>
+              <TableHead className="p-0 h-0"></TableHead>
+              <TableHead className="p-0 h-0"></TableHead>
+              <TableHead className="p-0 h-0"></TableHead>
+              <TableHead className="p-0 h-0"></TableHead>
+              <TableHead className="p-0 h-0"></TableHead>
+              <TableHead className="p-0 h-0"></TableHead>
+              <TableHead className="p-0 h-0"></TableHead>
+              <TableHead className="p-0 h-0"></TableHead>
+              <TableHead className="p-0 h-0"></TableHead>
+              
+              <TableHead className="w-24 text-xs leading-tight p-2">Release/ Required</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-2">Submit Release</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-2">28-Day #1</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-2">28-Day #2</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-2">28-Day #3</TableHead>
+              <TableHead className="w-24 text-xs leading-tight p-2">Average/ Required</TableHead>
+              <TableHead className="w-20 text-xs leading-tight p-2">Submit 28-Day</TableHead>
+              <TableHead className="w-16 text-xs leading-tight p-2">T-20 (sec)</TableHead>
+              <TableHead className="w-16 text-xs leading-tight p-2">J-Ring</TableHead>
+              <TableHead className="w-18 text-xs leading-tight p-2">Static Segregation</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -177,23 +196,23 @@ const FreshConcreteTestsTable = ({
               <TableRow key={test.id} className={
                 (isReleaseSubmitted(test.id) && is28DaySubmitted(test.id)) ? 'bg-green-50' : ''
               }>
-                <TableCell className="whitespace-nowrap">{test.date}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.time}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.mixDesign}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.batchTicket}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.pieces}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.slumpFlow}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.airContent}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.ambientTemp}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.concreteTemp}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.unitWeight}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.yield}</TableCell>
-                <TableCell className="whitespace-nowrap">{test.relativeYield}</TableCell>
+                <TableCell className="text-xs p-2">{test.date}</TableCell>
+                <TableCell className="text-xs p-2">{test.time}</TableCell>
+                <TableCell className="text-xs p-2">{test.mixDesign}</TableCell>
+                <TableCell className="text-xs p-2">{test.batchTicket}</TableCell>
+                <TableCell className="text-xs p-2">{test.pieces}</TableCell>
+                <TableCell className="text-xs p-2">{test.slumpFlow}</TableCell>
+                <TableCell className="text-xs p-2">{test.airContent}</TableCell>
+                <TableCell className="text-xs p-2">{test.ambientTemp}</TableCell>
+                <TableCell className="text-xs p-2">{test.concreteTemp}</TableCell>
+                <TableCell className="text-xs p-2">{test.unitWeight}</TableCell>
+                <TableCell className="text-xs p-2">{test.yield}</TableCell>
+                <TableCell className="text-xs p-2">{test.relativeYield}</TableCell>
                 
                 {/* Release Results */}
-                <TableCell className="whitespace-nowrap">
+                <TableCell className="p-2">
                   <Input
-                    className={`w-32 h-8 text-xs ${getReleaseColor(test.id, test.releaseRequired)}`}
+                    className={`w-full h-7 text-xs ${getReleaseColor(test.id, test.releaseRequired)}`}
                     placeholder={`5171/${test.releaseRequired || '3500'}`}
                     value={formatReleaseValue(test.id, test.releaseRequired)}
                     disabled={isReleaseSubmitted(test.id)}
@@ -210,16 +229,16 @@ const FreshConcreteTestsTable = ({
                     }}
                   />
                 </TableCell>
-                <TableCell className="whitespace-nowrap">
+                <TableCell className="p-2">
                   {isReleaseSubmitted(test.id) ? (
-                    <Badge className="bg-green-100 text-green-800 flex items-center gap-1">
+                    <Badge className="bg-green-100 text-green-800 flex items-center gap-1 text-xs">
                       <CheckCircle className="h-3 w-3" />
-                      Submitted
+                      Done
                     </Badge>
                   ) : (
                     <Button
                       size="sm"
-                      className="h-8 text-xs"
+                      className="h-7 text-xs px-2"
                       disabled={!isReleaseComplete(test.id)}
                       onClick={() => handleSubmitRelease(test.id)}
                     >
@@ -229,48 +248,48 @@ const FreshConcreteTestsTable = ({
                 </TableCell>
 
                 {/* 28-Day Strength Results */}
-                <TableCell className="whitespace-nowrap">
+                <TableCell className="p-2">
                   <Input
-                    className="w-24 h-8 text-xs"
+                    className="w-full h-7 text-xs"
                     placeholder="8674"
                     value={strengthData[test.id]?.strength1 || ''}
                     disabled={is28DaySubmitted(test.id)}
                     onChange={(e) => updateStrengthData(test.id, 'strength1', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="whitespace-nowrap">
+                <TableCell className="p-2">
                   <Input
-                    className="w-24 h-8 text-xs"
+                    className="w-full h-7 text-xs"
                     placeholder="8491"
                     value={strengthData[test.id]?.strength2 || ''}
                     disabled={is28DaySubmitted(test.id)}
                     onChange={(e) => updateStrengthData(test.id, 'strength2', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="whitespace-nowrap">
+                <TableCell className="p-2">
                   <Input
-                    className="w-24 h-8 text-xs"
+                    className="w-full h-7 text-xs"
                     placeholder="8532"
                     value={strengthData[test.id]?.strength3 || ''}
                     disabled={is28DaySubmitted(test.id)}
                     onChange={(e) => updateStrengthData(test.id, 'strength3', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="whitespace-nowrap">
-                  <div className={`w-32 h-8 flex items-center justify-center text-xs font-medium bg-gray-50 rounded border ${getAverageColor(test.id, test.strengthRequired)}`}>
+                <TableCell className="p-2">
+                  <div className={`w-full h-7 flex items-center justify-center text-xs font-medium bg-gray-50 rounded border ${getAverageColor(test.id, test.strengthRequired)}`}>
                     {formatAverageValue(test.id, test.strengthRequired)}
                   </div>
                 </TableCell>
-                <TableCell className="whitespace-nowrap">
+                <TableCell className="p-2">
                   {is28DaySubmitted(test.id) ? (
-                    <Badge className="bg-green-100 text-green-800 flex items-center gap-1">
+                    <Badge className="bg-green-100 text-green-800 flex items-center gap-1 text-xs">
                       <CheckCircle className="h-3 w-3" />
-                      Submitted
+                      Done
                     </Badge>
                   ) : (
                     <Button
                       size="sm"
-                      className="h-8 text-xs"
+                      className="h-7 text-xs px-2"
                       disabled={!is28DayComplete(test.id)}
                       onClick={() => handleSubmit28Day(test.id)}
                     >
@@ -280,14 +299,14 @@ const FreshConcreteTestsTable = ({
                 </TableCell>
 
                 {/* Additional Specifications */}
-                <TableCell className="whitespace-nowrap">{test.t20}</TableCell>
-                <TableCell className="whitespace-nowrap">
-                  <Badge className={test.jRing === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
+                <TableCell className="text-xs p-2">{test.t20}</TableCell>
+                <TableCell className="p-2">
+                  <Badge className={`text-xs ${test.jRing === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
                     {test.jRing}
                   </Badge>
                 </TableCell>
-                <TableCell className="whitespace-nowrap">
-                  <Badge className={test.staticSegregation === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
+                <TableCell className="p-2">
+                  <Badge className={`text-xs ${test.staticSegregation === "Pass" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
                     {test.staticSegregation}
                   </Badge>
                 </TableCell>
