@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -92,6 +91,20 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
     const piecesArray = Array.from(selectedPieces);
     updateField('pieces', piecesArray);
   }, [selectedPieces]);
+
+  const handleSelectAllForms = (checked: boolean) => {
+    if (checked) {
+      const allFormNames = precastForms.map(form => form.name);
+      setSelectedForms(new Set(allFormNames));
+      
+      // Also select all pieces from all forms
+      const allPieceIds = Object.values(scheduledPieces).flat().map(piece => piece.id);
+      setSelectedPieces(new Set(allPieceIds));
+    } else {
+      setSelectedForms(new Set());
+      setSelectedPieces(new Set());
+    }
+  };
 
   const handleFormToggle = (formName: string, checked: boolean) => {
     const newSelection = new Set(selectedForms);
@@ -281,57 +294,76 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                 </div>
               </div>
 
-              {/* Forms/Workspaces Selection */}
+              {/* Forms/Workspaces Selection with Select All */}
               <div className="mt-6">
-                <Label className="text-base font-medium">Select Forms/Workspaces</Label>
-                <div className="mt-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {precastForms.map((form) => (
-                    <div key={form.id} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={form.name}
-                        checked={selectedForms.has(form.name)}
-                        onCheckedChange={(checked) => handleFormToggle(form.name, checked as boolean)}
-                      />
-                      <Label htmlFor={form.name} className="text-sm cursor-pointer">
-                        {form.name}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Pieces Selection - show for selected forms */}
-              {selectedForms.size > 0 && (
-                <div className="mt-6">
-                  <Label className="text-base font-medium">Select Pieces</Label>
-                  <div className="mt-3 space-y-4 max-h-60 overflow-y-auto">
-                    {Array.from(selectedForms).map((formName) => {
-                      const formPieces = scheduledPieces[formName] || [];
-                      if (formPieces.length === 0) return null;
-                      
-                      return (
-                        <div key={formName} className="border rounded-lg p-4">
-                          <h4 className="font-medium text-sm mb-2 text-gray-700">{formName}</h4>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            {formPieces.map((piece) => (
-                              <div key={piece.id} className="flex items-center space-x-2">
-                                <Checkbox
-                                  id={piece.id}
-                                  checked={selectedPieces.has(piece.id)}
-                                  onCheckedChange={(checked) => handlePieceToggle(piece.id, checked as boolean)}
-                                />
-                                <Label htmlFor={piece.id} className="text-xs cursor-pointer">
-                                  {piece.name} (Job: {piece.jobNumber}, Piece: {piece.pieceId})
-                                </Label>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      );
-                    })}
+                <div className="flex items-center justify-between mb-3">
+                  <Label className="text-base font-medium">Select Forms/Workspaces</Label>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="selectAllForms"
+                      checked={selectedForms.size === precastForms.length}
+                      onCheckedChange={(checked) => handleSelectAllForms(checked as boolean)}
+                    />
+                    <Label htmlFor="selectAllForms" className="text-sm cursor-pointer font-medium">
+                      Select All
+                    </Label>
                   </div>
                 </div>
-              )}
+                
+                <div className="space-y-4">
+                  {precastForms.map((form) => {
+                    const formPieces = scheduledPieces[form.name] || [];
+                    const isFormSelected = selectedForms.has(form.name);
+                    
+                    return (
+                      <div key={form.id} className="border rounded-lg p-4">
+                        <div className="flex items-center space-x-2 mb-3">
+                          <Checkbox
+                            id={form.name}
+                            checked={isFormSelected}
+                            onCheckedChange={(checked) => handleFormToggle(form.name, checked as boolean)}
+                          />
+                          <Label htmlFor={form.name} className="text-sm cursor-pointer font-medium">
+                            {form.name}
+                          </Label>
+                          <span className="text-xs text-gray-500">
+                            ({formPieces.length} pieces)
+                          </span>
+                        </div>
+                        
+                        {/* Show pieces when form is selected */}
+                        {isFormSelected && formPieces.length > 0 && (
+                          <div className="ml-6 space-y-2 border-l-2 border-gray-200 pl-4">
+                            <Label className="text-xs font-medium text-gray-600 uppercase tracking-wide">
+                              Pieces for {form.name}
+                            </Label>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                              {formPieces.map((piece) => (
+                                <div key={piece.id} className="flex items-center space-x-2">
+                                  <Checkbox
+                                    id={piece.id}
+                                    checked={selectedPieces.has(piece.id)}
+                                    onCheckedChange={(checked) => handlePieceToggle(piece.id, checked as boolean)}
+                                  />
+                                  <Label htmlFor={piece.id} className="text-xs cursor-pointer">
+                                    {piece.name} (Job: {piece.jobNumber}, Piece: {piece.pieceId})
+                                  </Label>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {isFormSelected && formPieces.length === 0 && (
+                          <div className="ml-6 text-xs text-gray-500 italic">
+                            No pieces scheduled for this form
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
 
             {/* Test Results Section */}
