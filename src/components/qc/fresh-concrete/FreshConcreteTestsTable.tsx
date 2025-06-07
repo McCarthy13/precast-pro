@@ -1,3 +1,4 @@
+
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -240,10 +241,11 @@ const FreshConcreteTestsTable = ({
 
   // Handle filter updates
   const handleFilterChange = (column: string, value: string) => {
-    setColumnFilters(prev => ({
-      ...prev,
+    const updatedFilters = {
+      ...columnFilters,
       [column]: value
-    }));
+    };
+    setColumnFilters(updatedFilters);
   };
 
   return (
