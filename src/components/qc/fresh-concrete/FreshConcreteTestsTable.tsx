@@ -1,4 +1,3 @@
-
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,7 +28,7 @@ interface FreshTest {
   technician: string;
   status: string;
   submitted?: boolean;
-  formSubmissionId?: string; // Added to track which form submission created this record
+  formSubmissionId?: string;
 }
 
 interface Column {
@@ -245,91 +244,91 @@ const FreshConcreteTestsTable = ({
               >
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent"
                     value={getFieldValue(test, 'date')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'date', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent"
                     value={getFieldValue(test, 'time')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'time', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent font-medium"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent font-medium"
                     value={getFieldValue(test, 'job')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'job', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent"
                     value={getFieldValue(test, 'mixDesign')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'mixDesign', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent"
                     value={getFieldValue(test, 'batchTicket')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'batchTicket', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent"
                     value={getFieldValue(test, 'pieces')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'pieces', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent text-center"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent text-center"
                     value={getFieldValue(test, 'slumpFlow')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'slumpFlow', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent text-center"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent text-center"
                     value={getFieldValue(test, 'airContent')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'airContent', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent text-center"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent text-center"
                     value={getFieldValue(test, 'ambientTemp')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'ambientTemp', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent text-center"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent text-center"
                     value={getFieldValue(test, 'concreteTemp')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'concreteTemp', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent text-center"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent text-center"
                     value={getFieldValue(test, 'unitWeight')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'unitWeight', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent text-center"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent text-center"
                     value={getFieldValue(test, 'yield')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'yield', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent text-center"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent text-center"
                     value={getFieldValue(test, 'relativeYield')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'relativeYield', e.target.value)}
                   />
@@ -429,21 +428,21 @@ const FreshConcreteTestsTable = ({
                 {/* Additional Specifications */}
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent text-center"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent text-center"
                     value={getFieldValue(test, 't20')}
                     onChange={(e) => handleTestDataUpdate(test.id, 't20', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent"
                     value={getFieldValue(test, 'jRing')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'jRing', e.target.value)}
                   />
                 </TableCell>
                 <TableCell className="text-xs p-1">
                   <Input
-                    className="w-full h-6 text-xs px-2 border-none bg-transparent"
+                    className="w-full h-6 text-xs px-1 border-none bg-transparent"
                     value={getFieldValue(test, 'staticSegregation')}
                     onChange={(e) => handleTestDataUpdate(test.id, 'staticSegregation', e.target.value)}
                   />
