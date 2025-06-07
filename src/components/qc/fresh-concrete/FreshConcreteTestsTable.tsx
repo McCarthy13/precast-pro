@@ -1,4 +1,3 @@
-
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -192,280 +191,278 @@ const FreshConcreteTestsTable = ({
 
   return (
     <ScrollArea className="w-full rounded-md border">
-      <div className="w-max">
-        <Table className="w-auto">
-          <TableHeader>
-            <TableRow>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Date</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Time</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Job</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Mix<br/>ID</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Batch<br/>#</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Pieces</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Slump<br/>(Flow)<br/>(in)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Air<br/>(%)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Amb<br/>Temp<br/>(°F)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Conc<br/>Temp<br/>(°F)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Unit<br/>Wt<br/>(lb/ft³)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Yield<br/>(ft³)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Rel<br/>Yield</TableHead>
-              <TableHead className="text-center font-semibold bg-blue-50 text-xs leading-tight px-3 py-2" colSpan={2}>
-                RELEASE RESULTS
-              </TableHead>
-              <TableHead className="text-center font-semibold bg-purple-50 text-xs leading-tight px-3 py-2" colSpan={5}>
-                28-DAY STRENGTH RESULTS
-              </TableHead>
-              <TableHead className="text-center font-semibold bg-gray-50 text-xs leading-tight px-3 py-2" colSpan={3}>
-                ADDITIONAL SPECS
-              </TableHead>
-            </TableRow>
-            <TableRow>
-              {/* Spacer cells for main columns */}
-              <TableHead className="p-0 h-0"></TableHead>
-              <TableHead className="p-0 h-0"></TableHead>
-              <TableHead className="p-0 h-0"></TableHead>
-              <TableHead className="p-0 h-0"></TableHead>
-              <TableHead className="p-0 h-0"></TableHead>
-              <TableHead className="p-0 h-0"></TableHead>
-              <TableHead className="p-0 h-0"></TableHead>
-              <TableHead className="p-0 h-0"></TableHead>
-              <TableHead className="p-0 h-0"></TableHead>
-              <TableHead className="p-0 h-0"></TableHead>
-              <TableHead className="p-0 h-0"></TableHead>
-              <TableHead className="p-0 h-0"></TableHead>
-              <TableHead className="p-0 h-0"></TableHead>
+      <Table className="table-auto">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Date</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Time</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Job</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Mix<br/>ID</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Batch<br/>#</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Pieces</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Slump<br/>(Flow)<br/>(in)</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Air<br/>(%)</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Amb<br/>Temp<br/>(°F)</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Conc<br/>Temp<br/>(°F)</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Unit<br/>Wt<br/>(lb/ft³)</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Yield<br/>(ft³)</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Rel<br/>Yield</TableHead>
+            <TableHead className="text-center font-semibold bg-blue-50 text-xs px-2 py-2" colSpan={2}>
+              RELEASE RESULTS
+            </TableHead>
+            <TableHead className="text-center font-semibold bg-purple-50 text-xs px-2 py-2" colSpan={5}>
+              28-DAY STRENGTH RESULTS
+            </TableHead>
+            <TableHead className="text-center font-semibold bg-gray-50 text-xs px-2 py-2" colSpan={3}>
+              ADDITIONAL SPECS
+            </TableHead>
+          </TableRow>
+          <TableRow>
+            {/* Spacer cells for main columns */}
+            <TableHead className="p-0 h-0"></TableHead>
+            <TableHead className="p-0 h-0"></TableHead>
+            <TableHead className="p-0 h-0"></TableHead>
+            <TableHead className="p-0 h-0"></TableHead>
+            <TableHead className="p-0 h-0"></TableHead>
+            <TableHead className="p-0 h-0"></TableHead>
+            <TableHead className="p-0 h-0"></TableHead>
+            <TableHead className="p-0 h-0"></TableHead>
+            <TableHead className="p-0 h-0"></TableHead>
+            <TableHead className="p-0 h-0"></TableHead>
+            <TableHead className="p-0 h-0"></TableHead>
+            <TableHead className="p-0 h-0"></TableHead>
+            <TableHead className="p-0 h-0"></TableHead>
+            
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Release/<br/>Required</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Submit<br/>Release</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">28-Day<br/>#1</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">28-Day<br/>#2</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">28-Day<br/>#3</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Average/<br/>Required</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Submit<br/>28-Day</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">T-20<br/>(sec)</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">J-Ring</TableHead>
+            <TableHead className="px-2 py-2 text-xs whitespace-nowrap">Static<br/>Seg</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {tests.map((test) => (
+            <TableRow 
+              key={test.id} 
+              id={`test-row-${test.id}`}
+              className={
+                (isReleaseSubmitted(test.id) && is28DaySubmitted(test.id)) ? 'bg-green-50' : ''
+              }
+            >
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent"
+                  value={formatDate(getFieldValue(test, 'date'))}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'date', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent"
+                  value={getFieldValue(test, 'time')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'time', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent font-medium"
+                  value={getFieldValue(test, 'job')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'job', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent"
+                  value={getFieldValue(test, 'mixDesign')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'mixDesign', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent"
+                  value={getFieldValue(test, 'batchTicket')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'batchTicket', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent"
+                  value={getFieldValue(test, 'pieces')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'pieces', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent text-center"
+                  value={getFieldValue(test, 'slumpFlow')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'slumpFlow', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent text-center"
+                  value={getFieldValue(test, 'airContent')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'airContent', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent text-center"
+                  value={getFieldValue(test, 'ambientTemp')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'ambientTemp', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent text-center"
+                  value={getFieldValue(test, 'concreteTemp')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'concreteTemp', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent text-center"
+                  value={getFieldValue(test, 'unitWeight')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'unitWeight', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent text-center"
+                  value={getFieldValue(test, 'yield')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'yield', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent text-center"
+                  value={getFieldValue(test, 'relativeYield')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'relativeYield', e.target.value)}
+                />
+              </TableCell>
               
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Release/<br/>Required</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Submit<br/>Release</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">28-Day<br/>#1</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">28-Day<br/>#2</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">28-Day<br/>#3</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Average/<br/>Required</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Submit<br/>28-Day</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">T-20<br/>(sec)</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">J-Ring</TableHead>
-              <TableHead className="px-3 py-2 text-xs leading-tight whitespace-nowrap">Static<br/>Seg</TableHead>
+              {/* Release Results */}
+              <TableCell className="px-1 py-1">
+                <Input
+                  className={`h-6 text-[10px] px-1 ${getReleaseColor(test.id, getFieldValue(test, 'releaseRequired'))}`}
+                  placeholder={`5171/${getFieldValue(test, 'releaseRequired') || '3500'}`}
+                  value={formatReleaseValue(test.id, getFieldValue(test, 'releaseRequired'))}
+                  disabled={isReleaseSubmitted(test.id)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const slashIndex = value.lastIndexOf('/');
+                    if (slashIndex !== -1) {
+                      const numerator = value.substring(0, slashIndex);
+                      handleStrengthDataUpdate(test.id, 'release', numerator);
+                    } else {
+                      handleStrengthDataUpdate(test.id, 'release', value);
+                    }
+                  }}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                {isReleaseSubmitted(test.id) ? (
+                  <Badge className="bg-green-100 text-green-800 flex items-center gap-1 text-[10px] px-1 py-0 h-6">
+                    <CheckCircle className="h-2 w-2" />
+                    Done
+                  </Badge>
+                ) : (
+                  <Button
+                    size="sm"
+                    className="h-6 text-[10px] px-2"
+                    disabled={!isReleaseComplete(test.id)}
+                    onClick={() => handleSubmitRelease(test.id)}
+                  >
+                    Submit
+                  </Button>
+                )}
+              </TableCell>
+
+              {/* 28-Day Strength Results */}
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] text-center px-1"
+                  placeholder="8674"
+                  value={strengthData[test.id]?.strength1 || ''}
+                  disabled={is28DaySubmitted(test.id)}
+                  maxLength={5}
+                  onChange={(e) => handleStrengthDataUpdate(test.id, 'strength1', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] text-center px-1"
+                  placeholder="8491"
+                  value={strengthData[test.id]?.strength2 || ''}
+                  disabled={is28DaySubmitted(test.id)}
+                  maxLength={5}
+                  onChange={(e) => handleStrengthDataUpdate(test.id, 'strength2', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] text-center px-1"
+                  placeholder="8532"
+                  value={strengthData[test.id]?.strength3 || ''}
+                  disabled={is28DaySubmitted(test.id)}
+                  maxLength={5}
+                  onChange={(e) => handleStrengthDataUpdate(test.id, 'strength3', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <div className={`h-6 flex items-center justify-center text-[10px] font-medium bg-gray-50 rounded border px-1 ${getAverageColor(test.id, getFieldValue(test, 'strengthRequired'))}`}>
+                  {formatAverageValue(test.id, getFieldValue(test, 'strengthRequired'))}
+                </div>
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                {is28DaySubmitted(test.id) ? (
+                  <Badge className="bg-green-100 text-green-800 flex items-center gap-1 text-[10px] px-1 py-0 h-6">
+                    <CheckCircle className="h-2 w-2" />
+                    Done
+                  </Badge>
+                ) : (
+                  <Button
+                    size="sm"
+                    className="h-6 text-[10px] px-2"
+                    disabled={!is28DayComplete(test.id)}
+                    onClick={() => handleSubmit28Day(test.id)}
+                  >
+                    Submit
+                  </Button>
+                )}
+              </TableCell>
+
+              {/* Additional Specifications */}
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent text-center"
+                  value={getFieldValue(test, 't20')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 't20', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent"
+                  value={getFieldValue(test, 'jRing')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'jRing', e.target.value)}
+                />
+              </TableCell>
+              <TableCell className="px-1 py-1">
+                <Input
+                  className="h-6 text-[10px] px-1 border-none bg-transparent"
+                  value={getFieldValue(test, 'staticSegregation')}
+                  onChange={(e) => handleTestDataUpdate(test.id, 'staticSegregation', e.target.value)}
+                />
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {tests.map((test) => (
-              <TableRow 
-                key={test.id} 
-                id={`test-row-${test.id}`}
-                className={
-                  (isReleaseSubmitted(test.id) && is28DaySubmitted(test.id)) ? 'bg-green-50' : ''
-                }
-              >
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent"
-                    value={formatDate(getFieldValue(test, 'date'))}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'date', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent"
-                    value={getFieldValue(test, 'time')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'time', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent font-medium"
-                    value={getFieldValue(test, 'job')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'job', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent"
-                    value={getFieldValue(test, 'mixDesign')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'mixDesign', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent"
-                    value={getFieldValue(test, 'batchTicket')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'batchTicket', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent"
-                    value={getFieldValue(test, 'pieces')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'pieces', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent text-center"
-                    value={getFieldValue(test, 'slumpFlow')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'slumpFlow', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent text-center"
-                    value={getFieldValue(test, 'airContent')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'airContent', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent text-center"
-                    value={getFieldValue(test, 'ambientTemp')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'ambientTemp', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent text-center"
-                    value={getFieldValue(test, 'concreteTemp')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'concreteTemp', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent text-center"
-                    value={getFieldValue(test, 'unitWeight')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'unitWeight', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent text-center"
-                    value={getFieldValue(test, 'yield')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'yield', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent text-center"
-                    value={getFieldValue(test, 'relativeYield')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'relativeYield', e.target.value)}
-                  />
-                </TableCell>
-                
-                {/* Release Results */}
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className={`w-full h-6 text-[10px] px-1 ${getReleaseColor(test.id, getFieldValue(test, 'releaseRequired'))}`}
-                    placeholder={`5171/${getFieldValue(test, 'releaseRequired') || '3500'}`}
-                    value={formatReleaseValue(test.id, getFieldValue(test, 'releaseRequired'))}
-                    disabled={isReleaseSubmitted(test.id)}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      const slashIndex = value.lastIndexOf('/');
-                      if (slashIndex !== -1) {
-                        const numerator = value.substring(0, slashIndex);
-                        handleStrengthDataUpdate(test.id, 'release', numerator);
-                      } else {
-                        handleStrengthDataUpdate(test.id, 'release', value);
-                      }
-                    }}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  {isReleaseSubmitted(test.id) ? (
-                    <Badge className="bg-green-100 text-green-800 flex items-center gap-1 text-[10px] px-1 py-0 h-6">
-                      <CheckCircle className="h-2 w-2" />
-                      Done
-                    </Badge>
-                  ) : (
-                    <Button
-                      size="sm"
-                      className="h-6 text-[10px] px-2"
-                      disabled={!isReleaseComplete(test.id)}
-                      onClick={() => handleSubmitRelease(test.id)}
-                    >
-                      Submit
-                    </Button>
-                  )}
-                </TableCell>
-
-                {/* 28-Day Strength Results */}
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] text-center px-1"
-                    placeholder="8674"
-                    value={strengthData[test.id]?.strength1 || ''}
-                    disabled={is28DaySubmitted(test.id)}
-                    maxLength={5}
-                    onChange={(e) => handleStrengthDataUpdate(test.id, 'strength1', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] text-center px-1"
-                    placeholder="8491"
-                    value={strengthData[test.id]?.strength2 || ''}
-                    disabled={is28DaySubmitted(test.id)}
-                    maxLength={5}
-                    onChange={(e) => handleStrengthDataUpdate(test.id, 'strength2', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] text-center px-1"
-                    placeholder="8532"
-                    value={strengthData[test.id]?.strength3 || ''}
-                    disabled={is28DaySubmitted(test.id)}
-                    maxLength={5}
-                    onChange={(e) => handleStrengthDataUpdate(test.id, 'strength3', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <div className={`w-full h-6 flex items-center justify-center text-[10px] font-medium bg-gray-50 rounded border px-1 ${getAverageColor(test.id, getFieldValue(test, 'strengthRequired'))}`}>
-                    {formatAverageValue(test.id, getFieldValue(test, 'strengthRequired'))}
-                  </div>
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  {is28DaySubmitted(test.id) ? (
-                    <Badge className="bg-green-100 text-green-800 flex items-center gap-1 text-[10px] px-1 py-0 h-6">
-                      <CheckCircle className="h-2 w-2" />
-                      Done
-                    </Badge>
-                  ) : (
-                    <Button
-                      size="sm"
-                      className="h-6 text-[10px] px-2"
-                      disabled={!is28DayComplete(test.id)}
-                      onClick={() => handleSubmit28Day(test.id)}
-                    >
-                      Submit
-                    </Button>
-                  )}
-                </TableCell>
-
-                {/* Additional Specifications */}
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent text-center"
-                    value={getFieldValue(test, 't20')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 't20', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent"
-                    value={getFieldValue(test, 'jRing')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'jRing', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-2 py-1">
-                  <Input
-                    className="w-full h-6 text-[10px] px-1 border-none bg-transparent"
-                    value={getFieldValue(test, 'staticSegregation')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'staticSegregation', e.target.value)}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+          ))}
+        </TableBody>
+      </Table>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>
   );
