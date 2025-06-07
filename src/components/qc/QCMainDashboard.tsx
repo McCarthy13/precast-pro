@@ -18,56 +18,61 @@ const QCMainDashboard = () => {
     moistureTestsToday: 18
   };
 
-  const departmentStats = [
+  const firstPassQualityStats = [
     {
       name: "Wall Panels",
       route: "/qc/wall-panels",
-      icon: Factory,
       color: "blue",
-      inspections: 32,
-      passRate: 96.2,
-      freshTests: 8,
-      status: "active"
+      stats: {
+        last7Days: { passRate: 96.8, totalPieces: 245, failedPieces: 8 },
+        last30Days: { passRate: 95.2, totalPieces: 1024, failedPieces: 49 },
+        last90Days: { passRate: 94.7, totalPieces: 3150, failedPieces: 167 },
+        last12Months: { passRate: 94.1, totalPieces: 12890, failedPieces: 761 }
+      }
     },
     {
       name: "Precast", 
       route: "/qc/precast",
-      icon: Factory,
       color: "green", 
-      inspections: 28,
-      passRate: 93.8,
-      freshTests: 12,
-      status: "active"
+      stats: {
+        last7Days: { passRate: 94.5, totalPieces: 189, failedPieces: 10 },
+        last30Days: { passRate: 93.8, totalPieces: 782, failedPieces: 48 },
+        last90Days: { passRate: 93.1, totalPieces: 2456, failedPieces: 169 },
+        last12Months: { passRate: 92.8, totalPieces: 9874, failedPieces: 711 }
+      }
     },
     {
       name: "Extruded",
       route: "/qc/extruded", 
-      icon: Factory,
       color: "purple",
-      inspections: 24,
-      passRate: 94.5,
-      freshTests: 10,
-      status: "active"
+      stats: {
+        last7Days: { passRate: 97.2, totalPieces: 324, failedPieces: 9 },
+        last30Days: { passRate: 96.1, totalPieces: 1356, failedPieces: 53 },
+        last90Days: { passRate: 95.4, totalPieces: 4120, failedPieces: 189 },
+        last12Months: { passRate: 94.9, totalPieces: 16480, failedPieces: 841 }
+      }
     },
     {
       name: "Flexicore",
       route: "/qc/flexicore",
-      icon: Factory, 
       color: "orange",
-      inspections: 19,
-      passRate: 92.1,
-      freshTests: 7,
-      status: "active"
+      stats: {
+        last7Days: { passRate: 92.8, totalPieces: 167, failedPieces: 12 },
+        last30Days: { passRate: 91.5, totalPieces: 689, failedPieces: 59 },
+        last90Days: { passRate: 90.9, totalPieces: 2134, failedPieces: 194 },
+        last12Months: { passRate: 90.3, totalPieces: 8567, failedPieces: 831 }
+      }
     },
     {
       name: "Double Tees",
       route: "/qc/double-tees",
-      icon: Factory,
       color: "red", 
-      inspections: 15,
-      passRate: 95.8,
-      freshTests: 5,
-      status: "active"
+      stats: {
+        last7Days: { passRate: 98.1, totalPieces: 124, failedPieces: 2 },
+        last30Days: { passRate: 97.4, totalPieces: 487, failedPieces: 13 },
+        last90Days: { passRate: 96.8, totalPieces: 1456, failedPieces: 47 },
+        last12Months: { passRate: 96.2, totalPieces: 5892, failedPieces: 224 }
+      }
     }
   ];
 
@@ -116,49 +121,75 @@ const QCMainDashboard = () => {
         </Card>
       </div>
 
-      {/* Department Navigation */}
+      {/* First Pass Quality Statistics */}
       <Card>
         <CardHeader>
-          <CardTitle>QC by Production Department</CardTitle>
-          <CardDescription>Access quality control operations for each production department</CardDescription>
+          <CardTitle>First Pass Quality Statistics by Department</CardTitle>
+          <CardDescription>Quality performance metrics across different time periods</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {departmentStats.map((dept) => {
-              const IconComponent = dept.icon;
-              return (
-                <Card key={dept.name} className={`module-card-hover border-l-4 border-l-${dept.color}-600 cursor-pointer hover:shadow-lg transition-shadow`}>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center space-x-3">
-                        <IconComponent className={`h-6 w-6 text-${dept.color}-600`} />
-                        <h3 className="font-semibold text-lg">{dept.name}</h3>
-                      </div>
-                      <Badge className={`bg-${dept.color}-100 text-${dept.color}-800`}>
-                        {dept.passRate}%
-                      </Badge>
-                    </div>
-                    
-                    <div className="space-y-2 mb-4">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Inspections Today:</span>
-                        <span className="font-medium">{dept.inspections}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Fresh Tests:</span>
-                        <span className="font-medium">{dept.freshTests}</span>
-                      </div>
-                    </div>
-                    
+          <div className="space-y-6">
+            {firstPassQualityStats.map((dept) => (
+              <Card key={dept.name} className={`border-l-4 border-l-${dept.color}-600`}>
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg">{dept.name}</CardTitle>
                     <Link to={dept.route}>
-                      <Button className={`w-full bg-${dept.color}-600 hover:bg-${dept.color}-700`}>
-                        Enter {dept.name} QC
+                      <Button size="sm" className={`bg-${dept.color}-600 hover:bg-${dept.color}-700`}>
+                        View Details
                       </Button>
                     </Link>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {/* Last 7 Days */}
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="text-sm font-medium text-gray-600 mb-2">Last 7 Days</div>
+                      <div className={`text-2xl font-bold text-${dept.color}-600 mb-1`}>
+                        {dept.stats.last7Days.passRate}%
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {dept.stats.last7Days.totalPieces} pieces | {dept.stats.last7Days.failedPieces} failed
+                      </div>
+                    </div>
+
+                    {/* Last 30 Days */}
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="text-sm font-medium text-gray-600 mb-2">Last 30 Days</div>
+                      <div className={`text-2xl font-bold text-${dept.color}-600 mb-1`}>
+                        {dept.stats.last30Days.passRate}%
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {dept.stats.last30Days.totalPieces} pieces | {dept.stats.last30Days.failedPieces} failed
+                      </div>
+                    </div>
+
+                    {/* Last 90 Days */}
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="text-sm font-medium text-gray-600 mb-2">Last 90 Days</div>
+                      <div className={`text-2xl font-bold text-${dept.color}-600 mb-1`}>
+                        {dept.stats.last90Days.passRate}%
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {dept.stats.last90Days.totalPieces} pieces | {dept.stats.last90Days.failedPieces} failed
+                      </div>
+                    </div>
+
+                    {/* Last 12 Months */}
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="text-sm font-medium text-gray-600 mb-2">Last 12 Months</div>
+                      <div className={`text-2xl font-bold text-${dept.color}-600 mb-1`}>
+                        {dept.stats.last12Months.passRate}%
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {dept.stats.last12Months.totalPieces} pieces | {dept.stats.last12Months.failedPieces} failed
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </CardContent>
       </Card>
