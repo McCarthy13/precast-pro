@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,12 +10,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import PieceSelection from '../PieceSelection';
-import { mixDesigns, batchTickets, scheduledPieces, allForms } from './mockData';
+import { mixDesigns, batchTickets, scheduledPieces, precastForms } from './mockData';
 
 interface FreshConcreteTestData {
   date: string;
   time: string;
-  form: string; // Add form field
+  form: string;
   mixDesign: string;
   batchTicket: string;
   pieces: string[];
@@ -45,7 +46,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
   const [testData, setTestData] = useState<FreshConcreteTestData>({
     date: '',
     time: '',
-    form: '', // Add form field
+    form: '',
     mixDesign: '',
     batchTicket: '',
     pieces: [],
@@ -66,12 +67,12 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
   // Filter forms based on selected date - only show forms with scheduled pieces
   const getAvailableFormsForDate = () => {
     if (!testData.date) {
-      return allForms; // Show all forms if no date selected
+      return precastForms; // Show all precast forms if no date selected
     }
     
     // For demo purposes, we'll assume all forms have pieces scheduled for any selected date
     // In a real application, this would check against actual scheduling data
-    return allForms.filter(form => {
+    return precastForms.filter(form => {
       // Check if this form has any scheduled pieces
       return scheduledPieces[form.name] && scheduledPieces[form.name].length > 0;
     });
