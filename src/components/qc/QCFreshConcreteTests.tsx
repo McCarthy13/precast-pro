@@ -15,6 +15,8 @@ const QCFreshConcreteTests = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [strengthData, setStrengthData] = useState<Record<string, any>>({});
   const [submittedRecords, setSubmittedRecords] = useState<any[]>([]);
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedForm, setSelectedForm] = useState('');
 
   // Load submitted records from localStorage
   useEffect(() => {
@@ -233,6 +235,11 @@ const QCFreshConcreteTests = () => {
     setSearchTerm('');
   };
 
+  const handleNewTest = () => {
+    // Navigate to new test form
+    window.location.href = '/templates/fresh-concrete-test';
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -287,17 +294,13 @@ const QCFreshConcreteTests = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <FreshConcreteTestsControls
+                onNewTest={handleNewTest}
+                selectedDepartment={selectedDepartment}
+                onDepartmentChange={setSelectedDepartment}
+                selectedForm={selectedForm}
+                onFormChange={setSelectedForm}
                 searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                showFilters={showFilters}
-                setShowFilters={setShowFilters}
-                columnFilters={columnFilters}
-                setColumnFilters={setColumnFilters}
-                sortOrder={sortOrder}
-                setSortOrder={setSortOrder}
-                columns={columns}
-                clearColumnFilter={clearColumnFilter}
-                clearAllFilters={clearAllFilters}
+                onSearchChange={setSearchTerm}
               />
 
               <FreshConcreteTestsTable
