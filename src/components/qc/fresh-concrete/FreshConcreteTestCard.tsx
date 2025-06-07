@@ -137,6 +137,9 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
       existingRecords.push(...records);
       localStorage.setItem('freshConcreteTestRecords', JSON.stringify(existingRecords));
 
+      // Dispatch custom event to notify other components of the update
+      window.dispatchEvent(new CustomEvent('freshConcreteRecordsUpdated'));
+
       console.log('Fresh concrete test records created:', records);
 
       toast({
