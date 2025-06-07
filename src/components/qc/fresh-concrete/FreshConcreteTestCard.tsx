@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -110,6 +111,13 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
     const newSelection = new Set(selectedForms);
     if (checked) {
       newSelection.add(formName);
+      // Auto-select all pieces from this form
+      const formPieces = scheduledPieces[formName] || [];
+      const newPieceSelection = new Set(selectedPieces);
+      formPieces.forEach(piece => {
+        newPieceSelection.add(piece.id);
+      });
+      setSelectedPieces(newPieceSelection);
     } else {
       newSelection.delete(formName);
       // Also remove all pieces from this form
@@ -294,10 +302,10 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                 </div>
               </div>
 
-              {/* Forms/Workspaces Selection with Select All */}
+              {/* Forms/Workspaces Selection with Always Visible Pieces */}
               <div className="mt-6">
                 <div className="flex items-center justify-between mb-3">
-                  <Label className="text-base font-medium">Select Forms/Workspaces</Label>
+                  <Label className="text-base font-medium">Select Forms/Workspaces and Pieces</Label>
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="selectAllForms"
@@ -331,8 +339,8 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                           </span>
                         </div>
                         
-                        {/* Show pieces when form is selected */}
-                        {isFormSelected && formPieces.length > 0 && (
+                        {/* Always show pieces for each form */}
+                        {formPieces.length > 0 && (
                           <div className="ml-6 space-y-2 border-l-2 border-gray-200 pl-4">
                             <Label className="text-xs font-medium text-gray-600 uppercase tracking-wide">
                               Pieces for {form.name}
@@ -354,7 +362,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                           </div>
                         )}
                         
-                        {isFormSelected && formPieces.length === 0 && (
+                        {formPieces.length === 0 && (
                           <div className="ml-6 text-xs text-gray-500 italic">
                             No pieces scheduled for this form
                           </div>
