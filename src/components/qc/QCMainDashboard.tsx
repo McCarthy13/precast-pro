@@ -7,17 +7,6 @@ import { Factory, FlaskConical, Droplets, BarChart3, TrendingUp, AlertTriangle, 
 import { Link } from "react-router-dom";
 
 const QCMainDashboard = () => {
-  const overallMetrics = {
-    totalInspections: 156,
-    pendingInspections: 23,
-    passedToday: 18,
-    failedToday: 2,
-    overdueInspections: 5,
-    averagePassRate: 94.2,
-    freshTestsToday: 42,
-    moistureTestsToday: 18
-  };
-
   const firstPassQualityStats = [
     {
       name: "Wall Panels",
@@ -78,121 +67,57 @@ const QCMainDashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Overall QC Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="module-card-hover border-l-4 border-l-blue-600">
-          <CardContent className="p-4">
-            <div className="text-center">
-              <Factory className="h-6 w-6 mx-auto mb-2 text-blue-600" />
-              <div className="text-2xl font-bold text-blue-600">{overallMetrics.pendingInspections}</div>
-              <div className="text-xs text-gray-600">Total Pending</div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="module-card-hover border-l-4 border-l-green-600">
-          <CardContent className="p-4">
-            <div className="text-center">
-              <CheckCircle className="h-6 w-6 mx-auto mb-2 text-green-600" />
-              <div className="text-2xl font-bold text-green-600">{overallMetrics.averagePassRate}%</div>
-              <div className="text-xs text-gray-600">Overall Pass Rate</div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="module-card-hover border-l-4 border-l-purple-600">
-          <CardContent className="p-4">
-            <div className="text-center">
-              <FlaskConical className="h-6 w-6 mx-auto mb-2 text-purple-600" />
-              <div className="text-2xl font-bold text-purple-600">{overallMetrics.freshTestsToday}</div>
-              <div className="text-xs text-gray-600">Fresh Tests Today</div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="module-card-hover border-l-4 border-l-orange-600">
-          <CardContent className="p-4">
-            <div className="text-center">
-              <AlertTriangle className="h-6 w-6 mx-auto mb-2 text-orange-600" />
-              <div className="text-2xl font-bold text-orange-600">{overallMetrics.overdueInspections}</div>
-              <div className="text-xs text-gray-600">Overdue Items</div>
-            </div>
-          </CardContent>
-        </Card>
+      {/* First Pass Quality Statistics - replacing the metric boxes */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        {firstPassQualityStats.map((dept) => (
+          <Card key={dept.name} className={`module-card-hover border-l-4 border-l-${dept.color}-600`}>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">{dept.name}</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 pt-0">
+              <div className="space-y-3">
+                {/* Last 7 Days */}
+                <div className="text-center">
+                  <div className={`text-lg font-bold text-${dept.color}-600`}>
+                    {dept.stats.last7Days.passRate}%
+                  </div>
+                  <div className="text-xs text-gray-600">Last 7 Days</div>
+                </div>
+                
+                {/* Last 30 Days */}
+                <div className="text-center">
+                  <div className={`text-lg font-bold text-${dept.color}-600`}>
+                    {dept.stats.last30Days.passRate}%
+                  </div>
+                  <div className="text-xs text-gray-600">Last 30 Days</div>
+                </div>
+                
+                {/* Last 90 Days */}
+                <div className="text-center">
+                  <div className={`text-lg font-bold text-${dept.color}-600`}>
+                    {dept.stats.last90Days.passRate}%
+                  </div>
+                  <div className="text-xs text-gray-600">Last 90 Days</div>
+                </div>
+                
+                {/* Last 12 Months */}
+                <div className="text-center">
+                  <div className={`text-lg font-bold text-${dept.color}-600`}>
+                    {dept.stats.last12Months.passRate}%
+                  </div>
+                  <div className="text-xs text-gray-600">Last 12 Months</div>
+                </div>
+
+                <Link to={dept.route}>
+                  <Button size="sm" className={`w-full bg-${dept.color}-600 hover:bg-${dept.color}-700`}>
+                    View Details
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
-
-      {/* First Pass Quality Statistics */}
-      <Card>
-        <CardHeader>
-          <CardTitle>First Pass Quality Statistics by Department</CardTitle>
-          <CardDescription>Quality performance metrics across different time periods</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-6">
-            {firstPassQualityStats.map((dept) => (
-              <Card key={dept.name} className={`border-l-4 border-l-${dept.color}-600`}>
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg">{dept.name}</CardTitle>
-                    <Link to={dept.route}>
-                      <Button size="sm" className={`bg-${dept.color}-600 hover:bg-${dept.color}-700`}>
-                        View Details
-                      </Button>
-                    </Link>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {/* Last 7 Days */}
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="text-sm font-medium text-gray-600 mb-2">Last 7 Days</div>
-                      <div className={`text-2xl font-bold text-${dept.color}-600 mb-1`}>
-                        {dept.stats.last7Days.passRate}%
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {dept.stats.last7Days.totalPieces} pieces | {dept.stats.last7Days.failedPieces} failed
-                      </div>
-                    </div>
-
-                    {/* Last 30 Days */}
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="text-sm font-medium text-gray-600 mb-2">Last 30 Days</div>
-                      <div className={`text-2xl font-bold text-${dept.color}-600 mb-1`}>
-                        {dept.stats.last30Days.passRate}%
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {dept.stats.last30Days.totalPieces} pieces | {dept.stats.last30Days.failedPieces} failed
-                      </div>
-                    </div>
-
-                    {/* Last 90 Days */}
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="text-sm font-medium text-gray-600 mb-2">Last 90 Days</div>
-                      <div className={`text-2xl font-bold text-${dept.color}-600 mb-1`}>
-                        {dept.stats.last90Days.passRate}%
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {dept.stats.last90Days.totalPieces} pieces | {dept.stats.last90Days.failedPieces} failed
-                      </div>
-                    </div>
-
-                    {/* Last 12 Months */}
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="text-sm font-medium text-gray-600 mb-2">Last 12 Months</div>
-                      <div className={`text-2xl font-bold text-${dept.color}-600 mb-1`}>
-                        {dept.stats.last12Months.passRate}%
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {dept.stats.last12Months.totalPieces} pieces | {dept.stats.last12Months.failedPieces} failed
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
