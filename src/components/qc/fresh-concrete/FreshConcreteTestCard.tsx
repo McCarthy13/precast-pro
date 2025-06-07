@@ -349,7 +349,7 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
                                   onCheckedChange={(checked) => handlePieceToggle(piece.id, checked as boolean)}
                                 />
                                 <Label htmlFor={piece.id} className="text-xs cursor-pointer">
-                                  {piece.jobNumber}-{piece.pieceId}
+                                  {piece.pieceId}
                                 </Label>
                               </div>
                             ))}
