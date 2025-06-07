@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Plus, Search, Download, Filter } from "lucide-react";
+import { Search, Download, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 interface FreshConcreteTestsControlsProps {
@@ -32,10 +32,6 @@ const FreshConcreteTestsControls: React.FC<FreshConcreteTestsControlsProps> = ({
 
       {/* Action Buttons */}
       <div className="flex space-x-2">
-        <Button onClick={onNewTest} className="bg-blue-600 hover:bg-blue-700">
-          <Plus className="h-4 w-4 mr-2" />
-          New Test
-        </Button>
         <Button variant="outline" size="sm">
           <Download className="h-4 w-4 mr-2" />
           Export
