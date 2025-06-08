@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -223,7 +224,7 @@ const QCFreshConcreteTests = () => {
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4 px-2">
+            <CardContent className="space-y-4 px-1">
               {/* Search and Controls */}
               <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                 <div className="flex items-center gap-2">
