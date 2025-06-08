@@ -312,7 +312,7 @@ const QCFreshConcreteTests = () => {
                 </div>
               )}
 
-              <div className="overflow-x-auto -mx-2">
+              <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
