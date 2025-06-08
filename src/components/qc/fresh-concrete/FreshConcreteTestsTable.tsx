@@ -1,3 +1,4 @@
+
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -72,7 +73,7 @@ const FreshConcreteTestsTable = ({
     mixDesign: 80,
     batchTicket: 90,
     form: 100,
-    job: 70,
+    job: 80,
     pieces: 120,
     slumpFlow: 90,
     airContent: 70,
@@ -249,37 +250,6 @@ const FreshConcreteTestsTable = ({
     return strengthData[testId]?.strengthSubmitted === 'true';
   };
 
-  // Helper function to get the form identifier from the actual form data
-  const getFormIdentifier = (test: FreshTest) => {
-    if (test.formSubmissionId) {
-      // For submitted forms, extract a meaningful identifier
-      const timestamp = test.formSubmissionId.split('-')[1];
-      if (timestamp) {
-        const date = new Date(parseInt(timestamp));
-        const formattedDate = date.toLocaleDateString('en-US', { 
-          month: '2-digit', 
-          day: '2-digit' 
-        });
-        return `Form ${formattedDate}`;
-      }
-      return `Form ${test.formSubmissionId.slice(-6)}`;
-    }
-    
-    // For existing test data, create a form identifier based on date and batch
-    if (test.date && test.batchTicket) {
-      const date = new Date(test.date);
-      const formattedDate = date.toLocaleDateString('en-US', { 
-        month: '2-digit', 
-        day: '2-digit' 
-      });
-      const batchSuffix = test.batchTicket.slice(-2);
-      return `Form ${formattedDate}-${batchSuffix}`;
-    }
-    
-    // Fallback
-    return `Form ${test.id.slice(-6)}`;
-  };
-
   // Helper function to get Pass/Fail color
   const getPassFailColor = (value: string) => {
     const normalizedValue = value.toLowerCase().trim();
@@ -297,6 +267,21 @@ const FreshConcreteTestsTable = ({
       ...columnFilters,
       [column]: value
     });
+  };
+
+  // Filter out sub-lines since we'll display multiple jobs/pieces within single rows
+  const mainTests = tests.filter(test => !test.isSubLine);
+
+  // Helper function to get all jobs and pieces for a form
+  const getJobsAndPiecesForForm = (mainTest: FreshTest) => {
+    const relatedTests = tests.filter(test => 
+      test.formSubmissionId === mainTest.formSubmissionId || test.id === mainTest.id
+    );
+    
+    const jobs = relatedTests.map(test => test.job).filter(Boolean);
+    const pieces = relatedTests.map(test => formatPieces(test.pieces)).filter(Boolean);
+    
+    return { jobs: [...new Set(jobs)], pieces };
   };
 
   return (
@@ -408,269 +393,242 @@ const FreshConcreteTestsTable = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {tests.map((test) => (
-              <TableRow 
-                key={test.id} 
-                id={`test-row-${test.id}`}
-                className={`
-                  ${(isReleaseSubmitted(test.id) && is28DaySubmitted(test.id)) ? 'bg-green-50' : ''}
-                  ${test.isSubLine ? 'bg-gray-25 border-l-4 border-l-blue-300' : ''}
-                `}
-              >
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.date}px`, minWidth: `${columnWidths.date}px`}}>
-                  {test.isSubLine ? (
-                    <div className="text-xs px-1 py-1 text-gray-500">↳</div>
-                  ) : (
+            {mainTests.map((test) => {
+              const { jobs, pieces } = getJobsAndPiecesForForm(test);
+              
+              return (
+                <TableRow 
+                  key={test.id} 
+                  id={`test-row-${test.id}`}
+                  className={`
+                    ${(isReleaseSubmitted(test.id) && is28DaySubmitted(test.id)) ? 'bg-green-50' : ''}
+                  `}
+                >
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.date}px`, minWidth: `${columnWidths.date}px`}}>
                     <Input
                       className="text-xs px-1 border-none bg-transparent w-full"
                       value={formatDate(getFieldValue(test, 'date'))}
                       onChange={(e) => handleTestDataUpdate(test.id, 'date', e.target.value)}
                     />
-                  )}
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.time}px`, minWidth: `${columnWidths.time}px`}}>
-                  {test.isSubLine ? (
-                    <div className="text-xs px-1 py-1 text-gray-500"></div>
-                  ) : (
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.time}px`, minWidth: `${columnWidths.time}px`}}>
                     <Input
                       className="text-xs px-1 border-none bg-transparent w-full"
                       value={getFieldValue(test, 'time')}
                       onChange={(e) => handleTestDataUpdate(test.id, 'time', e.target.value)}
                     />
-                  )}
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.mixDesign}px`, minWidth: `${columnWidths.mixDesign}px`}}>
-                  {test.isSubLine ? (
-                    <div className="text-xs px-1 py-1 text-gray-500"></div>
-                  ) : (
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.mixDesign}px`, minWidth: `${columnWidths.mixDesign}px`}}>
                     <Input
                       className="text-xs px-1 border-none bg-transparent w-full"
                       value={getFieldValue(test, 'mixDesign')}
                       onChange={(e) => handleTestDataUpdate(test.id, 'mixDesign', e.target.value)}
                     />
-                  )}
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.batchTicket}px`, minWidth: `${columnWidths.batchTicket}px`}}>
-                  {test.isSubLine ? (
-                    <div className="text-xs px-1 py-1 text-gray-500"></div>
-                  ) : (
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.batchTicket}px`, minWidth: `${columnWidths.batchTicket}px`}}>
                     <Input
                       className="text-xs px-1 border-none bg-transparent w-full"
                       value={getFieldValue(test, 'batchTicket')}
                       onChange={(e) => handleTestDataUpdate(test.id, 'batchTicket', e.target.value)}
                     />
-                  )}
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.form}px`, minWidth: `${columnWidths.form}px`}}>
-                  {test.isSubLine ? (
-                    <div className="text-xs px-1 py-1 text-gray-500"></div>
-                  ) : (
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.form}px`, minWidth: `${columnWidths.form}px`}}>
                     <div className="text-xs px-1 font-medium text-center bg-gray-50 rounded border h-6 flex items-center justify-center">
                       {test.form}
                     </div>
-                  )}
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.job}px`, minWidth: `${columnWidths.job}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent font-medium w-full"
-                    value={getFieldValue(test, 'job')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'job', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.pieces}px`, minWidth: `${columnWidths.pieces}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent w-full"
-                    value={formatPieces(getFieldValue(test, 'pieces'))}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'pieces', e.target.value)}
-                  />
-                </TableCell>
-                
-                {/* For sub-lines, show empty cells for test data that's shared from parent */}
-                {test.isSubLine ? (
-                  <>
-                    {/* Empty cells for shared test data */}
-                    {Array.from({length: 7}, (_, i) => (
-                      <TableCell key={`empty-${i}`} className="px-1 py-1 whitespace-nowrap">
-                        <div className="text-xs px-1 py-1 text-gray-400 text-center">—</div>
-                      </TableCell>
-                    ))}
-                  </>
-                ) : (
-                  <>
-                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.slumpFlow}px`, minWidth: `${columnWidths.slumpFlow}px`}}>
-                      <Input
-                        className="text-xs px-1 border-none bg-transparent text-center w-full"
-                        value={getFieldValue(test, 'slumpFlow')}
-                        onChange={(e) => handleTestDataUpdate(test.id, 'slumpFlow', e.target.value)}
-                      />
-                    </TableCell>
-                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.airContent}px`, minWidth: `${columnWidths.airContent}px`}}>
-                      <Input
-                        className="text-xs px-1 border-none bg-transparent text-center w-full"
-                        value={getFieldValue(test, 'airContent')}
-                        onChange={(e) => handleTestDataUpdate(test.id, 'airContent', e.target.value)}
-                      />
-                    </TableCell>
-                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.ambientTemp}px`, minWidth: `${columnWidths.ambientTemp}px`}}>
-                      <Input
-                        className="text-xs px-1 border-none bg-transparent text-center w-full"
-                        value={getFieldValue(test, 'ambientTemp')}
-                        onChange={(e) => handleTestDataUpdate(test.id, 'ambientTemp', e.target.value)}
-                      />
-                    </TableCell>
-                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.concreteTemp}px`, minWidth: `${columnWidths.concreteTemp}px`}}>
-                      <Input
-                        className="text-xs px-1 border-none bg-transparent text-center w-full"
-                        value={getFieldValue(test, 'concreteTemp')}
-                        onChange={(e) => handleTestDataUpdate(test.id, 'concreteTemp', e.target.value)}
-                      />
-                    </TableCell>
-                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.unitWeight}px`, minWidth: `${columnWidths.unitWeight}px`}}>
-                      <Input
-                        className="text-xs px-1 border-none bg-transparent text-center w-full"
-                        value={getFieldValue(test, 'unitWeight')}
-                        onChange={(e) => handleTestDataUpdate(test.id, 'unitWeight', e.target.value)}
-                      />
-                    </TableCell>
-                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.yield}px`, minWidth: `${columnWidths.yield}px`}}>
-                      <Input
-                        className="text-xs px-1 border-none bg-transparent text-center w-full"
-                        value={getFieldValue(test, 'yield')}
-                        onChange={(e) => handleTestDataUpdate(test.id, 'yield', e.target.value)}
-                      />
-                    </TableCell>
-                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.relativeYield}px`, minWidth: `${columnWidths.relativeYield}px`}}>
-                      <Input
-                        className="text-xs px-1 border-none bg-transparent text-center w-full"
-                        value={getFieldValue(test, 'relativeYield')}
-                        onChange={(e) => handleTestDataUpdate(test.id, 'relativeYield', e.target.value)}
-                      />
-                    </TableCell>
-                  </>
-                )}
-                
-                {/* Release Results */}
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.release}px`, minWidth: `${columnWidths.release}px`}}>
-                  <Input
-                    className={`text-xs px-1 text-center w-full ${getReleaseColor(test.id, getFieldValue(test, 'releaseRequired'))}`}
-                    placeholder="5171"
-                    value={strengthData[test.id]?.release || ''}
-                    disabled={isReleaseSubmitted(test.id)}
-                    onChange={(e) => handleStrengthDataUpdate(test.id, 'release', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.releaseRequired}px`, minWidth: `${columnWidths.releaseRequired}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent text-center w-full"
-                    value={getFieldValue(test, 'releaseRequired')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'releaseRequired', e.target.value)}
-                    placeholder="3500"
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.releaseSubmit}px`, minWidth: `${columnWidths.releaseSubmit}px`}}>
-                  {isReleaseSubmitted(test.id) ? (
-                    <Badge className="bg-green-100 text-green-800 flex items-center gap-1 text-xs px-1 py-0 h-6 w-full justify-center">
-                      <CheckCircle className="h-2 w-2" />
-                      Done
-                    </Badge>
-                  ) : (
-                    <Button
-                      size="sm"
-                      className="h-6 text-xs px-2 w-full"
-                      disabled={!isReleaseComplete(test.id)}
-                      onClick={() => handleSubmitRelease(test.id)}
-                    >
-                      Submit
-                    </Button>
-                  )}
-                </TableCell>
+                  </TableCell>
+                  <TableCell className="px-1 py-1" style={{width: `${columnWidths.job}px`, minWidth: `${columnWidths.job}px`}}>
+                    <div className="text-xs px-1 space-y-0.5">
+                      {jobs.map((job, index) => (
+                        <div key={index} className="font-medium">
+                          {job}
+                        </div>
+                      ))}
+                    </div>
+                  </TableCell>
+                  <TableCell className="px-1 py-1" style={{width: `${columnWidths.pieces}px`, minWidth: `${columnWidths.pieces}px`}}>
+                    <div className="text-xs px-1 space-y-0.5">
+                      {pieces.map((pieceGroup, index) => (
+                        <div key={index}>
+                          {pieceGroup}
+                        </div>
+                      ))}
+                    </div>
+                  </TableCell>
+                  
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.slumpFlow}px`, minWidth: `${columnWidths.slumpFlow}px`}}>
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent text-center w-full"
+                      value={getFieldValue(test, 'slumpFlow')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'slumpFlow', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.airContent}px`, minWidth: `${columnWidths.airContent}px`}}>
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent text-center w-full"
+                      value={getFieldValue(test, 'airContent')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'airContent', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.ambientTemp}px`, minWidth: `${columnWidths.ambientTemp}px`}}>
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent text-center w-full"
+                      value={getFieldValue(test, 'ambientTemp')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'ambientTemp', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.concreteTemp}px`, minWidth: `${columnWidths.concreteTemp}px`}}>
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent text-center w-full"
+                      value={getFieldValue(test, 'concreteTemp')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'concreteTemp', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.unitWeight}px`, minWidth: `${columnWidths.unitWeight}px`}}>
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent text-center w-full"
+                      value={getFieldValue(test, 'unitWeight')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'unitWeight', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.yield}px`, minWidth: `${columnWidths.yield}px`}}>
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent text-center w-full"
+                      value={getFieldValue(test, 'yield')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'yield', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.relativeYield}px`, minWidth: `${columnWidths.relativeYield}px`}}>
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent text-center w-full"
+                      value={getFieldValue(test, 'relativeYield')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'relativeYield', e.target.value)}
+                    />
+                  </TableCell>
+                  
+                  {/* Release Results */}
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.release}px`, minWidth: `${columnWidths.release}px`}}>
+                    <Input
+                      className={`text-xs px-1 text-center w-full ${getReleaseColor(test.id, getFieldValue(test, 'releaseRequired'))}`}
+                      placeholder="5171"
+                      value={strengthData[test.id]?.release || ''}
+                      disabled={isReleaseSubmitted(test.id)}
+                      onChange={(e) => handleStrengthDataUpdate(test.id, 'release', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.releaseRequired}px`, minWidth: `${columnWidths.releaseRequired}px`}}>
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent text-center w-full"
+                      value={getFieldValue(test, 'releaseRequired')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'releaseRequired', e.target.value)}
+                      placeholder="3500"
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.releaseSubmit}px`, minWidth: `${columnWidths.releaseSubmit}px`}}>
+                    {isReleaseSubmitted(test.id) ? (
+                      <Badge className="bg-green-100 text-green-800 flex items-center gap-1 text-xs px-1 py-0 h-6 w-full justify-center">
+                        <CheckCircle className="h-2 w-2" />
+                        Done
+                      </Badge>
+                    ) : (
+                      <Button
+                        size="sm"
+                        className="h-6 text-xs px-2 w-full"
+                        disabled={!isReleaseComplete(test.id)}
+                        onClick={() => handleSubmitRelease(test.id)}
+                      >
+                        Submit
+                      </Button>
+                    )}
+                  </TableCell>
 
-                {/* 28-Day Strength Results */}
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strength1}px`, minWidth: `${columnWidths.strength1}px`}}>
-                  <Input
-                    className="text-xs text-center px-1 w-full"
-                    placeholder="8674"
-                    value={strengthData[test.id]?.strength1 || ''}
-                    disabled={is28DaySubmitted(test.id)}
-                    maxLength={5}
-                    onChange={(e) => handleStrengthDataUpdate(test.id, 'strength1', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strength2}px`, minWidth: `${columnWidths.strength2}px`}}>
-                  <Input
-                    className="text-xs text-center px-1 w-full"
-                    placeholder="8491"
-                    value={strengthData[test.id]?.strength2 || ''}
-                    disabled={is28DaySubmitted(test.id)}
-                    maxLength={5}
-                    onChange={(e) => handleStrengthDataUpdate(test.id, 'strength2', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strength3}px`, minWidth: `${columnWidths.strength3}px`}}>
-                  <Input
-                    className="text-xs text-center px-1 w-full"
-                    placeholder="8532"
-                    value={strengthData[test.id]?.strength3 || ''}
-                    disabled={is28DaySubmitted(test.id)}
-                    maxLength={5}
-                    onChange={(e) => handleStrengthDataUpdate(test.id, 'strength3', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.average}px`, minWidth: `${columnWidths.average}px`}}>
-                  <div className={`h-6 flex items-center justify-center text-sm font-medium bg-gray-50 rounded border px-1 w-full ${getAverageColor(test.id, getFieldValue(test, 'strengthRequired'))}`}>
-                    {calculateAverage(test.id) || '--'}
-                  </div>
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strengthRequired}px`, minWidth: `${columnWidths.strengthRequired}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent text-center w-full"
-                    value={getFieldValue(test, 'strengthRequired')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'strengthRequired', e.target.value)}
-                    placeholder="5000"
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strengthSubmit}px`, minWidth: `${columnWidths.strengthSubmit}px`}}>
-                  {is28DaySubmitted(test.id) ? (
-                    <Badge className="bg-green-100 text-green-800 flex items-center gap-1 text-xs px-1 py-0 h-6 w-full justify-center">
-                      <CheckCircle className="h-2 w-2" />
-                      Done
-                    </Badge>
-                  ) : (
-                    <Button
-                      size="sm"
-                      className="h-6 text-xs px-2 w-full"
-                      disabled={!is28DayComplete(test.id)}
-                      onClick={() => handleSubmit28Day(test.id)}
-                    >
-                      Submit
-                    </Button>
-                  )}
-                </TableCell>
+                  {/* 28-Day Strength Results */}
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strength1}px`, minWidth: `${columnWidths.strength1}px`}}>
+                    <Input
+                      className="text-xs text-center px-1 w-full"
+                      placeholder="8674"
+                      value={strengthData[test.id]?.strength1 || ''}
+                      disabled={is28DaySubmitted(test.id)}
+                      maxLength={5}
+                      onChange={(e) => handleStrengthDataUpdate(test.id, 'strength1', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strength2}px`, minWidth: `${columnWidths.strength2}px`}}>
+                    <Input
+                      className="text-xs text-center px-1 w-full"
+                      placeholder="8491"
+                      value={strengthData[test.id]?.strength2 || ''}
+                      disabled={is28DaySubmitted(test.id)}
+                      maxLength={5}
+                      onChange={(e) => handleStrengthDataUpdate(test.id, 'strength2', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strength3}px`, minWidth: `${columnWidths.strength3}px`}}>
+                    <Input
+                      className="text-xs text-center px-1 w-full"
+                      placeholder="8532"
+                      value={strengthData[test.id]?.strength3 || ''}
+                      disabled={is28DaySubmitted(test.id)}
+                      maxLength={5}
+                      onChange={(e) => handleStrengthDataUpdate(test.id, 'strength3', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.average}px`, minWidth: `${columnWidths.average}px`}}>
+                    <div className={`h-6 flex items-center justify-center text-sm font-medium bg-gray-50 rounded border px-1 w-full ${getAverageColor(test.id, getFieldValue(test, 'strengthRequired'))}`}>
+                      {calculateAverage(test.id) || '--'}
+                    </div>
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strengthRequired}px`, minWidth: `${columnWidths.strengthRequired}px`}}>
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent text-center w-full"
+                      value={getFieldValue(test, 'strengthRequired')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'strengthRequired', e.target.value)}
+                      placeholder="5000"
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.strengthSubmit}px`, minWidth: `${columnWidths.strengthSubmit}px`}}>
+                    {is28DaySubmitted(test.id) ? (
+                      <Badge className="bg-green-100 text-green-800 flex items-center gap-1 text-xs px-1 py-0 h-6 w-full justify-center">
+                        <CheckCircle className="h-2 w-2" />
+                        Done
+                      </Badge>
+                    ) : (
+                      <Button
+                        size="sm"
+                        className="h-6 text-xs px-2 w-full"
+                        disabled={!is28DayComplete(test.id)}
+                        onClick={() => handleSubmit28Day(test.id)}
+                      >
+                        Submit
+                      </Button>
+                    )}
+                  </TableCell>
 
-                {/* Additional Specifications */}
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.t20}px`, minWidth: `${columnWidths.t20}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent text-center w-full"
-                    value={getFieldValue(test, 't20')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 't20', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.jRing}px`, minWidth: `${columnWidths.jRing}px`}}>
-                  <Input
-                    className={`text-xs px-1 border-none bg-transparent w-full ${getPassFailColor(getFieldValue(test, 'jRing'))}`}
-                    value={getFieldValue(test, 'jRing')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'jRing', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.staticSegregation}px`, minWidth: `${columnWidths.staticSegregation}px`}}>
-                  <Input
-                    className={`text-xs px-1 border-none bg-transparent w-full ${getPassFailColor(getFieldValue(test, 'staticSegregation'))}`}
-                    value={getFieldValue(test, 'staticSegregation')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'staticSegregation', e.target.value)}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
+                  {/* Additional Specifications */}
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.t20}px`, minWidth: `${columnWidths.t20}px`}}>
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent text-center w-full"
+                      value={getFieldValue(test, 't20')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 't20', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.jRing}px`, minWidth: `${columnWidths.jRing}px`}}>
+                    <Input
+                      className={`text-xs px-1 border-none bg-transparent w-full ${getPassFailColor(getFieldValue(test, 'jRing'))}`}
+                      value={getFieldValue(test, 'jRing')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'jRing', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.staticSegregation}px`, minWidth: `${columnWidths.staticSegregation}px`}}>
+                    <Input
+                      className={`text-xs px-1 border-none bg-transparent w-full ${getPassFailColor(getFieldValue(test, 'staticSegregation'))}`}
+                      value={getFieldValue(test, 'staticSegregation')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'staticSegregation', e.target.value)}
+                    />
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
         <ScrollBar orientation="horizontal" />
