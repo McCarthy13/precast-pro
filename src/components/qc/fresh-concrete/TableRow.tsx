@@ -19,6 +19,7 @@ interface FreshConcreteTableRowProps {
   is28DayComplete: (testId: string) => boolean;
   handleSubmitRelease: (testId: string) => void;
   handleSubmit28Day: (testId: string) => void;
+  groupIndex: number;
 }
 
 const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
@@ -33,7 +34,8 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
   isReleaseComplete,
   is28DayComplete,
   handleSubmitRelease,
-  handleSubmit28Day
+  handleSubmit28Day,
+  groupIndex
 }) => {
   const { mainTest, hierarchy } = group;
 
@@ -60,10 +62,17 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
             const formReleaseKey = `${mainTest.id}_${formGroup.form}`;
             
             const rowElement = (
-              <TableRow key={`${mainTest.id}-${formIndex}-${jobIndex}-${pieceIndex}`} id={`test-row-${mainTest.id}`}>
+              <TableRow 
+                key={`${mainTest.id}-${formIndex}-${jobIndex}-${pieceIndex}`} 
+                id={`test-row-${mainTest.id}`}
+                className={`
+                  ${groupIndex % 2 === 0 ? 'bg-white' : 'bg-gray-25'} 
+                  hover:bg-blue-25 transition-colors border-b border-gray-100
+                `}
+              >
                 {/* Date - only show on first row */}
                 <TableCell 
-                  className="px-2 py-1 text-xs border-r border-gray-200" 
+                  className="px-1 py-2 text-xs font-medium" 
                   style={{width: `${columnWidths.date}px`, minWidth: `${columnWidths.date}px`}}
                   rowSpan={isFirstRowOfGroup ? totalRows : undefined}
                 >
@@ -72,7 +81,7 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
 
                 {/* Time - only show on first row */}
                 <TableCell 
-                  className="px-2 py-1 text-xs border-r border-gray-200" 
+                  className="px-1 py-2 text-xs" 
                   style={{width: `${columnWidths.time}px`, minWidth: `${columnWidths.time}px`}}
                   rowSpan={isFirstRowOfGroup ? totalRows : undefined}
                 >
@@ -81,7 +90,7 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
 
                 {/* Mix Design - only show on first row */}
                 <TableCell 
-                  className="px-2 py-1 text-xs border-r border-gray-200" 
+                  className="px-1 py-2 text-xs" 
                   style={{width: `${columnWidths.mixDesign}px`, minWidth: `${columnWidths.mixDesign}px`}}
                   rowSpan={isFirstRowOfGroup ? totalRows : undefined}
                 >
@@ -90,7 +99,7 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
 
                 {/* Batch Ticket - only show on first row */}
                 <TableCell 
-                  className="px-2 py-1 text-xs border-r border-gray-200" 
+                  className="px-1 py-2 text-xs" 
                   style={{width: `${columnWidths.batchTicket}px`, minWidth: `${columnWidths.batchTicket}px`}}
                   rowSpan={isFirstRowOfGroup ? totalRows : undefined}
                 >
@@ -99,7 +108,7 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
 
                 {/* Form - show on first row of each form */}
                 <TableCell 
-                  className="px-2 py-1 text-xs font-medium border-r border-gray-200" 
+                  className="px-1 py-2 text-xs font-semibold bg-blue-50" 
                   style={{width: `${columnWidths.form}px`, minWidth: `${columnWidths.form}px`}}
                   rowSpan={isFirstRowOfJob ? pieceRows * formGroup.jobs.length : undefined}
                 >
@@ -108,7 +117,7 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
 
                 {/* Job - show on first row of each job */}
                 <TableCell 
-                  className="px-2 py-1 text-xs border-r border-gray-200" 
+                  className="px-1 py-2 text-xs font-medium" 
                   style={{width: `${columnWidths.job}px`, minWidth: `${columnWidths.job}px`}}
                   rowSpan={pieceIndex === 0 ? pieceRows : undefined}
                 >
@@ -117,7 +126,7 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
 
                 {/* Pieces - show individual pieces */}
                 <TableCell 
-                  className="px-2 py-1 text-xs border-r border-gray-200" 
+                  className="px-1 py-2 text-xs" 
                   style={{width: `${columnWidths.pieces}px`, minWidth: `${columnWidths.pieces}px`}}
                 >
                   {piece}
@@ -126,13 +135,13 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
                 {/* Test Results - only show on first row */}
                 {isFirstRowOfGroup && (
                   <>
-                    <TableCell className="px-2 py-1 text-xs border-r border-gray-200" style={{width: `${columnWidths.slumpFlow}px`, minWidth: `${columnWidths.slumpFlow}px`}} rowSpan={totalRows}>{mainTest.slumpFlow}</TableCell>
-                    <TableCell className="px-2 py-1 text-xs border-r border-gray-200" style={{width: `${columnWidths.airContent}px`, minWidth: `${columnWidths.airContent}px`}} rowSpan={totalRows}>{mainTest.airContent}</TableCell>
-                    <TableCell className="px-2 py-1 text-xs border-r border-gray-200" style={{width: `${columnWidths.ambientTemp}px`, minWidth: `${columnWidths.ambientTemp}px`}} rowSpan={totalRows}>{mainTest.ambientTemp}</TableCell>
-                    <TableCell className="px-2 py-1 text-xs border-r border-gray-200" style={{width: `${columnWidths.concreteTemp}px`, minWidth: `${columnWidths.concreteTemp}px`}} rowSpan={totalRows}>{mainTest.concreteTemp}</TableCell>
-                    <TableCell className="px-2 py-1 text-xs border-r border-gray-200" style={{width: `${columnWidths.unitWeight}px`, minWidth: `${columnWidths.unitWeight}px`}} rowSpan={totalRows}>{mainTest.unitWeight}</TableCell>
-                    <TableCell className="px-2 py-1 text-xs border-r border-gray-200" style={{width: `${columnWidths.yield}px`, minWidth: `${columnWidths.yield}px`}} rowSpan={totalRows}>{mainTest.yield}</TableCell>
-                    <TableCell className="px-2 py-1 text-xs border-r border-gray-200" style={{width: `${columnWidths.relativeYield}px`, minWidth: `${columnWidths.relativeYield}px`}} rowSpan={totalRows}>{mainTest.relativeYield}</TableCell>
+                    <TableCell className="px-1 py-2 text-xs" style={{width: `${columnWidths.slumpFlow}px`, minWidth: `${columnWidths.slumpFlow}px`}} rowSpan={totalRows}>{mainTest.slumpFlow}</TableCell>
+                    <TableCell className="px-1 py-2 text-xs" style={{width: `${columnWidths.airContent}px`, minWidth: `${columnWidths.airContent}px`}} rowSpan={totalRows}>{mainTest.airContent}</TableCell>
+                    <TableCell className="px-1 py-2 text-xs" style={{width: `${columnWidths.ambientTemp}px`, minWidth: `${columnWidths.ambientTemp}px`}} rowSpan={totalRows}>{mainTest.ambientTemp}</TableCell>
+                    <TableCell className="px-1 py-2 text-xs" style={{width: `${columnWidths.concreteTemp}px`, minWidth: `${columnWidths.concreteTemp}px`}} rowSpan={totalRows}>{mainTest.concreteTemp}</TableCell>
+                    <TableCell className="px-1 py-2 text-xs" style={{width: `${columnWidths.unitWeight}px`, minWidth: `${columnWidths.unitWeight}px`}} rowSpan={totalRows}>{mainTest.unitWeight}</TableCell>
+                    <TableCell className="px-1 py-2 text-xs" style={{width: `${columnWidths.yield}px`, minWidth: `${columnWidths.yield}px`}} rowSpan={totalRows}>{mainTest.yield}</TableCell>
+                    <TableCell className="px-1 py-2 text-xs" style={{width: `${columnWidths.relativeYield}px`, minWidth: `${columnWidths.relativeYield}px`}} rowSpan={totalRows}>{mainTest.relativeYield}</TableCell>
                   </>
                 )}
 
@@ -140,7 +149,7 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
                 {isFirstRowOfJob && (
                   <>
                     <TableCell 
-                      className="px-1 py-1 border-r border-gray-200" 
+                      className="px-1 py-1 bg-blue-25" 
                       style={{width: `${columnWidths.release}px`, minWidth: `${columnWidths.release}px`}}
                       rowSpan={pieceRows * formGroup.jobs.length}
                     >
@@ -149,19 +158,19 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
                         value={strengthData[formReleaseKey]?.release || ''}
                         onChange={(e) => handleStrengthDataUpdate(formReleaseKey, 'release', e.target.value)}
                         placeholder="0000"
-                        className={`h-6 text-xs text-center ${getReleaseColor(strengthData, formReleaseKey, mainTest.releaseRequired)}`}
+                        className={`h-6 text-xs text-center border-0 ${getReleaseColor(strengthData, formReleaseKey, mainTest.releaseRequired)}`}
                         disabled={isReleaseSubmitted(formReleaseKey)}
                       />
                     </TableCell>
                     <TableCell 
-                      className="px-2 py-1 text-xs border-r border-gray-200" 
+                      className="px-1 py-2 text-xs bg-blue-25" 
                       style={{width: `${columnWidths.releaseRequired}px`, minWidth: `${columnWidths.releaseRequired}px`}}
                       rowSpan={pieceRows * formGroup.jobs.length}
                     >
                       {mainTest.releaseRequired}
                     </TableCell>
                     <TableCell 
-                      className="px-1 py-1 border-r border-gray-200" 
+                      className="px-1 py-1 bg-blue-25" 
                       style={{width: `${columnWidths.releaseSubmit}px`, minWidth: `${columnWidths.releaseSubmit}px`}}
                       rowSpan={pieceRows * formGroup.jobs.length}
                     >
@@ -181,41 +190,41 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
                 {/* 28-Day Strength Results - shared across all forms (only show on first row) */}
                 {isFirstRowOfGroup && (
                   <>
-                    <TableCell className="px-1 py-1 border-r border-gray-200" style={{width: `${columnWidths.strength1}px`, minWidth: `${columnWidths.strength1}px`}} rowSpan={totalRows}>
+                    <TableCell className="px-1 py-1 bg-purple-25" style={{width: `${columnWidths.strength1}px`, minWidth: `${columnWidths.strength1}px`}} rowSpan={totalRows}>
                       <Input
                         type="number"
                         value={strengthData[mainTest.id]?.strength1 || ''}
                         onChange={(e) => handleStrengthDataUpdate(mainTest.id, 'strength1', e.target.value)}
                         placeholder="0000"
-                        className="h-6 text-xs text-center"
+                        className="h-6 text-xs text-center border-0"
                         disabled={is28DaySubmitted(mainTest.id)}
                       />
                     </TableCell>
-                    <TableCell className="px-1 py-1 border-r border-gray-200" style={{width: `${columnWidths.strength2}px`, minWidth: `${columnWidths.strength2}px`}} rowSpan={totalRows}>
+                    <TableCell className="px-1 py-1 bg-purple-25" style={{width: `${columnWidths.strength2}px`, minWidth: `${columnWidths.strength2}px`}} rowSpan={totalRows}>
                       <Input
                         type="number"
                         value={strengthData[mainTest.id]?.strength2 || ''}
                         onChange={(e) => handleStrengthDataUpdate(mainTest.id, 'strength2', e.target.value)}
                         placeholder="0000"
-                        className="h-6 text-xs text-center"
+                        className="h-6 text-xs text-center border-0"
                         disabled={is28DaySubmitted(mainTest.id)}
                       />
                     </TableCell>
-                    <TableCell className="px-1 py-1 border-r border-gray-200" style={{width: `${columnWidths.strength3}px`, minWidth: `${columnWidths.strength3}px`}} rowSpan={totalRows}>
+                    <TableCell className="px-1 py-1 bg-purple-25" style={{width: `${columnWidths.strength3}px`, minWidth: `${columnWidths.strength3}px`}} rowSpan={totalRows}>
                       <Input
                         type="number"
                         value={strengthData[mainTest.id]?.strength3 || ''}
                         onChange={(e) => handleStrengthDataUpdate(mainTest.id, 'strength3', e.target.value)}
                         placeholder="0000"
-                        className="h-6 text-xs text-center"
+                        className="h-6 text-xs text-center border-0"
                         disabled={is28DaySubmitted(mainTest.id)}
                       />
                     </TableCell>
-                    <TableCell className={`px-2 py-1 text-xs font-semibold text-center border-r border-gray-200 ${getAverageColor(calculateAverage, mainTest.id, mainTest.strengthRequired)}`} style={{width: `${columnWidths.average}px`, minWidth: `${columnWidths.average}px`}} rowSpan={totalRows}>
+                    <TableCell className={`px-1 py-2 text-xs font-semibold text-center bg-purple-25 ${getAverageColor(calculateAverage, mainTest.id, mainTest.strengthRequired)}`} style={{width: `${columnWidths.average}px`, minWidth: `${columnWidths.average}px`}} rowSpan={totalRows}>
                       {calculateAverage(mainTest.id)}
                     </TableCell>
-                    <TableCell className="px-2 py-1 text-xs border-r border-gray-200" style={{width: `${columnWidths.strengthRequired}px`, minWidth: `${columnWidths.strengthRequired}px`}} rowSpan={totalRows}>{mainTest.strengthRequired}</TableCell>
-                    <TableCell className="px-1 py-1 border-r border-gray-200" style={{width: `${columnWidths.strengthSubmit}px`, minWidth: `${columnWidths.strengthSubmit}px`}} rowSpan={totalRows}>
+                    <TableCell className="px-1 py-2 text-xs bg-purple-25" style={{width: `${columnWidths.strengthRequired}px`, minWidth: `${columnWidths.strengthRequired}px`}} rowSpan={totalRows}>{mainTest.strengthRequired}</TableCell>
+                    <TableCell className="px-1 py-1 bg-purple-25" style={{width: `${columnWidths.strengthSubmit}px`, minWidth: `${columnWidths.strengthSubmit}px`}} rowSpan={totalRows}>
                       <Button
                         variant="outline"
                         size="sm"
@@ -232,9 +241,9 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
                 {/* Additional Specs - only show on first row */}
                 {isFirstRowOfGroup && (
                   <>
-                    <TableCell className="px-2 py-1 text-xs border-r border-gray-200" style={{width: `${columnWidths.t20}px`, minWidth: `${columnWidths.t20}px`}} rowSpan={totalRows}>{mainTest.t20}</TableCell>
-                    <TableCell className={`px-2 py-1 text-xs border-r border-gray-200 ${getPassFailColor(mainTest.jRing)}`} style={{width: `${columnWidths.jRing}px`, minWidth: `${columnWidths.jRing}px`}} rowSpan={totalRows}>{mainTest.jRing}</TableCell>
-                    <TableCell className={`px-2 py-1 text-xs ${getPassFailColor(mainTest.staticSegregation)}`} style={{width: `${columnWidths.staticSegregation}px`, minWidth: `${columnWidths.staticSegregation}px`}} rowSpan={totalRows}>{mainTest.staticSegregation}</TableCell>
+                    <TableCell className="px-1 py-2 text-xs bg-gray-25" style={{width: `${columnWidths.t20}px`, minWidth: `${columnWidths.t20}px`}} rowSpan={totalRows}>{mainTest.t20}</TableCell>
+                    <TableCell className={`px-1 py-2 text-xs bg-gray-25 ${getPassFailColor(mainTest.jRing)}`} style={{width: `${columnWidths.jRing}px`, minWidth: `${columnWidths.jRing}px`}} rowSpan={totalRows}>{mainTest.jRing}</TableCell>
+                    <TableCell className={`px-1 py-2 text-xs bg-gray-25 ${getPassFailColor(mainTest.staticSegregation)}`} style={{width: `${columnWidths.staticSegregation}px`, minWidth: `${columnWidths.staticSegregation}px`}} rowSpan={totalRows}>{mainTest.staticSegregation}</TableCell>
                   </>
                 )}
               </TableRow>

@@ -160,7 +160,7 @@ const FreshConcreteTestsTable = ({
         clearAllFilters={clearAllFilters}
       />
 
-      <ScrollArea className="w-full rounded-md border">
+      <ScrollArea className="w-full rounded-md border-0">
         <Table className="min-w-max">
           <FreshConcreteTableHeader />
           <TableBody>
@@ -168,6 +168,7 @@ const FreshConcreteTestsTable = ({
               <FreshConcreteTableRow
                 key={group.mainTest.id}
                 group={group}
+                groupIndex={groupIndex}
                 strengthData={strengthData}
                 handleTestDataUpdate={handleTestDataUpdate}
                 handleStrengthDataUpdate={handleStrengthDataUpdate}
