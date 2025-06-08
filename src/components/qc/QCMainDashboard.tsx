@@ -1,22 +1,10 @@
 
 import React from 'react';
 import { Factory } from "lucide-react";
-import QCOverallMetrics from "./QCOverallMetrics";
 import QCDepartmentNavigation from "./QCDepartmentNavigation";
 import QCQuickActions from "./QCQuickActions";
 
 const QCMainDashboard = () => {
-  const overallMetrics = {
-    totalInspections: 156,
-    pendingInspections: 23,
-    passedToday: 18,
-    failedToday: 2,
-    overdueInspections: 5,
-    averagePassRate: 94.2,
-    freshTestsToday: 42,
-    moistureTestsToday: 18
-  };
-
   const departmentStats = [
     {
       name: "Wall Panels",
@@ -72,9 +60,6 @@ const QCMainDashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Overall QC Metrics */}
-      <QCOverallMetrics metrics={overallMetrics} />
-
       {/* Department Navigation */}
       <QCDepartmentNavigation departmentStats={departmentStats} />
 
