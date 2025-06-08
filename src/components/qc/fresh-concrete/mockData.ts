@@ -80,7 +80,7 @@ export const batchTickets: BatchTicket[] = [
 ];
 
 export const scheduledPieces: { [formName: string]: Piece[] } = {
-  // Precast Department Forms - Updated to use Job/Mark format
+  // Precast Department Forms - Updated to use Job/Mark format with shorthand job #
   "BL1": [
     { id: "BL1-001", name: "Beam A1", jobNumber: "25-5014", pieceId: "B001" },
     { id: "BL1-002", name: "Beam A2", jobNumber: "25-5014", pieceId: "B002" },

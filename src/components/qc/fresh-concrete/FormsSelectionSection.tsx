@@ -28,6 +28,11 @@ const FormsSelectionSection: React.FC<FormsSelectionSectionProps> = ({
   console.log('FormsSelectionSection - Department:', departmentName, 'Normalized:', normalizedDept);
   console.log('FormsSelectionSection - Forms:', departmentForms);
 
+  // Helper function to get shorthand job number (last 4 digits)
+  const getShorthandJobNumber = (fullJobNumber: string): string => {
+    return fullJobNumber.slice(-4);
+  };
+
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between mb-3">
@@ -75,7 +80,7 @@ const FormsSelectionSection: React.FC<FormsSelectionSectionProps> = ({
                         onCheckedChange={(checked) => handlePieceToggle(piece.id, checked as boolean)}
                       />
                       <Label htmlFor={piece.id} className="text-xs cursor-pointer">
-                        {piece.jobNumber}-{piece.pieceId}
+                        {getShorthandJobNumber(piece.jobNumber)}-{piece.pieceId}
                       </Label>
                     </div>
                   ))}
