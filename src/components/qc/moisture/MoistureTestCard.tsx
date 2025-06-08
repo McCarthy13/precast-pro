@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -52,7 +53,9 @@ const MoistureTestCard: React.FC<MoistureTestCardProps> = ({ departmentName = ""
   };
 
   const handleCancel = () => {
-    navigate(-1); // Go back to previous page
+    // Navigate to specific department QC page instead of using navigate(-1)
+    const departmentRoute = departmentName ? departmentName.toLowerCase().replace(/\s+/g, '-') : 'precast';
+    navigate(`/qc/${departmentRoute}`);
   };
 
   const handleSubmit = async () => {

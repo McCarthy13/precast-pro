@@ -148,7 +148,9 @@ const FreshConcreteTestCard: React.FC<FreshConcreteTestCardProps> = ({ departmen
   };
 
   const handleCancel = () => {
-    navigate(-1);
+    // Navigate to specific department QC page instead of using navigate(-1)
+    const departmentRoute = departmentName ? departmentName.toLowerCase().replace(/\s+/g, '-') : 'precast';
+    navigate(`/qc/${departmentRoute}`);
   };
 
   const handleSubmit = async () => {

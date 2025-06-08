@@ -10,7 +10,8 @@ const FreshConcreteTestForm = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate(-1);
+    // Navigate to QC dashboard instead of using navigate(-1)
+    navigate('/qc');
   };
 
   return (
