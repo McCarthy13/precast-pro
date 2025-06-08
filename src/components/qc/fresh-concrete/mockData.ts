@@ -105,28 +105,56 @@ export const scheduledPieces: { [formName: string]: Piece[] } = {
     { id: "STAD-002", name: "Riser 2", jobNumber: "5020", pieceId: "M002" }
   ],
   "EPB-E": [
-    { id: "EPB-E-001", name: "Panel E1", jobNumber: "5021", pieceId: "SS001" }
+    { id: "EPB-E-001", name: "Panel E1", jobNumber: "5021", pieceId: "S001" }
   ],
   "EPB-W": [
-    { id: "EPB-W-001", name: "Panel W1", jobNumber: "5022", pieceId: "SS002" },
-    { id: "EPB-W-002", name: "Panel W2", jobNumber: "5022", pieceId: "SS003" }
+    { id: "EPB-W-001", name: "Panel W1", jobNumber: "5022", pieceId: "S002" },
+    { id: "EPB-W-002", name: "Panel W2", jobNumber: "5022", pieceId: "S003" }
   ],
   "WPB-E": [],
   "WPB-W": [
-    { id: "WPB-W-001", name: "Panel WW1", jobNumber: "5023", pieceId: "SS004" }
+    { id: "WPB-W-001", name: "Panel WW1", jobNumber: "5023", pieceId: "S004" }
   ],
   "MS": [
     { id: "MS-001", name: "Mild Steel 1", jobNumber: "5024", pieceId: "B007" }
   ],
 
   // Wall Panels Department Forms (WP1-WP24)
-  ...Array.from({ length: 24 }, (_, i) => {
-    const formName = `WP${i + 1}`;
-    const pieces = i < 12 ? [
-      { id: `${formName}-001`, name: `Wall Panel ${i + 1}-1`, jobNumber: `50${25 + i}`, pieceId: `W${String(i + 1).padStart(3, '0')}` },
-      { id: `${formName}-002`, name: `Wall Panel ${i + 1}-2`, jobNumber: `50${25 + i}`, pieceId: `W${String(i + 1).padStart(3, '0')}` }
-    ] : [];
-    return { [formName]: pieces };
+  "WP1": [
+    { id: "WP1-001", name: "Wall Panel 1-1", jobNumber: "5025", pieceId: "W001" },
+    { id: "WP1-002", name: "Wall Panel 1-2", jobNumber: "5025", pieceId: "W002" }
+  ],
+  "WP2": [
+    { id: "WP2-001", name: "Wall Panel 2-1", jobNumber: "5026", pieceId: "W003" },
+    { id: "WP2-002", name: "Wall Panel 2-2", jobNumber: "5026", pieceId: "W004" }
+  ],
+  "WP3": [
+    { id: "WP3-001", name: "Wall Panel 3-1", jobNumber: "5027", pieceId: "W005" }
+  ],
+  "WP4": [
+    { id: "WP4-001", name: "Wall Panel 4-1", jobNumber: "5028", pieceId: "W006" },
+    { id: "WP4-002", name: "Wall Panel 4-2", jobNumber: "5028", pieceId: "W007" }
+  ],
+  "WP5": [
+    { id: "WP5-001", name: "Wall Panel 5-1", jobNumber: "5029", pieceId: "W008" }
+  ],
+  "WP6": [],
+  "WP7": [],
+  "WP8": [
+    { id: "WP8-001", name: "Wall Panel 8-1", jobNumber: "5030", pieceId: "W009" }
+  ],
+  "WP9": [
+    { id: "WP9-001", name: "Wall Panel 9-1", jobNumber: "5031", pieceId: "W010" },
+    { id: "WP9-002", name: "Wall Panel 9-2", jobNumber: "5031", pieceId: "W011" }
+  ],
+  "WP10": [],
+  "WP11": [],
+  "WP12": [
+    { id: "WP12-001", name: "Wall Panel 12-1", jobNumber: "5032", pieceId: "W012" }
+  ],
+  ...Array.from({ length: 12 }, (_, i) => {
+    const formName = `WP${i + 13}`;
+    return { [formName]: [] };
   }).reduce((acc, curr) => ({ ...acc, ...curr }), {}),
 
   // Extruded Department Forms (EXT1-EXT8)
@@ -152,20 +180,38 @@ export const scheduledPieces: { [formName: string]: Piece[] } = {
   "EXT8": [],
 
   // Flexicore Department Forms
-  ...Array.from({ length: 20 }, (_, i) => {
-    const formName = `FL12x24-${i + 1}`;
-    const pieces = i < 5 ? [
-      { id: `${formName}-001`, name: `Flexicore 12x24 ${i + 1}`, jobNumber: `80${10 + i}`, pieceId: `H${String(i + 1).padStart(3, '0')}` }
-    ] : [];
-    return { [formName]: pieces };
+  "FL12x24-1": [
+    { id: "FL12x24-1-001", name: "Flexicore 12x24 1", jobNumber: "8010", pieceId: "H001" }
+  ],
+  "FL12x24-2": [
+    { id: "FL12x24-2-001", name: "Flexicore 12x24 2", jobNumber: "8011", pieceId: "H002" }
+  ],
+  "FL12x24-3": [
+    { id: "FL12x24-3-001", name: "Flexicore 12x24 3", jobNumber: "8012", pieceId: "H003" }
+  ],
+  "FL12x24-4": [
+    { id: "FL12x24-4-001", name: "Flexicore 12x24 4", jobNumber: "8013", pieceId: "H004" }
+  ],
+  "FL12x24-5": [
+    { id: "FL12x24-5-001", name: "Flexicore 12x24 5", jobNumber: "8014", pieceId: "H005" }
+  ],
+  ...Array.from({ length: 15 }, (_, i) => {
+    const formName = `FL12x24-${i + 6}`;
+    return { [formName]: [] };
   }).reduce((acc, curr) => ({ ...acc, ...curr }), {}),
 
-  ...Array.from({ length: 20 }, (_, i) => {
-    const formName = `FL8x24-${i + 1}`;
-    const pieces = i < 3 ? [
-      { id: `${formName}-001`, name: `Flexicore 8x24 ${i + 1}`, jobNumber: `80${15 + i}`, pieceId: `H${String(i + 5).padStart(3, '0')}` }
-    ] : [];
-    return { [formName]: pieces };
+  "FL8x24-1": [
+    { id: "FL8x24-1-001", name: "Flexicore 8x24 1", jobNumber: "8015", pieceId: "H006" }
+  ],
+  "FL8x24-2": [
+    { id: "FL8x24-2-001", name: "Flexicore 8x24 2", jobNumber: "8016", pieceId: "H007" }
+  ],
+  "FL8x24-3": [
+    { id: "FL8x24-3-001", name: "Flexicore 8x24 3", jobNumber: "8017", pieceId: "H008" }
+  ],
+  ...Array.from({ length: 17 }, (_, i) => {
+    const formName = `FL8x24-${i + 4}`;
+    return { [formName]: [] };
   }).reduce((acc, curr) => ({ ...acc, ...curr }), {}),
 
   ...Array.from({ length: 3 }, (_, i) => {
@@ -176,7 +222,20 @@ export const scheduledPieces: { [formName: string]: Piece[] } = {
   ...Array.from({ length: 3 }, (_, i) => {
     const formName = `FL8x16-${i + 1}`;
     return { [formName]: [] };
-  }).reduce((acc, curr) => ({ ...acc, ...curr }), {})
+  }).reduce((acc, curr) => ({ ...acc, ...curr }), {}),
+
+  // Double Tees Department Forms (hypothetical for this example)
+  "DT1": [
+    { id: "DT1-001", name: "Double Tee 1", jobNumber: "9001", pieceId: "T001" },
+    { id: "DT1-002", name: "Double Tee 2", jobNumber: "9001", pieceId: "T002" }
+  ],
+  "DT2": [
+    { id: "DT2-001", name: "Double Tee 3", jobNumber: "9002", pieceId: "T001" }
+  ],
+  "DT3": [],
+  "DT4": [
+    { id: "DT4-001", name: "Double Tee 4", jobNumber: "9003", pieceId: "T003" }
+  ]
 };
 
 export const getFormsByDepartment = (department: string): Form[] => {
@@ -229,6 +288,13 @@ export const getFormsByDepartment = (department: string): Form[] => {
           id: `FL8x16-${i + 1}`,
           name: `FL8x16-${i + 1}`
         }))
+      ];
+    case 'double-tees':
+      return [
+        { id: "DT1", name: "DT1" },
+        { id: "DT2", name: "DT2" },
+        { id: "DT3", name: "DT3" },
+        { id: "DT4", name: "DT4" }
       ];
     default:
       return [];

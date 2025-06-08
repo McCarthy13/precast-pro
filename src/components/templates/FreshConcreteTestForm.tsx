@@ -23,7 +23,7 @@ const FreshConcreteTestForm = () => {
       </div>
       
       <DocumentTemplate
-        title="Fresh Concrete Test Data Form"
+        title="Fresh Concrete Test Data Form - Precast"
         documentNumber="QC-FCT-001"
         version="Rev 1.0"
         creationDate="2024-01-15"
@@ -32,7 +32,7 @@ const FreshConcreteTestForm = () => {
         approvedBy="QC Manager"
         fullWidth={true}
       >
-        <FreshConcreteTestCard />
+        <FreshConcreteTestCard departmentName="Precast" />
       </DocumentTemplate>
     </div>
   );
