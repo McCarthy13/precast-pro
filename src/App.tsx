@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -31,6 +30,7 @@ import ExtrudedFreshConcreteTestFormPage from "./pages/ExtrudedFreshConcreteTest
 import FlexicoreFreshConcreteTestFormPage from "./pages/FlexicoreFreshConcreteTestFormPage";
 import DoubleTeesFreshConcreteTestFormPage from "./pages/DoubleTeesFreshConcreteTestFormPage";
 import MoistureTestForm from "./components/templates/MoistureTestForm";
+import QCWorkspaceSelector from "./components/qc/QCWorkspaceSelector";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -57,35 +57,35 @@ const App: React.FC = () => (
         <Route path="/qc/double-tees" element={<QCDoubleTees />} />
         
         {/* QC Department Section Routes */}
-        <Route path="/qc/wall-panels/workspace" element={<div>Wall Panels Workspace - Coming Soon</div>} />
+        <Route path="/qc/wall-panels/workspace" element={<QCWorkspaceSelector department="Wall Panels" />} />
         <Route path="/qc/wall-panels/fresh-concrete" element={<WallPanelsFreshConcreteTestFormPage />} />
         <Route path="/qc/wall-panels/aggregate" element={<div>Wall Panels Aggregate Info - Coming Soon</div>} />
         <Route path="/qc/wall-panels/resources" element={<div>Wall Panels Resources - Coming Soon</div>} />
         <Route path="/qc/wall-panels/calibrations" element={<div>Wall Panels Calibrations - Coming Soon</div>} />
         <Route path="/qc/wall-panels/mix-designs" element={<div>Wall Panels Mix Designs - Coming Soon</div>} />
         
-        <Route path="/qc/precast/workspace" element={<div>Precast Workspace - Coming Soon</div>} />
+        <Route path="/qc/precast/workspace" element={<QCWorkspaceSelector department="Precast" />} />
         <Route path="/qc/precast/fresh-concrete" element={<FreshConcreteTestFormPage />} />
         <Route path="/qc/precast/aggregate" element={<div>Precast Aggregate Info - Coming Soon</div>} />
         <Route path="/qc/precast/resources" element={<div>Precast Resources - Coming Soon</div>} />
         <Route path="/qc/precast/calibrations" element={<div>Precast Calibrations - Coming Soon</div>} />
         <Route path="/qc/precast/mix-designs" element={<div>Precast Mix Designs - Coming Soon</div>} />
         
-        <Route path="/qc/extruded/workspace" element={<div>Extruded Workspace - Coming Soon</div>} />
+        <Route path="/qc/extruded/workspace" element={<QCWorkspaceSelector department="Extruded" />} />
         <Route path="/qc/extruded/fresh-concrete" element={<ExtrudedFreshConcreteTestFormPage />} />
         <Route path="/qc/extruded/aggregate" element={<div>Extruded Aggregate Info - Coming Soon</div>} />
         <Route path="/qc/extruded/resources" element={<div>Extruded Resources - Coming Soon</div>} />
         <Route path="/qc/extruded/calibrations" element={<div>Extruded Calibrations - Coming Soon</div>} />
         <Route path="/qc/extruded/mix-designs" element={<div>Extruded Mix Designs - Coming Soon</div>} />
         
-        <Route path="/qc/flexicore/workspace" element={<div>Flexicore Workspace - Coming Soon</div>} />
+        <Route path="/qc/flexicore/workspace" element={<QCWorkspaceSelector department="Flexicore" />} />
         <Route path="/qc/flexicore/fresh-concrete" element={<FlexicoreFreshConcreteTestFormPage />} />
         <Route path="/qc/flexicore/aggregate" element={<div>Flexicore Aggregate Info - Coming Soon</div>} />
         <Route path="/qc/flexicore/resources" element={<div>Flexicore Resources - Coming Soon</div>} />
         <Route path="/qc/flexicore/calibrations" element={<div>Flexicore Calibrations - Coming Soon</div>} />
         <Route path="/qc/flexicore/mix-designs" element={<div>Flexicore Mix Designs - Coming Soon</div>} />
         
-        <Route path="/qc/double-tees/workspace" element={<div>Double Tees Workspace - Coming Soon</div>} />
+        <Route path="/qc/double-tees/workspace" element={<QCWorkspaceSelector department="Double Tees" />} />
         <Route path="/qc/double-tees/fresh-concrete" element={<DoubleTeesFreshConcreteTestFormPage />} />
         <Route path="/qc/double-tees/aggregate" element={<div>Double Tees Aggregate Info - Coming Soon</div>} />
         <Route path="/qc/double-tees/resources" element={<div>Double Tees Resources - Coming Soon</div>} />
