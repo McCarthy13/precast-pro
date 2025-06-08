@@ -204,9 +204,13 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
                   <>
                     <TableCell className="px-1 py-1 bg-purple-25" style={{width: `${columnWidths.strength1}px`, minWidth: `${columnWidths.strength1}px`}} rowSpan={totalRows}>
                       <Input
-                        type="number"
+                        type="text"
+                        maxLength={5}
                         value={strengthData[mainTest.id]?.strength1 || ''}
-                        onChange={(e) => handleStrengthDataUpdate(mainTest.id, 'strength1', e.target.value)}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '');
+                          handleStrengthDataUpdate(mainTest.id, 'strength1', value);
+                        }}
                         placeholder="0000"
                         className="h-6 text-xs text-center border-0"
                         disabled={is28DaySubmitted(mainTest.id)}
@@ -214,9 +218,13 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
                     </TableCell>
                     <TableCell className="px-1 py-1 bg-purple-25" style={{width: `${columnWidths.strength2}px`, minWidth: `${columnWidths.strength2}px`}} rowSpan={totalRows}>
                       <Input
-                        type="number"
+                        type="text"
+                        maxLength={5}
                         value={strengthData[mainTest.id]?.strength2 || ''}
-                        onChange={(e) => handleStrengthDataUpdate(mainTest.id, 'strength2', e.target.value)}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '');
+                          handleStrengthDataUpdate(mainTest.id, 'strength2', value);
+                        }}
                         placeholder="0000"
                         className="h-6 text-xs text-center border-0"
                         disabled={is28DaySubmitted(mainTest.id)}
@@ -224,9 +232,13 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
                     </TableCell>
                     <TableCell className="px-1 py-1 bg-purple-25" style={{width: `${columnWidths.strength3}px`, minWidth: `${columnWidths.strength3}px`}} rowSpan={totalRows}>
                       <Input
-                        type="number"
+                        type="text"
+                        maxLength={5}
                         value={strengthData[mainTest.id]?.strength3 || ''}
-                        onChange={(e) => handleStrengthDataUpdate(mainTest.id, 'strength3', e.target.value)}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '');
+                          handleStrengthDataUpdate(mainTest.id, 'strength3', value);
+                        }}
                         placeholder="0000"
                         className="h-6 text-xs text-center border-0"
                         disabled={is28DaySubmitted(mainTest.id)}
