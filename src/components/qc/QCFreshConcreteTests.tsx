@@ -23,6 +23,173 @@ const QCFreshConcreteTests = () => {
 
   const currentDepartment = getCurrentDepartment();
 
+  // Get department-specific sample data
+  const getDepartmentSampleData = () => {
+    switch (currentDepartment) {
+      case 'precast':
+        return [
+          {
+            id: "FCT-P001",
+            date: "2024-01-15",
+            time: "09:30",
+            job: "5014",
+            mixDesign: "MD-001",
+            batchTicket: "2401151",
+            form: "BL1",
+            pieces: "C0016, C0017, B0003",
+            slumpFlow: "5.5",
+            airContent: "6.2",
+            ambientTemp: "72",
+            concreteTemp: "68",
+            unitWeight: "145.2",
+            releaseRequired: "3500",
+            strengthRequired: "5000",
+            yield: "27.0",
+            relativeYield: "1.00",
+            t20: "12.5",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "John Smith",
+            status: "Submitted"
+          },
+          {
+            id: "FCT-P002",
+            date: "2024-01-14",
+            time: "14:15",
+            job: "5015",
+            mixDesign: "MD-002",
+            batchTicket: "2401142",
+            form: "COL",
+            pieces: "C0018, C0019",
+            slumpFlow: "4.0",
+            airContent: "5.8",
+            ambientTemp: "75",
+            concreteTemp: "72",
+            unitWeight: "147.8",
+            releaseRequired: "4000",
+            strengthRequired: "6000",
+            yield: "26.8",
+            relativeYield: "0.99",
+            t20: "11.2",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Sarah Johnson",
+            status: "Draft"
+          }
+        ];
+      case 'wall-panels':
+        return [
+          {
+            id: "FCT-W001",
+            date: "2024-01-15",
+            time: "10:45",
+            job: "5016",
+            mixDesign: "MD-WP01",
+            batchTicket: "2401153",
+            form: "WP1",
+            pieces: "W0001, W0002",
+            slumpFlow: "6.0",
+            airContent: "6.0",
+            ambientTemp: "70",
+            concreteTemp: "67",
+            unitWeight: "144.8",
+            releaseRequired: "3500",
+            strengthRequired: "5000",
+            yield: "27.2",
+            relativeYield: "1.01",
+            t20: "13.0",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Mike Wilson",
+            status: "Submitted"
+          }
+        ];
+      case 'extruded':
+        return [
+          {
+            id: "FCT-E001",
+            date: "2024-01-15",
+            time: "11:30",
+            job: "5017",
+            mixDesign: "MD-EXT01",
+            batchTicket: "2401154",
+            form: "EXT1",
+            pieces: "H0001, H0002",
+            slumpFlow: "5.0",
+            airContent: "5.5",
+            ambientTemp: "73",
+            concreteTemp: "69",
+            unitWeight: "146.0",
+            releaseRequired: "3200",
+            strengthRequired: "4500",
+            yield: "26.5",
+            relativeYield: "0.98",
+            t20: "12.0",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Lisa Brown",
+            status: "Submitted"
+          }
+        ];
+      case 'flexicore':
+        return [
+          {
+            id: "FCT-F001",
+            date: "2024-01-15",
+            time: "13:15",
+            job: "5018",
+            mixDesign: "MD-FL01",
+            batchTicket: "2401155",
+            form: "FL12x24",
+            pieces: "H0003, H0004",
+            slumpFlow: "4.5",
+            airContent: "5.0",
+            ambientTemp: "74",
+            concreteTemp: "70",
+            unitWeight: "145.5",
+            releaseRequired: "3000",
+            strengthRequired: "4000",
+            yield: "26.0",
+            relativeYield: "0.96",
+            t20: "11.5",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Tom Davis",
+            status: "Submitted"
+          }
+        ];
+      case 'double-tees':
+        return [
+          {
+            id: "FCT-DT001",
+            date: "2024-01-15",
+            time: "15:00",
+            job: "5019",
+            mixDesign: "MD-DT01",
+            batchTicket: "2401156",
+            form: "DT1",
+            pieces: "T0001, T0002",
+            slumpFlow: "5.5",
+            airContent: "6.0",
+            ambientTemp: "72",
+            concreteTemp: "68",
+            unitWeight: "146.5",
+            releaseRequired: "3800",
+            strengthRequired: "5500",
+            yield: "27.5",
+            relativeYield: "1.02",
+            t20: "12.8",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Amy Chen",
+            status: "Submitted"
+          }
+        ];
+      default:
+        return [];
+    }
+  };
+
   // Get the correct form URL based on department
   const getFormUrl = () => {
     switch (currentDepartment) {
@@ -46,11 +213,12 @@ const QCFreshConcreteTests = () => {
   const [strengthData, setStrengthData] = useState<Record<string, any>>({});
   const [submittedRecords, setSubmittedRecords] = useState<any[]>([]);
 
-  // Load submitted records from localStorage
+  // Load department-specific submitted records from localStorage
   useEffect(() => {
-    const records = JSON.parse(localStorage.getItem('freshConcreteTestRecords') || '[]');
+    const storageKey = `freshConcreteTestRecords_${currentDepartment}`;
+    const records = JSON.parse(localStorage.getItem(storageKey) || '[]');
     setSubmittedRecords(records);
-  }, []);
+  }, [currentDepartment]);
 
   // Convert submitted records to the format expected by the table
   const convertedSubmittedRecords = submittedRecords.map(record => ({
@@ -60,6 +228,7 @@ const QCFreshConcreteTests = () => {
     job: record.testData.job,
     mixDesign: record.testData.mixDesign,
     batchTicket: record.testData.batchTicket,
+    form: record.testData.selectedForms?.[0] || 'N/A',
     pieces: record.testData.pieces,
     slumpFlow: record.testData.slumpFlow,
     airContent: record.testData.airContent,
@@ -75,79 +244,12 @@ const QCFreshConcreteTests = () => {
     staticSegregation: record.testData.staticSegregation,
     technician: "System",
     status: "Submitted",
-    formSubmissionId: record.formSubmissionId || record.id.split('-')[0] + '-' + record.id.split('-')[1] // Extract submission ID from record ID
+    formSubmissionId: record.formSubmissionId || record.id.split('-')[0] + '-' + record.id.split('-')[1]
   }));
 
+  // Combine department sample data with submitted records
   const freshTests = [
-    {
-      id: "FCT-001",
-      date: "2024-01-15",
-      time: "09:30",
-      job: "5014",
-      mixDesign: "MD-001",
-      batchTicket: "2401151",
-      pieces: "5014-C0016, 5014-C0017, 5014-B0003",
-      slumpFlow: "5.5",
-      airContent: "6.2",
-      ambientTemp: "72",
-      concreteTemp: "68",
-      unitWeight: "145.2",
-      releaseRequired: "3500",
-      strengthRequired: "5000",
-      yield: "27.0",
-      relativeYield: "1.00",
-      t20: "12.5",
-      jRing: "Pass",
-      staticSegregation: "Pass",
-      technician: "John Smith",
-      status: "Submitted"
-    },
-    {
-      id: "FCT-002",
-      date: "2024-01-15",
-      time: "14:15",
-      job: "5015",
-      mixDesign: "MD-002",
-      batchTicket: "2401152",
-      pieces: "5015-W0001, 5015-W0002",
-      slumpFlow: "4.0",
-      airContent: "5.8",
-      ambientTemp: "75",
-      concreteTemp: "72",
-      unitWeight: "147.8",
-      releaseRequired: "4000",
-      strengthRequired: "6000",
-      yield: "26.8",
-      relativeYield: "0.99",
-      t20: "11.2",
-      jRing: "Pass",
-      staticSegregation: "Pass",
-      technician: "Sarah Johnson",
-      status: "Draft"
-    },
-    {
-      id: "FCT-003",
-      date: "2024-01-14",
-      time: "10:45",
-      job: "5016",
-      mixDesign: "MD-001",
-      batchTicket: "2401143",
-      pieces: "5016-T0001, 5016-T0002",
-      slumpFlow: "6.0",
-      airContent: "6.0",
-      ambientTemp: "70",
-      concreteTemp: "67",
-      unitWeight: "144.8",
-      releaseRequired: "3500",
-      strengthRequired: "5000",
-      yield: "27.2",
-      relativeYield: "1.01",
-      t20: "13.0",
-      jRing: "Pass",
-      staticSegregation: "Pass",
-      technician: "Mike Wilson",
-      status: "Submitted"
-    },
+    ...getDepartmentSampleData(),
     ...convertedSubmittedRecords
   ];
 
@@ -157,6 +259,7 @@ const QCFreshConcreteTests = () => {
     { key: 'mixDesign', label: 'Mix Design' },
     { key: 'batchTicket', label: 'Batch Ticket' },
     { key: 'job', label: 'Job' },
+    { key: 'form', label: 'Form' },
     { key: 'pieces', label: 'Pieces' },
     { key: 'slumpFlow', label: 'Slump Flow (in)' },
     { key: 'airContent', label: 'Air Content (%)' },
