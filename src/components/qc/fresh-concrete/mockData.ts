@@ -131,20 +131,20 @@ export const scheduledPieces: { [formName: string]: Piece[] } = {
 
   // Extruded Department Forms (EXT1-EXT8)
   "EXT1": [
-    { id: "EXT1-001", name: "Hollow Core 1", jobNumber: "7001", pieceId: "EP01" },
-    { id: "EXT1-002", name: "Hollow Core 2", jobNumber: "7001", pieceId: "EP02" },
-    { id: "EXT1-003", name: "Hollow Core 3", jobNumber: "7002", pieceId: "EP01" }
+    { id: "EXT1-001", name: "Hollow Core 1", jobNumber: "7001", pieceId: "H001" },
+    { id: "EXT1-002", name: "Hollow Core 2", jobNumber: "7001", pieceId: "H002" },
+    { id: "EXT1-003", name: "Hollow Core 3", jobNumber: "7002", pieceId: "H001" }
   ],
   "EXT2": [
-    { id: "EXT2-001", name: "Hollow Core 4", jobNumber: "7003", pieceId: "EP01" },
-    { id: "EXT2-002", name: "Hollow Core 5", jobNumber: "7003", pieceId: "EP02" }
+    { id: "EXT2-001", name: "Hollow Core 4", jobNumber: "7003", pieceId: "H001" },
+    { id: "EXT2-002", name: "Hollow Core 5", jobNumber: "7003", pieceId: "H002" }
   ],
   "EXT3": [
-    { id: "EXT3-001", name: "Hollow Core 6", jobNumber: "7004", pieceId: "EP01" },
-    { id: "EXT3-002", name: "Hollow Core 7", jobNumber: "7004", pieceId: "EP02" }
+    { id: "EXT3-001", name: "Hollow Core 6", jobNumber: "7004", pieceId: "H001" },
+    { id: "EXT3-002", name: "Hollow Core 7", jobNumber: "7004", pieceId: "H002" }
   ],
   "EXT4": [
-    { id: "EXT4-001", name: "Hollow Core 8", jobNumber: "7005", pieceId: "EP01" }
+    { id: "EXT4-001", name: "Hollow Core 8", jobNumber: "7005", pieceId: "H001" }
   ],
   "EXT5": [],
   "EXT6": [],

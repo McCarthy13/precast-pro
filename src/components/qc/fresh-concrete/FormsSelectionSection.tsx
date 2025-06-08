@@ -75,7 +75,7 @@ const FormsSelectionSection: React.FC<FormsSelectionSectionProps> = ({
                         onCheckedChange={(checked) => handlePieceToggle(piece.id, checked as boolean)}
                       />
                       <Label htmlFor={piece.id} className="text-xs cursor-pointer">
-                        {piece.pieceId}
+                        {piece.jobNumber}-{piece.pieceId}
                       </Label>
                     </div>
                   ))}
