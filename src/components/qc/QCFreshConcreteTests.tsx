@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -23,7 +24,7 @@ const QCFreshConcreteTests = () => {
 
   const currentDepartment = getCurrentDepartment();
 
-  // Get department-specific sample data
+  // Get department-specific sample data with proper form names and multiple jobs per form
   const getDepartmentSampleData = () => {
     switch (currentDepartment) {
       case 'precast':
@@ -36,7 +37,7 @@ const QCFreshConcreteTests = () => {
             mixDesign: "MD-001",
             batchTicket: "2401151",
             form: "BL1",
-            pieces: "C0016, C0017, B0003",
+            pieces: "C0016, C0017",
             slumpFlow: "5.5",
             airContent: "6.2",
             ambientTemp: "72",
@@ -53,10 +54,36 @@ const QCFreshConcreteTests = () => {
             status: "Submitted"
           },
           {
+            id: "FCT-P001-sub",
+            date: "2024-01-15",
+            time: "09:30",
+            job: "5015",
+            mixDesign: "MD-001",
+            batchTicket: "2401151",
+            form: "BL1",
+            pieces: "B0003",
+            slumpFlow: "5.5",
+            airContent: "6.2",
+            ambientTemp: "72",
+            concreteTemp: "68",
+            unitWeight: "145.2",
+            releaseRequired: "3500",
+            strengthRequired: "5000",
+            yield: "27.0",
+            relativeYield: "1.00",
+            t20: "12.5",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "John Smith",
+            status: "Submitted",
+            isSubLine: true,
+            parentId: "FCT-P001"
+          },
+          {
             id: "FCT-P002",
             date: "2024-01-14",
             time: "14:15",
-            job: "5015",
+            job: "5016",
             mixDesign: "MD-002",
             batchTicket: "2401142",
             form: "COL",
@@ -75,6 +102,30 @@ const QCFreshConcreteTests = () => {
             staticSegregation: "Pass",
             technician: "Sarah Johnson",
             status: "Draft"
+          },
+          {
+            id: "FCT-P003",
+            date: "2024-01-13",
+            time: "11:00",
+            job: "5017",
+            mixDesign: "MD-003",
+            batchTicket: "2401131",
+            form: "BL3",
+            pieces: "B0020, B0021",
+            slumpFlow: "5.2",
+            airContent: "6.0",
+            ambientTemp: "74",
+            concreteTemp: "70",
+            unitWeight: "146.1",
+            releaseRequired: "3800",
+            strengthRequired: "5500",
+            yield: "26.9",
+            relativeYield: "1.01",
+            t20: "12.8",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Mike Wilson",
+            status: "Submitted"
           }
         ];
       case 'wall-panels':
@@ -101,6 +152,56 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "Mike Wilson",
+            status: "Submitted"
+          },
+          {
+            id: "FCT-W001-sub",
+            date: "2024-01-15",
+            time: "10:45",
+            job: "5017",
+            mixDesign: "MD-WP01",
+            batchTicket: "2401153",
+            form: "WP1",
+            pieces: "W0003",
+            slumpFlow: "6.0",
+            airContent: "6.0",
+            ambientTemp: "70",
+            concreteTemp: "67",
+            unitWeight: "144.8",
+            releaseRequired: "3500",
+            strengthRequired: "5000",
+            yield: "27.2",
+            relativeYield: "1.01",
+            t20: "13.0",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Mike Wilson",
+            status: "Submitted",
+            isSubLine: true,
+            parentId: "FCT-W001"
+          },
+          {
+            id: "FCT-W002",
+            date: "2024-01-14",
+            time: "09:30",
+            job: "5018",
+            mixDesign: "MD-WP02",
+            batchTicket: "2401141",
+            form: "WP15",
+            pieces: "W0010, W0011, W0012",
+            slumpFlow: "5.8",
+            airContent: "5.9",
+            ambientTemp: "72",
+            concreteTemp: "69",
+            unitWeight: "145.5",
+            releaseRequired: "3200",
+            strengthRequired: "4800",
+            yield: "27.0",
+            relativeYield: "0.99",
+            t20: "12.2",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Lisa Brown",
             status: "Submitted"
           }
         ];
@@ -129,6 +230,30 @@ const QCFreshConcreteTests = () => {
             staticSegregation: "Pass",
             technician: "Lisa Brown",
             status: "Submitted"
+          },
+          {
+            id: "FCT-E002",
+            date: "2024-01-14",
+            time: "08:15",
+            job: "5019",
+            mixDesign: "MD-EXT02",
+            batchTicket: "2401142",
+            form: "EXT3",
+            pieces: "H0005, H0006, H0007",
+            slumpFlow: "4.8",
+            airContent: "5.2",
+            ambientTemp: "75",
+            concreteTemp: "71",
+            unitWeight: "146.8",
+            releaseRequired: "3400",
+            strengthRequired: "4700",
+            yield: "26.3",
+            relativeYield: "0.97",
+            t20: "11.5",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Tom Davis",
+            status: "Submitted"
           }
         ];
       case 'flexicore':
@@ -156,6 +281,30 @@ const QCFreshConcreteTests = () => {
             staticSegregation: "Pass",
             technician: "Tom Davis",
             status: "Submitted"
+          },
+          {
+            id: "FCT-F002",
+            date: "2024-01-14",
+            time: "15:30",
+            job: "5020",
+            mixDesign: "MD-FL02",
+            batchTicket: "2401143",
+            form: "FL8x24",
+            pieces: "H0008, H0009, H0010, H0011",
+            slumpFlow: "4.2",
+            airContent: "4.8",
+            ambientTemp: "76",
+            concreteTemp: "72",
+            unitWeight: "145.9",
+            releaseRequired: "2800",
+            strengthRequired: "3800",
+            yield: "25.8",
+            relativeYield: "0.95",
+            t20: "11.0",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Amy Chen",
+            status: "Submitted"
           }
         ];
       case 'double-tees':
@@ -182,6 +331,30 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "Amy Chen",
+            status: "Submitted"
+          },
+          {
+            id: "FCT-DT002",
+            date: "2024-01-14",
+            time: "13:45",
+            job: "5021",
+            mixDesign: "MD-DT02",
+            batchTicket: "2401144",
+            form: "DT2",
+            pieces: "T0005, T0006, T0007",
+            slumpFlow: "5.2",
+            airContent: "5.8",
+            ambientTemp: "74",
+            concreteTemp: "70",
+            unitWeight: "146.2",
+            releaseRequired: "3600",
+            strengthRequired: "5200",
+            yield: "27.1",
+            relativeYield: "1.00",
+            t20: "12.5",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "John Smith",
             status: "Submitted"
           }
         ];

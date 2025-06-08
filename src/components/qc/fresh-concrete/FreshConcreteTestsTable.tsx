@@ -13,6 +13,7 @@ interface FreshTest {
   job: string;
   mixDesign: string;
   batchTicket: string;
+  form: string;
   pieces: string;
   slumpFlow: string;
   airContent: string;
@@ -30,6 +31,8 @@ interface FreshTest {
   status: string;
   submitted?: boolean;
   formSubmissionId?: string;
+  isSubLine?: boolean;
+  parentId?: string;
 }
 
 interface Column {
@@ -92,25 +95,30 @@ const FreshConcreteTestsTable = ({
     staticSegregation: 90
   };
 
-  // Helper function to format pieces to XXXX-X0000 format
-  const formatPieces = (originalPieces: string, jobNumber: string) => {
-    if (!originalPieces || !jobNumber) return originalPieces;
+  // Helper function to format pieces to Mark # format only (remove job numbers)
+  const formatPieces = (originalPieces: string) => {
+    if (!originalPieces) return originalPieces;
     
     // Split pieces by comma and process each
     const pieceArray = originalPieces.split(',').map(piece => piece.trim());
     const formattedPieces = pieceArray.map(piece => {
-      // If already in correct format, return as-is
-      if (/^\d{4}-[A-Z]{1,2}\d{4}$/.test(piece)) {
+      // If already in Mark # format only, return as-is
+      if (/^[A-Z]{1,2}\d{4}$/.test(piece)) {
         return piece;
       }
       
-      // Extract product type letter and number from original format
-      const match = piece.match(/^([A-Z]{1,2})(\d+)$/);
-      if (match) {
-        const productType = match[1];
-        const pieceNumber = match[2].padStart(4, '0');
-        const shortJobNumber = jobNumber.padStart(4, '0');
-        return `${shortJobNumber}-${productType}${pieceNumber}`;
+      // If in XXXX-Mark# format, extract just the Mark# part
+      const jobMarkMatch = piece.match(/^\d{4}-([A-Z]{1,2}\d{4})$/);
+      if (jobMarkMatch) {
+        return jobMarkMatch[1];
+      }
+      
+      // If in original simple format (like C0016), pad to 4 digits
+      const simpleMatch = piece.match(/^([A-Z]{1,2})(\d+)$/);
+      if (simpleMatch) {
+        const productType = simpleMatch[1];
+        const pieceNumber = simpleMatch[2].padStart(4, '0');
+        return `${productType}${pieceNumber}`;
       }
       
       // If format doesn't match expected pattern, return original
@@ -404,42 +412,63 @@ const FreshConcreteTestsTable = ({
               <TableRow 
                 key={test.id} 
                 id={`test-row-${test.id}`}
-                className={
-                  (isReleaseSubmitted(test.id) && is28DaySubmitted(test.id)) ? 'bg-green-50' : ''
-                }
+                className={`
+                  ${(isReleaseSubmitted(test.id) && is28DaySubmitted(test.id)) ? 'bg-green-50' : ''}
+                  ${test.isSubLine ? 'bg-gray-25 border-l-4 border-l-blue-300' : ''}
+                `}
               >
                 <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.date}px`, minWidth: `${columnWidths.date}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent w-full"
-                    value={formatDate(getFieldValue(test, 'date'))}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'date', e.target.value)}
-                  />
+                  {test.isSubLine ? (
+                    <div className="text-xs px-1 py-1 text-gray-500">↳</div>
+                  ) : (
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent w-full"
+                      value={formatDate(getFieldValue(test, 'date'))}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'date', e.target.value)}
+                    />
+                  )}
                 </TableCell>
                 <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.time}px`, minWidth: `${columnWidths.time}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent w-full"
-                    value={getFieldValue(test, 'time')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'time', e.target.value)}
-                  />
+                  {test.isSubLine ? (
+                    <div className="text-xs px-1 py-1 text-gray-500"></div>
+                  ) : (
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent w-full"
+                      value={getFieldValue(test, 'time')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'time', e.target.value)}
+                    />
+                  )}
                 </TableCell>
                 <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.mixDesign}px`, minWidth: `${columnWidths.mixDesign}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent w-full"
-                    value={getFieldValue(test, 'mixDesign')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'mixDesign', e.target.value)}
-                  />
+                  {test.isSubLine ? (
+                    <div className="text-xs px-1 py-1 text-gray-500"></div>
+                  ) : (
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent w-full"
+                      value={getFieldValue(test, 'mixDesign')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'mixDesign', e.target.value)}
+                    />
+                  )}
                 </TableCell>
                 <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.batchTicket}px`, minWidth: `${columnWidths.batchTicket}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent w-full"
-                    value={getFieldValue(test, 'batchTicket')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'batchTicket', e.target.value)}
-                  />
+                  {test.isSubLine ? (
+                    <div className="text-xs px-1 py-1 text-gray-500"></div>
+                  ) : (
+                    <Input
+                      className="text-xs px-1 border-none bg-transparent w-full"
+                      value={getFieldValue(test, 'batchTicket')}
+                      onChange={(e) => handleTestDataUpdate(test.id, 'batchTicket', e.target.value)}
+                    />
+                  )}
                 </TableCell>
                 <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.form}px`, minWidth: `${columnWidths.form}px`}}>
-                  <div className="text-xs px-1 font-medium text-center bg-gray-50 rounded border h-6 flex items-center justify-center">
-                    {getFormIdentifier(test)}
-                  </div>
+                  {test.isSubLine ? (
+                    <div className="text-xs px-1 py-1 text-gray-500"></div>
+                  ) : (
+                    <div className="text-xs px-1 font-medium text-center bg-gray-50 rounded border h-6 flex items-center justify-center">
+                      {test.form}
+                    </div>
+                  )}
                 </TableCell>
                 <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.job}px`, minWidth: `${columnWidths.job}px`}}>
                   <Input
@@ -451,59 +480,74 @@ const FreshConcreteTestsTable = ({
                 <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.pieces}px`, minWidth: `${columnWidths.pieces}px`}}>
                   <Input
                     className="text-xs px-1 border-none bg-transparent w-full"
-                    value={formatPieces(getFieldValue(test, 'pieces'), getFieldValue(test, 'job'))}
+                    value={formatPieces(getFieldValue(test, 'pieces'))}
                     onChange={(e) => handleTestDataUpdate(test.id, 'pieces', e.target.value)}
                   />
                 </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.slumpFlow}px`, minWidth: `${columnWidths.slumpFlow}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent text-center w-full"
-                    value={getFieldValue(test, 'slumpFlow')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'slumpFlow', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.airContent}px`, minWidth: `${columnWidths.airContent}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent text-center w-full"
-                    value={getFieldValue(test, 'airContent')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'airContent', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.ambientTemp}px`, minWidth: `${columnWidths.ambientTemp}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent text-center w-full"
-                    value={getFieldValue(test, 'ambientTemp')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'ambientTemp', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.concreteTemp}px`, minWidth: `${columnWidths.concreteTemp}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent text-center w-full"
-                    value={getFieldValue(test, 'concreteTemp')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'concreteTemp', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.unitWeight}px`, minWidth: `${columnWidths.unitWeight}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent text-center w-full"
-                    value={getFieldValue(test, 'unitWeight')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'unitWeight', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.yield}px`, minWidth: `${columnWidths.yield}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent text-center w-full"
-                    value={getFieldValue(test, 'yield')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'yield', e.target.value)}
-                  />
-                </TableCell>
-                <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.relativeYield}px`, minWidth: `${columnWidths.relativeYield}px`}}>
-                  <Input
-                    className="text-xs px-1 border-none bg-transparent text-center w-full"
-                    value={getFieldValue(test, 'relativeYield')}
-                    onChange={(e) => handleTestDataUpdate(test.id, 'relativeYield', e.target.value)}
-                  />
-                </TableCell>
+                
+                {/* For sub-lines, show empty cells for test data that's shared from parent */}
+                {test.isSubLine ? (
+                  <>
+                    {/* Empty cells for shared test data */}
+                    {Array.from({length: 7}, (_, i) => (
+                      <TableCell key={`empty-${i}`} className="px-1 py-1 whitespace-nowrap">
+                        <div className="text-xs px-1 py-1 text-gray-400 text-center">—</div>
+                      </TableCell>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.slumpFlow}px`, minWidth: `${columnWidths.slumpFlow}px`}}>
+                      <Input
+                        className="text-xs px-1 border-none bg-transparent text-center w-full"
+                        value={getFieldValue(test, 'slumpFlow')}
+                        onChange={(e) => handleTestDataUpdate(test.id, 'slumpFlow', e.target.value)}
+                      />
+                    </TableCell>
+                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.airContent}px`, minWidth: `${columnWidths.airContent}px`}}>
+                      <Input
+                        className="text-xs px-1 border-none bg-transparent text-center w-full"
+                        value={getFieldValue(test, 'airContent')}
+                        onChange={(e) => handleTestDataUpdate(test.id, 'airContent', e.target.value)}
+                      />
+                    </TableCell>
+                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.ambientTemp}px`, minWidth: `${columnWidths.ambientTemp}px`}}>
+                      <Input
+                        className="text-xs px-1 border-none bg-transparent text-center w-full"
+                        value={getFieldValue(test, 'ambientTemp')}
+                        onChange={(e) => handleTestDataUpdate(test.id, 'ambientTemp', e.target.value)}
+                      />
+                    </TableCell>
+                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.concreteTemp}px`, minWidth: `${columnWidths.concreteTemp}px`}}>
+                      <Input
+                        className="text-xs px-1 border-none bg-transparent text-center w-full"
+                        value={getFieldValue(test, 'concreteTemp')}
+                        onChange={(e) => handleTestDataUpdate(test.id, 'concreteTemp', e.target.value)}
+                      />
+                    </TableCell>
+                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.unitWeight}px`, minWidth: `${columnWidths.unitWeight}px`}}>
+                      <Input
+                        className="text-xs px-1 border-none bg-transparent text-center w-full"
+                        value={getFieldValue(test, 'unitWeight')}
+                        onChange={(e) => handleTestDataUpdate(test.id, 'unitWeight', e.target.value)}
+                      />
+                    </TableCell>
+                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.yield}px`, minWidth: `${columnWidths.yield}px`}}>
+                      <Input
+                        className="text-xs px-1 border-none bg-transparent text-center w-full"
+                        value={getFieldValue(test, 'yield')}
+                        onChange={(e) => handleTestDataUpdate(test.id, 'yield', e.target.value)}
+                      />
+                    </TableCell>
+                    <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.relativeYield}px`, minWidth: `${columnWidths.relativeYield}px`}}>
+                      <Input
+                        className="text-xs px-1 border-none bg-transparent text-center w-full"
+                        value={getFieldValue(test, 'relativeYield')}
+                        onChange={(e) => handleTestDataUpdate(test.id, 'relativeYield', e.target.value)}
+                      />
+                    </TableCell>
+                  </>
+                )}
                 
                 {/* Release Results */}
                 <TableCell className="px-1 py-1 whitespace-nowrap" style={{width: `${columnWidths.release}px`, minWidth: `${columnWidths.release}px`}}>
