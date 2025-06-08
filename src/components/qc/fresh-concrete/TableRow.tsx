@@ -71,58 +71,70 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
                 `}
               >
                 {/* Date - only show on first row */}
-                <TableCell 
-                  className="px-1 py-2 text-xs font-medium" 
-                  style={{width: `${columnWidths.date}px`, minWidth: `${columnWidths.date}px`}}
-                  rowSpan={isFirstRowOfGroup ? totalRows : undefined}
-                >
-                  {isFirstRowOfGroup ? formatDate(mainTest.date) : ''}
-                </TableCell>
+                {isFirstRowOfGroup && (
+                  <TableCell 
+                    className="px-1 py-2 text-xs font-medium" 
+                    style={{width: `${columnWidths.date}px`, minWidth: `${columnWidths.date}px`}}
+                    rowSpan={totalRows}
+                  >
+                    {formatDate(mainTest.date)}
+                  </TableCell>
+                )}
 
                 {/* Time - only show on first row */}
-                <TableCell 
-                  className="px-1 py-2 text-xs" 
-                  style={{width: `${columnWidths.time}px`, minWidth: `${columnWidths.time}px`}}
-                  rowSpan={isFirstRowOfGroup ? totalRows : undefined}
-                >
-                  {isFirstRowOfGroup ? mainTest.time : ''}
-                </TableCell>
+                {isFirstRowOfGroup && (
+                  <TableCell 
+                    className="px-1 py-2 text-xs" 
+                    style={{width: `${columnWidths.time}px`, minWidth: `${columnWidths.time}px`}}
+                    rowSpan={totalRows}
+                  >
+                    {mainTest.time}
+                  </TableCell>
+                )}
 
                 {/* Mix Design - only show on first row */}
-                <TableCell 
-                  className="px-1 py-2 text-xs" 
-                  style={{width: `${columnWidths.mixDesign}px`, minWidth: `${columnWidths.mixDesign}px`}}
-                  rowSpan={isFirstRowOfGroup ? totalRows : undefined}
-                >
-                  {isFirstRowOfGroup ? mainTest.mixDesign : ''}
-                </TableCell>
+                {isFirstRowOfGroup && (
+                  <TableCell 
+                    className="px-1 py-2 text-xs" 
+                    style={{width: `${columnWidths.mixDesign}px`, minWidth: `${columnWidths.mixDesign}px`}}
+                    rowSpan={totalRows}
+                  >
+                    {mainTest.mixDesign}
+                  </TableCell>
+                )}
 
                 {/* Batch Ticket - only show on first row */}
-                <TableCell 
-                  className="px-1 py-2 text-xs" 
-                  style={{width: `${columnWidths.batchTicket}px`, minWidth: `${columnWidths.batchTicket}px`}}
-                  rowSpan={isFirstRowOfGroup ? totalRows : undefined}
-                >
-                  {isFirstRowOfGroup ? mainTest.batchTicket : ''}
-                </TableCell>
+                {isFirstRowOfGroup && (
+                  <TableCell 
+                    className="px-1 py-2 text-xs" 
+                    style={{width: `${columnWidths.batchTicket}px`, minWidth: `${columnWidths.batchTicket}px`}}
+                    rowSpan={totalRows}
+                  >
+                    {mainTest.batchTicket}
+                  </TableCell>
+                )}
 
                 {/* Form - show on first row of each form */}
-                <TableCell 
-                  className="px-1 py-2 text-xs font-semibold bg-blue-50" 
-                  style={{width: `${columnWidths.form}px`, minWidth: `${columnWidths.form}px`}}
-                  rowSpan={isFirstRowOfJob ? pieceRows * formGroup.jobs.length : undefined}
-                >
-                  {isFirstRowOfJob ? formGroup.form : ''}
-                </TableCell>
+                {isFirstRowOfJob && (
+                  <TableCell 
+                    className="px-1 py-2 text-xs font-semibold bg-blue-50" 
+                    style={{width: `${columnWidths.form}px`, minWidth: `${columnWidths.form}px`}}
+                    rowSpan={pieceRows * formGroup.jobs.length}
+                  >
+                    {formGroup.form}
+                  </TableCell>
+                )}
 
                 {/* Job - show on first row of each job */}
-                <TableCell 
-                  className="px-1 py-2 text-xs font-medium" 
-                  style={{width: `${columnWidths.job}px`, minWidth: `${columnWidths.job}px`}}
-                  rowSpan={pieceIndex === 0 ? pieceRows : undefined}
-                >
-                  {pieceIndex === 0 ? jobGroup.job : ''}
-                </TableCell>
+                {pieceIndex === 0 && (
+                  <TableCell 
+                    className="px-1 py-2 text-xs font-medium" 
+                    style={{width: `${columnWidths.job}px`, minWidth: `${columnWidths.job}px`}}
+                    rowSpan={pieceRows}
+                  >
+                    {jobGroup.job}
+                  </TableCell>
+                )}
 
                 {/* Pieces - show individual pieces */}
                 <TableCell 
