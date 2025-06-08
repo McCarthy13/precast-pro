@@ -1,13 +1,13 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Factory, Play, Pause, CheckCircle, Clock } from "lucide-react";
+import { Factory } from "lucide-react";
 import DayView from "./DayView";
 import { flexicoreForms } from "@/data/productionForms";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Progress } from "@/components/ui/progress";
 import InventoryTracker from "./InventoryTracker";
+import FlexicoreProductionQueue from "./flexicore/FlexicoreProductionQueue";
+import FlexicoreFormsStatus from "./flexicore/FlexicoreFormsStatus";
+import FlexicoreControls from "./flexicore/FlexicoreControls";
 
 const FlexicoreProduction = () => {
   // Updated jobs to follow proper Job # and Mark # format, and use proper Flexicore form naming
@@ -62,19 +62,6 @@ const FlexicoreProduction = () => {
     }
   ];
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "completed":
-        return <CheckCircle className="h-4 w-4 text-green-600" />;
-      case "in-progress":
-        return <Play className="h-4 w-4 text-blue-600" />;
-      case "paused":
-        return <Pause className="h-4 w-4 text-orange-600" />;
-      default:
-        return <Clock className="h-4 w-4 text-gray-600" />;
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -102,134 +89,15 @@ const FlexicoreProduction = () => {
         </TabsContent>
 
         <TabsContent value="production-queue">
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Flexicore Production Queue</CardTitle>
-                <CardDescription>Flexible concrete deck production</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {flexicoreJobs.map((job) => (
-                    <Card key={job.jobNumber} className="border">
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between mb-3">
-                          <div>
-                            <h4 className="font-semibold">Job #{job.shorthand}</h4>
-                            <p className="text-sm text-gray-600">Full: {job.jobNumber}</p>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            {getStatusIcon(job.status)}
-                            <Badge variant="outline">{job.status}</Badge>
-                          </div>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div className="space-y-2">
-                            <p className="text-sm"><strong>Project:</strong> {job.project}</p>
-                            <p className="text-sm"><strong>Type:</strong> {job.panelType}</p>
-                            <p className="text-sm"><strong>Span:</strong> {job.dimensions}</p>
-                          </div>
-                          
-                          <div className="space-y-2">
-                            <p className="text-sm"><strong>Progress:</strong> {job.completed}/{job.quantity}</p>
-                            <p className="text-sm"><strong>Form:</strong> {job.formId}</p>
-                            <p className="text-sm"><strong>Crew:</strong> {job.crew}</p>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div 
-                                className="bg-orange-600 h-2 rounded-full" 
-                                style={{ width: `${(job.completed / job.quantity) * 100}%` }}
-                              ></div>
-                            </div>
-                          </div>
-                          
-                          <div className="space-y-2">
-                            <div className="text-sm">
-                              <strong>Mark #s:</strong>
-                              <div className="flex flex-wrap gap-1 mt-1">
-                                {job.marks.map((mark) => (
-                                  <Badge key={mark} variant="outline" className="text-xs">
-                                    {mark}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-                            <p className="text-sm"><strong>Due:</strong> {job.dueDate}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <FlexicoreProductionQueue jobs={flexicoreJobs} />
         </TabsContent>
 
         <TabsContent value="flexicore-forms">
-          <Card>
-            <CardHeader>
-              <CardTitle>Flexicore Forms Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[
-                  { name: "FL12x24", quantity: 20, type: "12x24" },
-                  { name: "FL8x24", quantity: 20, type: "8x24" },
-                  { name: "FL12x16", quantity: 3, type: "12x16" },
-                  { name: "FL8x16", quantity: 3, type: "8x16" }
-                ].map((form) => {
-                  const assignedJob = flexicoreJobs.find(job => job.formId === form.name);
-                  
-                  return (
-                    <Card key={form.name} className="border">
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-medium">{form.name}</h4>
-                          <Badge variant={assignedJob ? "secondary" : "default"}>
-                            {assignedJob ? "In Use" : "Available"}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-gray-600">
-                          Size: {form.type} | Qty: {form.quantity}
-                        </p>
-                        {assignedJob ? (
-                          <div className="text-sm text-gray-600 mt-2">
-                            <p>Job #{assignedJob.shorthand}</p>
-                            <p>{assignedJob.project}</p>
-                          </div>
-                        ) : (
-                          <p className="text-sm text-gray-500 mt-2">Ready for assignment</p>
-                        )}
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
+          <FlexicoreFormsStatus jobs={flexicoreJobs} />
         </TabsContent>
 
         <TabsContent value="flexicore-controls">
-          <Card>
-            <CardHeader>
-              <CardTitle>Flexicore Controls</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Button className="w-full bg-orange-600 hover:bg-orange-700">
-                Start Flexicore Pour
-              </Button>
-              <Button variant="outline" className="w-full">
-                Bed Preparation
-              </Button>
-              <Button variant="outline" className="w-full">
-                Reinforcement Setup
-              </Button>
-              <Button variant="outline" className="w-full">
-                Stress Monitoring
-              </Button>
-            </CardContent>
-          </Card>
+          <FlexicoreControls />
         </TabsContent>
 
         <TabsContent value="inventory">
