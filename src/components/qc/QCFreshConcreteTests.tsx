@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,13 +23,14 @@ const QCFreshConcreteTests = () => {
 
   const currentDepartment = getCurrentDepartment();
 
-  // Get department-specific sample data with proper form names and multiple jobs per form
+  // Get department-specific sample data with hierarchical grouping
   const getDepartmentSampleData = () => {
     switch (currentDepartment) {
       case 'precast':
         return [
+          // Form Submission Group 1 - Multiple forms, jobs, and pieces from one test session
           {
-            id: "FCT-P001",
+            id: "FCT-P001-main",
             date: "2024-01-15",
             time: "09:30",
             job: "5014",
@@ -51,17 +51,18 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "John Smith",
-            status: "Submitted"
+            status: "Submitted",
+            formSubmissionId: "FS-001"
           },
           {
-            id: "FCT-P001-sub",
+            id: "FCT-P001-sub1",
             date: "2024-01-15",
             time: "09:30",
             job: "5015",
             mixDesign: "MD-001",
             batchTicket: "2401151",
             form: "BL1",
-            pieces: "B0003",
+            pieces: "B0003, B0004",
             slumpFlow: "5.5",
             airContent: "6.2",
             ambientTemp: "72",
@@ -76,18 +77,94 @@ const QCFreshConcreteTests = () => {
             staticSegregation: "Pass",
             technician: "John Smith",
             status: "Submitted",
-            isSubLine: true,
-            parentId: "FCT-P001"
+            formSubmissionId: "FS-001"
           },
+          {
+            id: "FCT-P001-sub2",
+            date: "2024-01-15",
+            time: "09:30",
+            job: "5016",
+            mixDesign: "MD-001",
+            batchTicket: "2401151",
+            form: "COL",
+            pieces: "C0018",
+            slumpFlow: "5.5",
+            airContent: "6.2",
+            ambientTemp: "72",
+            concreteTemp: "68",
+            unitWeight: "145.2",
+            releaseRequired: "3500",
+            strengthRequired: "5000",
+            yield: "27.0",
+            relativeYield: "1.00",
+            t20: "12.5",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "John Smith",
+            status: "Submitted",
+            formSubmissionId: "FS-001"
+          },
+          {
+            id: "FCT-P001-sub3",
+            date: "2024-01-15",
+            time: "09:30",
+            job: "5017",
+            mixDesign: "MD-001",
+            batchTicket: "2401151",
+            form: "COL",
+            pieces: "C0019, C0020",
+            slumpFlow: "5.5",
+            airContent: "6.2",
+            ambientTemp: "72",
+            concreteTemp: "68",
+            unitWeight: "145.2",
+            releaseRequired: "3500",
+            strengthRequired: "5000",
+            yield: "27.0",
+            relativeYield: "1.00",
+            t20: "12.5",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "John Smith",
+            status: "Submitted",
+            formSubmissionId: "FS-001"
+          },
+          {
+            id: "FCT-P001-sub4",
+            date: "2024-01-15",
+            time: "09:30",
+            job: "5018",
+            mixDesign: "MD-001",
+            batchTicket: "2401151",
+            form: "BL3",
+            pieces: "B0020, B0021, B0022",
+            slumpFlow: "5.5",
+            airContent: "6.2",
+            ambientTemp: "72",
+            concreteTemp: "68",
+            unitWeight: "145.2",
+            releaseRequired: "3500",
+            strengthRequired: "5000",
+            yield: "27.0",
+            relativeYield: "1.00",
+            t20: "12.5",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "John Smith",
+            status: "Submitted",
+            formSubmissionId: "FS-001"
+          },
+
+          // Form Submission Group 2 - Single form, single job
           {
             id: "FCT-P002",
             date: "2024-01-14",
             time: "14:15",
-            job: "5016",
+            job: "5019",
             mixDesign: "MD-002",
             batchTicket: "2401142",
-            form: "COL",
-            pieces: "C0018, C0019",
+            form: "STAD",
+            pieces: "M0001, M0002",
             slumpFlow: "4.0",
             airContent: "5.8",
             ambientTemp: "75",
@@ -101,17 +178,20 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "Sarah Johnson",
-            status: "Draft"
+            status: "Draft",
+            formSubmissionId: "FS-002"
           },
+
+          // Form Submission Group 3 - Multiple forms with different jobs
           {
-            id: "FCT-P003",
+            id: "FCT-P003-main",
             date: "2024-01-13",
             time: "11:00",
-            job: "5017",
+            job: "5020",
             mixDesign: "MD-003",
             batchTicket: "2401131",
-            form: "BL3",
-            pieces: "B0020, B0021",
+            form: "BL2",
+            pieces: "B0025, B0026",
             slumpFlow: "5.2",
             airContent: "6.0",
             ambientTemp: "74",
@@ -125,13 +205,65 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "Mike Wilson",
-            status: "Submitted"
+            status: "Submitted",
+            formSubmissionId: "FS-003"
+          },
+          {
+            id: "FCT-P003-sub1",
+            date: "2024-01-13",
+            time: "11:00",
+            job: "5021",
+            mixDesign: "MD-003",
+            batchTicket: "2401131",
+            form: "EPB-E",
+            pieces: "B0027",
+            slumpFlow: "5.2",
+            airContent: "6.0",
+            ambientTemp: "74",
+            concreteTemp: "70",
+            unitWeight: "146.1",
+            releaseRequired: "3800",
+            strengthRequired: "5500",
+            yield: "26.9",
+            relativeYield: "1.01",
+            t20: "12.8",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Mike Wilson",
+            status: "Submitted",
+            formSubmissionId: "FS-003"
+          },
+          {
+            id: "FCT-P003-sub2",
+            date: "2024-01-13",
+            time: "11:00",
+            job: "5022",
+            mixDesign: "MD-003",
+            batchTicket: "2401131",
+            form: "EPB-E",
+            pieces: "B0028, B0029, B0030",
+            slumpFlow: "5.2",
+            airContent: "6.0",
+            ambientTemp: "74",
+            concreteTemp: "70",
+            unitWeight: "146.1",
+            releaseRequired: "3800",
+            strengthRequired: "5500",
+            yield: "26.9",
+            relativeYield: "1.01",
+            t20: "12.8",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Mike Wilson",
+            status: "Submitted",
+            formSubmissionId: "FS-003"
           }
         ];
       case 'wall-panels':
         return [
+          // Form Submission Group 1 - Multiple forms and jobs
           {
-            id: "FCT-W001",
+            id: "FCT-W001-main",
             date: "2024-01-15",
             time: "10:45",
             job: "5016",
@@ -152,17 +284,18 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "Mike Wilson",
-            status: "Submitted"
+            status: "Submitted",
+            formSubmissionId: "FS-W001"
           },
           {
-            id: "FCT-W001-sub",
+            id: "FCT-W001-sub1",
             date: "2024-01-15",
             time: "10:45",
             job: "5017",
             mixDesign: "MD-WP01",
             batchTicket: "2401153",
             form: "WP1",
-            pieces: "W0003",
+            pieces: "W0003, W0004",
             slumpFlow: "6.0",
             airContent: "6.0",
             ambientTemp: "70",
@@ -177,18 +310,44 @@ const QCFreshConcreteTests = () => {
             staticSegregation: "Pass",
             technician: "Mike Wilson",
             status: "Submitted",
-            isSubLine: true,
-            parentId: "FCT-W001"
+            formSubmissionId: "FS-W001"
           },
+          {
+            id: "FCT-W001-sub2",
+            date: "2024-01-15",
+            time: "10:45",
+            job: "5018",
+            mixDesign: "MD-WP01",
+            batchTicket: "2401153",
+            form: "WP15",
+            pieces: "W0010, W0011, W0012",
+            slumpFlow: "6.0",
+            airContent: "6.0",
+            ambientTemp: "70",
+            concreteTemp: "67",
+            unitWeight: "144.8",
+            releaseRequired: "3500",
+            strengthRequired: "5000",
+            yield: "27.2",
+            relativeYield: "1.01",
+            t20: "13.0",
+            jRing: "Pass",
+            staticSegregation: "Pass",
+            technician: "Mike Wilson",
+            status: "Submitted",
+            formSubmissionId: "FS-W001"
+          },
+
+          // Form Submission Group 2 - Single form
           {
             id: "FCT-W002",
             date: "2024-01-14",
             time: "09:30",
-            job: "5018",
+            job: "5019",
             mixDesign: "MD-WP02",
             batchTicket: "2401141",
-            form: "WP15",
-            pieces: "W0010, W0011, W0012",
+            form: "WP24",
+            pieces: "W0020, W0021",
             slumpFlow: "5.8",
             airContent: "5.9",
             ambientTemp: "72",
@@ -202,9 +361,11 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "Lisa Brown",
-            status: "Submitted"
+            status: "Submitted",
+            formSubmissionId: "FS-W002"
           }
         ];
+
       case 'extruded':
         return [
           {
@@ -229,7 +390,8 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "Lisa Brown",
-            status: "Submitted"
+            status: "Submitted",
+            formSubmissionId: "FS-E001"
           },
           {
             id: "FCT-E002",
@@ -253,7 +415,8 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "Tom Davis",
-            status: "Submitted"
+            status: "Submitted",
+            formSubmissionId: "FS-E002"
           }
         ];
       case 'flexicore':
@@ -280,7 +443,8 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "Tom Davis",
-            status: "Submitted"
+            status: "Submitted",
+            formSubmissionId: "FS-F001"
           },
           {
             id: "FCT-F002",
@@ -304,7 +468,8 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "Amy Chen",
-            status: "Submitted"
+            status: "Submitted",
+            formSubmissionId: "FS-F002"
           }
         ];
       case 'double-tees':
@@ -331,7 +496,8 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "Amy Chen",
-            status: "Submitted"
+            status: "Submitted",
+            formSubmissionId: "FS-DT001"
           },
           {
             id: "FCT-DT002",
@@ -355,7 +521,8 @@ const QCFreshConcreteTests = () => {
             jRing: "Pass",
             staticSegregation: "Pass",
             technician: "John Smith",
-            status: "Submitted"
+            status: "Submitted",
+            formSubmissionId: "FS-DT002"
           }
         ];
       default:
