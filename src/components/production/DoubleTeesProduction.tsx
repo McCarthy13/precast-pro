@@ -9,11 +9,14 @@ import { Play, Pause, CheckCircle, Clock } from "lucide-react";
 import InventoryTracker from "./InventoryTracker";
 
 const DoubleTeesProduction = () => {
+  // Updated jobs to follow proper Job # and Mark # format
   const doubleTeeJobs = [
     {
-      id: "DT-001",
+      jobNumber: "25-5026",
+      shorthand: "5026",
       project: "Warehouse Complex",
       teeType: "24-inch Double Tee",
+      marks: ["T0001", "T0002"], // Double Tee marks
       span: "60 ft",
       quantity: 12,
       completed: 8,
@@ -21,9 +24,11 @@ const DoubleTeesProduction = () => {
       bed: "Long Bed 1"
     },
     {
-      id: "DT-002",
+      jobNumber: "25-5027",
+      shorthand: "5027", 
       project: "Manufacturing Plant",
       teeType: "32-inch Double Tee",
+      marks: ["T0003", "T0004"],
       span: "80 ft",
       quantity: 8,
       completed: 8,
@@ -31,10 +36,12 @@ const DoubleTeesProduction = () => {
       bed: "Long Bed 2"
     },
     {
-      id: "DT-003",
+      jobNumber: "25-5028",
+      shorthand: "5028",
       project: "Distribution Center",
       teeType: "28-inch Double Tee",
-      span: "70 ft",
+      marks: ["T0005", "T0006"],
+      span: "70 ft", 
       quantity: 16,
       completed: 2,
       status: "in-progress",
@@ -79,45 +86,53 @@ const DoubleTeesProduction = () => {
                 <CardDescription>Large span double tee production</CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Job ID</TableHead>
-                      <TableHead>Project</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Span</TableHead>
-                      <TableHead>Progress</TableHead>
-                      <TableHead>Bed</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {doubleTeeJobs.map((job) => (
-                      <TableRow key={job.id}>
-                        <TableCell className="font-medium">{job.id}</TableCell>
-                        <TableCell>{job.project}</TableCell>
-                        <TableCell>{job.teeType}</TableCell>
-                        <TableCell>{job.span}</TableCell>
-                        <TableCell>
-                          <div className="space-y-1">
-                            <div className="flex justify-between text-sm">
-                              <span>{job.completed}/{job.quantity}</span>
-                              <span>{Math.round((job.completed / job.quantity) * 100)}%</span>
-                            </div>
-                            <Progress value={(job.completed / job.quantity) * 100} className="h-2" />
+                <div className="space-y-4">
+                  {doubleTeeJobs.map((job) => (
+                    <Card key={job.jobNumber} className="border">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between mb-3">
+                          <div>
+                            <h4 className="font-semibold">Job #{job.shorthand}</h4>
+                            <p className="text-sm text-gray-600">Full: {job.jobNumber}</p>
                           </div>
-                        </TableCell>
-                        <TableCell>{job.bed}</TableCell>
-                        <TableCell>
                           <div className="flex items-center space-x-2">
                             {getStatusIcon(job.status)}
                             <Badge variant="outline">{job.status}</Badge>
                           </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <p className="text-sm"><strong>Project:</strong> {job.project}</p>
+                            <p className="text-sm"><strong>Type:</strong> {job.teeType}</p>
+                            <p className="text-sm"><strong>Span:</strong> {job.span}</p>
+                            <p className="text-sm"><strong>Bed:</strong> {job.bed}</p>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <p className="text-sm"><strong>Progress:</strong> {job.completed}/{job.quantity}</p>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-red-600 h-2 rounded-full" 
+                                style={{ width: `${(job.completed / job.quantity) * 100}%` }}
+                              ></div>
+                            </div>
+                            <div className="text-sm">
+                              <strong>Mark #s:</strong>
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {job.marks.map((mark) => (
+                                  <Badge key={mark} variant="outline" className="text-xs">
+                                    {mark}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </CardContent>
             </Card>
 
