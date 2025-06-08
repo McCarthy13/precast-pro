@@ -1,4 +1,53 @@
-import { Piece, Form, BatchTicket } from "@/types/production";
+
+// Define types locally since they don't exist in production types
+export interface Piece {
+  id: string;
+  name: string;
+  jobNumber: string;
+  pieceId: string;
+}
+
+export interface Form {
+  id: string;
+  name: string;
+}
+
+export interface BatchTicket {
+  id: string;
+  mixDesign: string;
+  batchSize: string;
+  yield: string;
+  description: string;
+}
+
+export interface MixDesign {
+  id: string;
+  name: string;
+  description: string;
+}
+
+export const mixDesigns: MixDesign[] = [
+  {
+    id: "MD-001",
+    name: "Standard Precast Mix",
+    description: "General purpose precast concrete mix"
+  },
+  {
+    id: "MD-002", 
+    name: "High Strength Precast",
+    description: "High strength concrete for structural elements"
+  },
+  {
+    id: "MD-003",
+    name: "Extruded Products",
+    description: "Specialized mix for extruded concrete products"
+  },
+  {
+    id: "MD-004",
+    name: "Flexicore Mix", 
+    description: "Mix design for flexicore production"
+  }
+];
 
 export const batchTickets: BatchTicket[] = [
   {
