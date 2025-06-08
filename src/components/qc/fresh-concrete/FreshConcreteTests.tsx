@@ -223,7 +223,7 @@ const QCFreshConcreteTests = () => {
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 px-2">
               {/* Search and Controls */}
               <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -312,7 +312,7 @@ const QCFreshConcreteTests = () => {
                 </div>
               )}
 
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto -mx-2">
                 <Table>
                   <TableHeader>
                     <TableRow>

@@ -13,13 +13,13 @@ const FreshConcreteTableHeader = () => {
         <TableHead className="px-0.5 py-3 text-xs font-semibold" style={{width: `${columnWidths.form}px`, minWidth: `${columnWidths.form}px`}}>Form</TableHead>
         <TableHead className="px-0.5 py-3 text-xs font-semibold" style={{width: `${columnWidths.job}px`, minWidth: `${columnWidths.job}px`}}>Job</TableHead>
         <TableHead className="px-0.5 py-3 text-xs font-semibold" style={{width: `${columnWidths.pieces}px`, minWidth: `${columnWidths.pieces}px`}}>Pieces</TableHead>
-        <TableHead className="px-0.5 py-3 text-xs font-semibold" style={{width: `${columnWidths.slumpFlow}px`, minWidth: `${columnWidths.slumpFlow}px`}}>Slump<br/>(Flow)<br/>(in)</TableHead>
-        <TableHead className="px-0.5 py-3 text-xs font-semibold" style={{width: `${columnWidths.airContent}px`, minWidth: `${columnWidths.airContent}px`}}>Air<br/>(%)</TableHead>
-        <TableHead className="px-0.5 py-3 text-xs font-semibold" style={{width: `${columnWidths.ambientTemp}px`, minWidth: `${columnWidths.ambientTemp}px`}}>Amb<br/>Temp<br/>(°F)</TableHead>
-        <TableHead className="px-0.5 py-3 text-xs font-semibold" style={{width: `${columnWidths.concreteTemp}px`, minWidth: `${columnWidths.concreteTemp}px`}}>Conc<br/>Temp<br/>(°F)</TableHead>
-        <TableHead className="px-0.5 py-3 text-xs font-semibold" style={{width: `${columnWidths.unitWeight}px`, minWidth: `${columnWidths.unitWeight}px`}}>Unit<br/>Wt<br/>(lb/ft³)</TableHead>
-        <TableHead className="px-0.5 py-3 text-xs font-semibold" style={{width: `${columnWidths.yield}px`, minWidth: `${columnWidths.yield}px`}}>Yield<br/>(ft³)</TableHead>
-        <TableHead className="px-0.5 py-3 text-xs font-semibold" style={{width: `${columnWidths.relativeYield}px`, minWidth: `${columnWidths.relativeYield}px`}}>Rel<br/>Yield</TableHead>
+        <TableHead className="px-0 py-3 text-xs font-semibold" style={{width: `${columnWidths.slumpFlow}px`, minWidth: `${columnWidths.slumpFlow}px`}}>Slump<br/>(Flow)<br/>(in)</TableHead>
+        <TableHead className="px-0 py-3 text-xs font-semibold" style={{width: `${columnWidths.airContent}px`, minWidth: `${columnWidths.airContent}px`}}>Air<br/>(%)</TableHead>
+        <TableHead className="px-0 py-3 text-xs font-semibold" style={{width: `${columnWidths.ambientTemp}px`, minWidth: `${columnWidths.ambientTemp}px`}}>Amb<br/>Temp<br/>(°F)</TableHead>
+        <TableHead className="px-0 py-3 text-xs font-semibold" style={{width: `${columnWidths.concreteTemp}px`, minWidth: `${columnWidths.concreteTemp}px`}}>Conc<br/>Temp<br/>(°F)</TableHead>
+        <TableHead className="px-0 py-3 text-xs font-semibold" style={{width: `${columnWidths.unitWeight}px`, minWidth: `${columnWidths.unitWeight}px`}}>Unit<br/>Wt<br/>(lb/ft³)</TableHead>
+        <TableHead className="px-0 py-3 text-xs font-semibold" style={{width: `${columnWidths.yield}px`, minWidth: `${columnWidths.yield}px`}}>Yield<br/>(ft³)</TableHead>
+        <TableHead className="px-0 py-3 text-xs font-semibold" style={{width: `${columnWidths.relativeYield}px`, minWidth: `${columnWidths.relativeYield}px`}}>Rel<br/>Yield</TableHead>
         <TableHead className="text-center font-bold bg-blue-100 text-xs px-0.5 py-3" colSpan={3}>
           RELEASE RESULTS
         </TableHead>

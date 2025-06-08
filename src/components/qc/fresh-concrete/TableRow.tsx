@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
@@ -147,13 +146,13 @@ const FreshConcreteTableRow: React.FC<FreshConcreteTableRowProps> = ({
                 {/* Test Results - only show on first row */}
                 {isFirstRowOfGroup && (
                   <>
-                    <TableCell className="px-0.5 py-2 text-xs" style={{width: `${columnWidths.slumpFlow}px`, minWidth: `${columnWidths.slumpFlow}px`}} rowSpan={totalRows}>{mainTest.slumpFlow}</TableCell>
-                    <TableCell className="px-0.5 py-2 text-xs" style={{width: `${columnWidths.airContent}px`, minWidth: `${columnWidths.airContent}px`}} rowSpan={totalRows}>{mainTest.airContent}</TableCell>
-                    <TableCell className="px-0.5 py-2 text-xs" style={{width: `${columnWidths.ambientTemp}px`, minWidth: `${columnWidths.ambientTemp}px`}} rowSpan={totalRows}>{mainTest.ambientTemp}</TableCell>
-                    <TableCell className="px-0.5 py-2 text-xs" style={{width: `${columnWidths.concreteTemp}px`, minWidth: `${columnWidths.concreteTemp}px`}} rowSpan={totalRows}>{mainTest.concreteTemp}</TableCell>
-                    <TableCell className="px-0.5 py-2 text-xs" style={{width: `${columnWidths.unitWeight}px`, minWidth: `${columnWidths.unitWeight}px`}} rowSpan={totalRows}>{mainTest.unitWeight}</TableCell>
-                    <TableCell className="px-0.5 py-2 text-xs" style={{width: `${columnWidths.yield}px`, minWidth: `${columnWidths.yield}px`}} rowSpan={totalRows}>{mainTest.yield}</TableCell>
-                    <TableCell className="px-0.5 py-2 text-xs" style={{width: `${columnWidths.relativeYield}px`, minWidth: `${columnWidths.relativeYield}px`}} rowSpan={totalRows}>{mainTest.relativeYield}</TableCell>
+                    <TableCell className="px-0 py-2 text-xs" style={{width: `${columnWidths.slumpFlow}px`, minWidth: `${columnWidths.slumpFlow}px`}} rowSpan={totalRows}>{mainTest.slumpFlow}</TableCell>
+                    <TableCell className="px-0 py-2 text-xs" style={{width: `${columnWidths.airContent}px`, minWidth: `${columnWidths.airContent}px`}} rowSpan={totalRows}>{mainTest.airContent}</TableCell>
+                    <TableCell className="px-0 py-2 text-xs" style={{width: `${columnWidths.ambientTemp}px`, minWidth: `${columnWidths.ambientTemp}px`}} rowSpan={totalRows}>{mainTest.ambientTemp}</TableCell>
+                    <TableCell className="px-0 py-2 text-xs" style={{width: `${columnWidths.concreteTemp}px`, minWidth: `${columnWidths.concreteTemp}px`}} rowSpan={totalRows}>{mainTest.concreteTemp}</TableCell>
+                    <TableCell className="px-0 py-2 text-xs" style={{width: `${columnWidths.unitWeight}px`, minWidth: `${columnWidths.unitWeight}px`}} rowSpan={totalRows}>{mainTest.unitWeight}</TableCell>
+                    <TableCell className="px-0 py-2 text-xs" style={{width: `${columnWidths.yield}px`, minWidth: `${columnWidths.yield}px`}} rowSpan={totalRows}>{mainTest.yield}</TableCell>
+                    <TableCell className="px-0 py-2 text-xs" style={{width: `${columnWidths.relativeYield}px`, minWidth: `${columnWidths.relativeYield}px`}} rowSpan={totalRows}>{mainTest.relativeYield}</TableCell>
                   </>
                 )}
 
