@@ -1,4 +1,3 @@
-
 import { Table, TableBody } from "@/components/ui/table";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { FreshTest, Column, HierarchyGroup } from './types';
@@ -36,12 +35,14 @@ const FreshConcreteTestsTable = ({
   const handleStrengthDataUpdate = (testId: string, field: string, value: string) => {
     if (field.startsWith('strength') || field === 'strengthSubmitted') {
       // For 28-day strength fields, update all records with the same date and time
-      const dateTimeGroupIds = getDateTimeGroup(tests, testId);
+      // Extract the base test ID if this is a form-specific key
+      const baseTestId = testId.includes('_') ? testId.split('_')[0] : testId;
+      const dateTimeGroupIds = getDateTimeGroup(tests, baseTestId);
       dateTimeGroupIds.forEach(id => {
         updateStrengthData(id, field, value);
       });
     } else {
-      // For release data, update only the specific record
+      // For release data (which can be form-specific), update only the specific record/form
       updateStrengthData(testId, field, value);
     }
   };
@@ -64,7 +65,8 @@ const FreshConcreteTestsTable = ({
 
   const handleSubmit28Day = (testId: string) => {
     // Submit 28-day data for all records with the same date and time
-    const dateTimeGroupIds = getDateTimeGroup(tests, testId);
+    const baseTestId = testId.includes('_') ? testId.split('_')[0] : testId;
+    const dateTimeGroupIds = getDateTimeGroup(tests, baseTestId);
     dateTimeGroupIds.forEach(id => {
       updateStrengthData(id, 'strengthSubmitted', 'true');
     });
@@ -77,7 +79,8 @@ const FreshConcreteTestsTable = ({
   };
 
   const is28DayComplete = (testId: string) => {
-    const data = strengthData[testId];
+    const baseTestId = testId.includes('_') ? testId.split('_')[0] : testId;
+    const data = strengthData[baseTestId];
     return data?.strength1 && data?.strength2 && data?.strength3;
   };
 
@@ -86,7 +89,8 @@ const FreshConcreteTestsTable = ({
   };
 
   const is28DaySubmitted = (testId: string) => {
-    return strengthData[testId]?.strengthSubmitted === 'true';
+    const baseTestId = testId.includes('_') ? testId.split('_')[0] : testId;
+    return strengthData[baseTestId]?.strengthSubmitted === 'true';
   };
 
   // Group tests by form submission ID and create hierarchical structure
