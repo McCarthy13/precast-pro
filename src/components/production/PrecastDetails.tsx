@@ -1,4 +1,5 @@
 
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -39,6 +40,17 @@ const PrecastDetails = () => {
       crew: "Team C"
     }
   ];
+
+  // Precast forms with their actual names
+  const precastFormsList = ["BL1", "BL2", "BL3", "BL6", "COL", "STAD", "EPB-E", "EPB-W", "WPB-E", "WPB-W", "MS"];
+
+  const getFormTypeDescription = (formName: string) => {
+    if (formName.startsWith('BL')) return 'Beam Line';
+    if (formName === 'COL') return 'Column';
+    if (formName === 'STAD') return 'Stadia/Riser';
+    if (formName.includes('PB')) return 'Panel Bed';
+    return 'Miscellaneous';
+  };
 
   return (
     <div className="space-y-6">
@@ -118,7 +130,7 @@ const PrecastDetails = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {["BL1", "BL2", "BL3", "BL6", "COL", "STAD", "EPB-E", "EPB-W", "WPB-E", "WPB-W", "MS"].map((formName) => (
+                {precastFormsList.map((formName) => (
                   <Card key={formName} className="border">
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between mb-2">
@@ -126,10 +138,7 @@ const PrecastDetails = () => {
                         <Badge variant="default">Active</Badge>
                       </div>
                       <p className="text-sm text-gray-600">
-                        Form Type: {formName.startsWith('BL') ? 'Beam Line' : 
-                                   formName === 'COL' ? 'Column' :
-                                   formName === 'STAD' ? 'Stadia/Riser' :
-                                   formName.includes('PB') ? 'Panel Bed' : 'Misc'}
+                        Form Type: {getFormTypeDescription(formName)}
                       </p>
                       <div className="mt-2 text-xs text-gray-500">
                         Current Job: {activeJobs.find(j => j.form === formName)?.shorthand || 'Available'}
@@ -151,3 +160,4 @@ const PrecastDetails = () => {
 };
 
 export default PrecastDetails;
+

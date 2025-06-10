@@ -1,4 +1,5 @@
 
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Search, Plus, Thermometer, FlaskConical, Database, ArrowUpDown, Filter, X } from "lucide-react";
+import { Search, Plus, Thermometer, FlaskConical, Database, ArrowUpDown, Filter, X, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useMemo } from "react";
 
@@ -185,6 +186,16 @@ const QCFreshConcreteTests = () => {
 
   return (
     <div className="space-y-6">
+      {/* Back Button */}
+      <div className="flex items-center space-x-4">
+        <Link to="/qc/precast">
+          <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-800">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Precast QC
+          </Button>
+        </Link>
+      </div>
+
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold">Fresh Concrete Test Data</h2>
@@ -462,3 +473,4 @@ const QCFreshConcreteTests = () => {
 };
 
 export default QCFreshConcreteTests;
+
