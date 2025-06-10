@@ -1,9 +1,11 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Factory, Calendar, Users } from "lucide-react";
+import { Factory, Calendar, Users, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 import { getAllForms, getFormsByDepartment } from "@/data/productionForms";
 import MobileQCInspection from "./MobileQCInspection";
 import { QCInspectionPiece } from "@/types/production";
@@ -22,7 +24,7 @@ const QCWorkspaceSelector: React.FC<QCWorkspaceSelectorProps> = ({ department })
       case 'wall panels':
         return Array.from({ length: 24 }, (_, i) => ({
           id: `WP-${i + 1}`,
-          name: `Wall Panel Form ${i + 1}`,
+          name: `WP${i + 1}`,
           department: 'wall-panels',
           capacity: '8-12 panels',
           dimensions: '8x40ft',
@@ -34,25 +36,25 @@ const QCWorkspaceSelector: React.FC<QCWorkspaceSelectorProps> = ({ department })
       
       case 'precast':
         return [
-          { id: 'BL1', name: 'Beam Line 1', department: 'precast', capacity: '4-6 beams', dimensions: '12x200ft', scheduledJobs: [{ id: 'bl1-job1', panelType: 'Beam' }] },
-          { id: 'BL2', name: 'Beam Line 2', department: 'precast', capacity: '4-6 beams', dimensions: '12x200ft', scheduledJobs: [{ id: 'bl2-job1', panelType: 'Beam' }] },
-          { id: 'BL3', name: 'Beam Line 3', department: 'precast', capacity: '4-6 beams', dimensions: '12x200ft', scheduledJobs: [{ id: 'bl3-job1', panelType: 'Beam' }] },
-          { id: 'BL6', name: 'Beam Line 6', department: 'precast', capacity: '4-6 beams', dimensions: '12x200ft', scheduledJobs: [{ id: 'bl6-job1', panelType: 'Beam' }] },
-          { id: 'WPB-W', name: 'West Panel Bed-West', department: 'precast', capacity: '8-10 panels', dimensions: '10x100ft', scheduledJobs: [{ id: 'wpbw-job1', panelType: 'Panel' }] },
-          { id: 'WPB-E', name: 'West Panel Bed-East', department: 'precast', capacity: '8-10 panels', dimensions: '10x100ft', scheduledJobs: [{ id: 'wpbe-job1', panelType: 'Panel' }] },
-          { id: 'EPB-W', name: 'East Panel Bed-West', department: 'precast', capacity: '8-10 panels', dimensions: '10x100ft', scheduledJobs: [{ id: 'epbw-job1', panelType: 'Panel' }] },
-          { id: 'EPB-E', name: 'East Panel Bed-East', department: 'precast', capacity: '8-10 panels', dimensions: '10x100ft', scheduledJobs: [{ id: 'epbe-job1', panelType: 'Panel' }] },
-          { id: 'COL', name: 'Columns', department: 'precast', capacity: '12-16 columns', dimensions: '8x80ft', scheduledJobs: [{ id: 'col-job1', panelType: 'Column' }] },
-          { id: 'STADIA', name: 'Stadia', department: 'precast', capacity: '6-8 stadia', dimensions: '12x120ft', scheduledJobs: [{ id: 'stadia-job1', panelType: 'Stadia' }] },
-          { id: 'MILD-STEEL', name: 'Mild Steel', department: 'precast', capacity: '20-25 pieces', dimensions: '6x60ft', scheduledJobs: [{ id: 'mild-job1', panelType: 'Mild Steel' }] }
+          { id: 'BL1', name: 'BL1', department: 'precast', capacity: '4-6 beams', dimensions: '12x200ft', scheduledJobs: [{ id: 'bl1-job1', panelType: 'Beam' }] },
+          { id: 'BL2', name: 'BL2', department: 'precast', capacity: '4-6 beams', dimensions: '12x200ft', scheduledJobs: [{ id: 'bl2-job1', panelType: 'Beam' }] },
+          { id: 'BL3', name: 'BL3', department: 'precast', capacity: '4-6 beams', dimensions: '12x200ft', scheduledJobs: [{ id: 'bl3-job1', panelType: 'Beam' }] },
+          { id: 'BL6', name: 'BL6', department: 'precast', capacity: '4-6 beams', dimensions: '12x200ft', scheduledJobs: [{ id: 'bl6-job1', panelType: 'Beam' }] },
+          { id: 'WPB-W', name: 'WPB-W', department: 'precast', capacity: '8-10 panels', dimensions: '10x100ft', scheduledJobs: [{ id: 'wpbw-job1', panelType: 'Panel' }] },
+          { id: 'WPB-E', name: 'WPB-E', department: 'precast', capacity: '8-10 panels', dimensions: '10x100ft', scheduledJobs: [{ id: 'wpbe-job1', panelType: 'Panel' }] },
+          { id: 'EPB-W', name: 'EPB-W', department: 'precast', capacity: '8-10 panels', dimensions: '10x100ft', scheduledJobs: [{ id: 'epbw-job1', panelType: 'Panel' }] },
+          { id: 'EPB-E', name: 'EPB-E', department: 'precast', capacity: '8-10 panels', dimensions: '10x100ft', scheduledJobs: [{ id: 'epbe-job1', panelType: 'Panel' }] },
+          { id: 'COL', name: 'COL', department: 'precast', capacity: '12-16 columns', dimensions: '8x80ft', scheduledJobs: [{ id: 'col-job1', panelType: 'Column' }] },
+          { id: 'STAD', name: 'STAD', department: 'precast', capacity: '6-8 stadia', dimensions: '12x120ft', scheduledJobs: [{ id: 'stadia-job1', panelType: 'Stadia' }] },
+          { id: 'MS', name: 'MS', department: 'precast', capacity: '20-25 pieces', dimensions: '6x60ft', scheduledJobs: [{ id: 'mild-job1', panelType: 'Mild Steel' }] }
         ];
       
       case 'extruded':
         return [
-          { id: 'EXT1', name: 'EXT 1', department: 'extruded', capacity: '200-250ft', dimensions: '4x250ft', scheduledJobs: [{ id: 'ext1-job1', panelType: 'Extruded' }] },
-          { id: 'EXT2', name: 'EXT 2', department: 'extruded', capacity: '200-250ft', dimensions: '4x250ft', scheduledJobs: [{ id: 'ext2-job1', panelType: 'Extruded' }] },
-          { id: 'EXT3', name: 'EXT 3', department: 'extruded', capacity: '200-250ft', dimensions: '4x250ft', scheduledJobs: [{ id: 'ext3-job1', panelType: 'Extruded' }] },
-          { id: 'EXT4', name: 'EXT 4', department: 'extruded', capacity: '200-250ft', dimensions: '4x250ft', scheduledJobs: [{ id: 'ext4-job1', panelType: 'Extruded' }] }
+          { id: 'EXT1', name: 'EXT1', department: 'extruded', capacity: '200-250ft', dimensions: '4x250ft', scheduledJobs: [{ id: 'ext1-job1', panelType: 'Extruded' }] },
+          { id: 'EXT2', name: 'EXT2', department: 'extruded', capacity: '200-250ft', dimensions: '4x250ft', scheduledJobs: [{ id: 'ext2-job1', panelType: 'Extruded' }] },
+          { id: 'EXT3', name: 'EXT3', department: 'extruded', capacity: '200-250ft', dimensions: '4x250ft', scheduledJobs: [{ id: 'ext3-job1', panelType: 'Extruded' }] },
+          { id: 'EXT4', name: 'EXT4', department: 'extruded', capacity: '200-250ft', dimensions: '4x250ft', scheduledJobs: [{ id: 'ext4-job1', panelType: 'Extruded' }] }
         ];
       
       case 'flexicore':
@@ -63,6 +65,24 @@ const QCWorkspaceSelector: React.FC<QCWorkspaceSelectorProps> = ({ department })
       
       default:
         return getAllForms();
+    }
+  };
+
+  // Get the appropriate back link based on department
+  const getBackLink = () => {
+    switch (department?.toLowerCase()) {
+      case 'precast':
+        return '/qc/precast';
+      case 'wall panels':
+        return '/qc/wall-panels';
+      case 'extruded':
+        return '/qc/extruded';
+      case 'flexicore':
+        return '/qc/flexicore';
+      case 'double tees':
+        return '/qc/double-tees';
+      default:
+        return '/qc';
     }
   };
 
@@ -132,6 +152,16 @@ const QCWorkspaceSelector: React.FC<QCWorkspaceSelectorProps> = ({ department })
 
   return (
     <div className="space-y-6">
+      {/* Back Button */}
+      <div className="flex items-center space-x-4">
+        <Link to={getBackLink()}>
+          <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-800">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to {department ? `${department} QC` : 'QC Dashboard'}
+          </Button>
+        </Link>
+      </div>
+
       <div className="flex justify-between items-center">
         <div>
           <h3 className="text-xl font-bold">
