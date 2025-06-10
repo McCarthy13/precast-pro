@@ -1,8 +1,13 @@
 
 import React from 'react';
 import { PageHeader } from "@/components/ui/page-header";
-import { FileText, Layers, Settings, Users } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FileText, Layers, Settings, Users, Calculator, GitBranch, Upload } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import DrawingManagement from "@/components/drafting/DrawingManagement";
+import ModelViewer from "@/components/drafting/ModelViewer";
+import EngineeringCalcs from "@/components/drafting/EngineeringCalcs";
+import RevisionControl from "@/components/drafting/RevisionControl";
 
 const DraftingDashboard = () => {
   return (
@@ -61,19 +66,42 @@ const DraftingDashboard = () => {
           </Card>
         </div>
 
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Drafting & Engineering Dashboard Coming Soon</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
-                Advanced drafting tools, 3D modeling capabilities, engineering calculations, 
-                and collaborative design features will be available here.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+        <Tabs defaultValue="drawings" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="drawings" className="flex items-center space-x-2">
+              <FileText className="h-4 w-4" />
+              <span>Drawings</span>
+            </TabsTrigger>
+            <TabsTrigger value="models" className="flex items-center space-x-2">
+              <Layers className="h-4 w-4" />
+              <span>3D Models</span>
+            </TabsTrigger>
+            <TabsTrigger value="calculations" className="flex items-center space-x-2">
+              <Calculator className="h-4 w-4" />
+              <span>Calculations</span>
+            </TabsTrigger>
+            <TabsTrigger value="revisions" className="flex items-center space-x-2">
+              <GitBranch className="h-4 w-4" />
+              <span>Revisions</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="drawings">
+            <DrawingManagement />
+          </TabsContent>
+
+          <TabsContent value="models">
+            <ModelViewer />
+          </TabsContent>
+
+          <TabsContent value="calculations">
+            <EngineeringCalcs />
+          </TabsContent>
+
+          <TabsContent value="revisions">
+            <RevisionControl />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
