@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { ArrowLeft, Calendar, TestTube, Database, BookOpen, Settings, Beaker } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Calendar, TestTube, Database, BookOpen, Settings, Beaker } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const QCWallPanels = () => {
@@ -55,25 +55,12 @@ const QCWallPanels = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50">
-      {/* Header */}
-      <header className="construction-gradient text-white p-6 shadow-lg">
-        <div className="container mx-auto">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link to="/qc">
-                <Button variant="ghost" size="sm" className="text-white hover:bg-white/10">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to QC Dashboard
-                </Button>
-              </Link>
-              <div>
-                <h1 className="text-3xl font-bold">Wall Panels QC</h1>
-                <p className="text-blue-100 mt-1">Quality Control Operations - Wall Panels Department</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PageHeader 
+        title="Wall Panels QC"
+        subtitle="Quality Control Operations - Wall Panels Department"
+        backLink="/qc"
+        backText="Back to QC Dashboard"
+      />
 
       <div className="container mx-auto p-6">
         <div className="space-y-6">

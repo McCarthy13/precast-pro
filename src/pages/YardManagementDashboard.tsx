@@ -1,42 +1,31 @@
 
+import React from 'react';
+import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Warehouse, Package, MapPin, Settings } from "lucide-react";
+import { Warehouse, Package, MapPin, Settings } from "lucide-react";
 
 const YardManagementDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-slate-50">
-      <header className="bg-gradient-to-r from-gray-600 to-slate-600 text-white p-6 shadow-lg">
-        <div className="container mx-auto">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" asChild className="text-white hover:bg-white/10">
-                <a href="/">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to Dashboard
-                </a>
-              </Button>
-              <Separator orientation="vertical" className="h-6 bg-white/20" />
-              <div>
-                <h1 className="text-3xl font-bold">Yard Management</h1>
-                <p className="text-gray-100 mt-1">Storage, inventory, and yard operations</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
-                <Package className="h-4 w-4 mr-1" />
-                342 Items in Yard
-              </Badge>
-              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
-                <Settings className="h-4 w-4 mr-2" />
-                Settings
-              </Button>
-            </div>
-          </div>
+      <PageHeader 
+        title="Yard Management"
+        subtitle="Storage, inventory, and yard operations"
+        backLink="/"
+        backText="Back to Main Dashboard"
+      >
+        <div className="flex items-center space-x-3">
+          <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+            <Package className="h-4 w-4 mr-1" />
+            342 Items in Yard
+          </Badge>
+          <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
+            <Settings className="h-4 w-4 mr-2" />
+            Settings
+          </Button>
         </div>
-      </header>
+      </PageHeader>
 
       <div className="container mx-auto p-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
