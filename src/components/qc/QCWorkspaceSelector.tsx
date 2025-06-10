@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Factory, Calendar, Users, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PageHeader } from "@/components/ui/page-header";
 import { getAllForms, getFormsByDepartment } from "@/data/productionForms";
 import MobileQCInspection from "./MobileQCInspection";
 import { QCInspectionPiece } from "@/types/production";
@@ -151,76 +151,69 @@ const QCWorkspaceSelector: React.FC<QCWorkspaceSelectorProps> = ({ department })
   const formsToDisplay = getDepartmentForms(department || '');
 
   return (
-    <div className="space-y-6">
-      {/* Back Button */}
-      <div className="flex items-center space-x-4">
-        <Link to={getBackLink()}>
-          <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-800">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to {department ? `${department} QC` : 'QC Dashboard'}
-          </Button>
-        </Link>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-gray-50">
+      <PageHeader 
+        title={`${department ? `${department} ` : ''}QC Workspace Inspection`}
+        subtitle={`Select a ${department ? department.toLowerCase() : ''} form/workspace to inspect`}
+        backLink={getBackLink()}
+        backText={`Back to ${department ? `${department} QC` : 'QC Dashboard'}`}
+      />
 
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-xl font-bold">
-            {department ? `${department} ` : ''}QC Workspace Inspection
-          </h3>
-          <p className="text-gray-600">
-            Select a {department ? department.toLowerCase() : ''} form/workspace to inspect
-          </p>
-        </div>
-        <div className="flex space-x-2">
-          <Button
-            variant={inspectionType === 'pre-pour' ? 'default' : 'outline'}
-            onClick={() => setInspectionType('pre-pour')}
-          >
-            Pre-Pour
-          </Button>
-          <Button
-            variant={inspectionType === 'post-pour' ? 'default' : 'outline'}
-            onClick={() => setInspectionType('post-pour')}
-          >
-            Post-Pour
-          </Button>
-        </div>
-      </div>
+      <div className="container mx-auto p-6">
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <div className="flex space-x-2">
+              <Button
+                variant={inspectionType === 'pre-pour' ? 'default' : 'outline'}
+                onClick={() => setInspectionType('pre-pour')}
+              >
+                Pre-Pour
+              </Button>
+              <Button
+                variant={inspectionType === 'post-pour' ? 'default' : 'outline'}
+                onClick={() => setInspectionType('post-pour')}
+              >
+                Post-Pour
+              </Button>
+            </div>
+          </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {formsToDisplay.map((form) => (
-          <Card 
-            key={form.id} 
-            className="cursor-pointer hover:shadow-lg transition-shadow border-l-4 border-l-blue-500"
-            onClick={() => setSelectedForm(form.id)}
-          >
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center justify-between">
-                {form.name}
-                <Badge variant="secondary" className="text-xs">
-                  {form.scheduledJobs.length} pieces
-                </Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-2">
-              <div className="space-y-2">
-                {form.dimensions && (
-                  <p className="text-xs text-gray-600">{form.dimensions}</p>
-                )}
-                <div className="flex items-center justify-between text-xs">
-                  <span className="flex items-center text-gray-600">
-                    <Factory className="h-3 w-3 mr-1" />
-                    Capacity: {form.capacity}
-                  </span>
-                  <span className="flex items-center text-blue-600">
-                    <Calendar className="h-3 w-3 mr-1" />
-                    Ready for QC
-                  </span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {formsToDisplay.map((form) => (
+              <Card 
+                key={form.id} 
+                className="cursor-pointer hover:shadow-lg transition-shadow border-l-4 border-l-blue-500"
+                onClick={() => setSelectedForm(form.id)}
+              >
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium flex items-center justify-between">
+                    {form.name}
+                    <Badge variant="secondary" className="text-xs">
+                      {form.scheduledJobs.length} pieces
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-2">
+                  <div className="space-y-2">
+                    {form.dimensions && (
+                      <p className="text-xs text-gray-600">{form.dimensions}</p>
+                    )}
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="flex items-center text-gray-600">
+                        <Factory className="h-3 w-3 mr-1" />
+                        Capacity: {form.capacity}
+                      </span>
+                      <span className="flex items-center text-blue-600">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        Ready for QC
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
